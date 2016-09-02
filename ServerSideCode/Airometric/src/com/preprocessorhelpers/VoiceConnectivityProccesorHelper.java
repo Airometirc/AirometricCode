@@ -1574,7 +1574,7 @@ public class VoiceConnectivityProccesorHelper {
 
 				") as temp order by str_to_date(TIME_STAMP_FOREACH_SAMPLE,'%Y-%m-%d %H:%i:%s') desc limit 1";
 
- System.out.println("matchinDeviceInfo query-----------" + query);
+//			System.out.println("matchinDeviceInfo query-----------" + query);
 
 		try {
 			stmt = conn.createStatement();
@@ -1698,6 +1698,11 @@ public class VoiceConnectivityProccesorHelper {
 
 					deviceInfos.setDeviceManufacturer(rs
 							.getString("DEVICE_MANUFACTURER"));
+					//Added by Ankit
+					deviceInfos.setCellLocationTAC(rs
+							.getString("CELLLOCATION_TAC"));
+					deviceInfos.setCellLocationPCI(rs
+							.getString("CELLLOCATION_PCI"));
 					//deviceInfos.setNetworkType(rs.getString("NETWORK_TYPE"));
 
 				}
@@ -1885,6 +1890,12 @@ public class VoiceConnectivityProccesorHelper {
 
 					deviceInfos.setDeviceManufacturer(rs
 							.getString("DEVICE_MANUFACTURER"));
+					//Added by Ankit
+					deviceInfos.setCellLocationTAC(rs
+							.getString("CELLLOCATION_TAC"));
+					deviceInfos.setCellLocationPCI(rs
+							.getString("CELLLOCATION_PCI"));
+					
 					//deviceInfos.setNetworkType(rs.getString("NETWORK_TYPE"));
 
 				}
@@ -2142,7 +2153,12 @@ public class VoiceConnectivityProccesorHelper {
 
 					deviceInfos.setDeviceManufacturer(rs
 							.getString("DEVICE_MANUFACTURER"));
-
+					//Added by Ankit
+					deviceInfos.setCellLocationTAC(rs
+							.getString("CELLLOCATION_TAC"));
+					deviceInfos.setCellLocationPCI(rs
+							.getString("CELLLOCATION_PCI"));
+					
 					CallSetUpTo cto = new CallSetUpTo();
 					cto.setDeviceInfoTO(deviceInfos);
 					allcallSetUpList.add(cto);
@@ -2212,7 +2228,8 @@ public class VoiceConnectivityProccesorHelper {
 			String testName, List<CallSetUpTo> voiceConnectivityValueList,
 			String chartType, int flag) {
 		// //System.out.println("inserrrrr");
-
+		Float signalStrength = new Float(0);
+		String SignalStrength = null;
 		try {
 			// ////System.out.println("insertQuery-------"+insertQuery);
 			for (int i = 0; i < voiceConnectivityValueList.size(); i++) {
@@ -2225,6 +2242,29 @@ public class VoiceConnectivityProccesorHelper {
 				 * 
 				 */
 				if (chartType.equalsIgnoreCase("Placing Call")) {
+					
+					if(vto.getDeviceInfoTO().getSignalStrength()=="99")
+					{	if (vto.getDeviceInfoTO().getNetworkType().equalsIgnoreCase("LTE")
+							|| vto.getDeviceInfoTO().getNetworkType().equalsIgnoreCase("LTE (4G)")) {
+						/*Code correction */
+//						signalStrength = -140+ (new Float(
+//										new Float(rs.getString("SIGNALSTRENGTH_LTERSRP"))));
+						signalStrength = new Float(vto.getDeviceInfoTO().getSignalStrengthLTERSRP());
+						
+					} else 
+					if(vto.getDeviceInfoTO().getNetworkType().equalsIgnoreCase("wifi") 
+							|| vto.getDeviceInfoTO().getNetworkType().equalsIgnoreCase("WIFI")) //Added by ankit
+					{
+						signalStrength = new Float(vto.getDeviceInfoTO().getWifiRssi());
+						////
+					}
+					else{
+						//SIGNALSTRENGTH_LTESIGNALSTRENGTH
+					signalStrength = -113 + 2* (new Float(new Float(vto.getDeviceInfoTO().getSignalStrength())));
+					}
+					SignalStrength = new Float(signalStrength).toString();
+				}else{SignalStrength="NA";}
+					
 					String insertQuery = "INSERT INTO pre_calc_voiceconnectivity_1 (MARKET_ID,TEST_NAME,CHART_TYPE,TIMESTAMP,IMEI	"
 							+ ",TEST_TYPE,	USER_NAME	,DEVICE_PHONENUMBER,	DEVICE_PHONETYPE,	"
 							+ "DEVICE_MANUFACTURER,	DEVICE_VERSION,	TIME_STAMP_FOREACH_SAMPLE,	NETWORK_NETWORKOPERATOR,	NETWORK_NETWORKOPERATORNAME,"
@@ -2232,7 +2272,7 @@ public class VoiceConnectivityProccesorHelper {
 							+ ",SIGNALSTRENGTH_GSMSIGNALSTRENGTH,	SIGNALSTRENGTH_CDMADBM,	SIGNALSTRENGTH_CDMACIO,	SIGNALSTRENGTH_EVDODBM,	SIGNALSTRENGTH_EVDOECIO	"
 							+ ",SIGNALSTRENGTH_EVDOSNR,	SIGNALSTRENGTH_GSM,	SIGNALSTRENGTH_GSMBITRATEERROR,	SIGNALSTRENGTH_LTESIGNALSTRENGTH,	"
 							+ "SIGNALSTRENGTH_LTERSRP,	SIGNALSTRENGTH_LTERSRQ,	SIGNALSTRENGTH_LTERSSNR,	SIGNALSTRENGTH_LTECQI,	CELLLOCATION_CID,	"
-							+ "CELLLOCATION_LAC,	NEIGHBOUR_INFO,	BATTERY_LEVEL,	NETWORK_MANUALLY_DONE,	GEOLOCATION_LATITUDE,	GEOLOCATION_LONGITUDE,"
+							+ "CELLLOCATION_LAC,CELLLOCATION_TAC,CELLLOCATION_PCI,	NEIGHBOUR_INFO,	BATTERY_LEVEL,	NETWORK_MANUALLY_DONE,	GEOLOCATION_LATITUDE,	GEOLOCATION_LONGITUDE,"
 							+ "		SNAPSHOT_ID) VALUES  ('"
 							+ marketId
 							+ "', '"
@@ -2280,7 +2320,7 @@ public class VoiceConnectivityProccesorHelper {
 							+ "','"
 							+ vto.getDeviceInfoTO().getNetworkMNC()
 							+ "','"
-							+ vto.getDeviceInfoTO().getSignalStrengthGSM()
+							+ SignalStrength
 							+ "','"
 							+ vto.getDeviceInfoTO().getSignalStrengthCDMA()
 							+ "',"
@@ -2311,9 +2351,12 @@ public class VoiceConnectivityProccesorHelper {
 							+ vto.getDeviceInfoTO().getSignalStrength_LTECQI()
 							+ "','"
 							+ vto.getDeviceInfoTO().getCellLocationCID()
-							+ "',"
-							+ "'"
+							+ "','"
 							+ vto.getDeviceInfoTO().getCellLocationLAC()
+							+ "','"
+							+ vto.getDeviceInfoTO().getCellLocationTAC()
+							+ "','"
+							+ vto.getDeviceInfoTO().getCellLocationPCI()
 							+ "','"
 							+ vto.getDeviceInfoTO().getNeighbourInfo()
 							+ "','"
@@ -2328,7 +2371,7 @@ public class VoiceConnectivityProccesorHelper {
 							+ "','"
 							+ vto.getDeviceInfoTO().getSnapShotId()
 							+ "')";
-					//System.out.println("insertQuery-------"+insertQuery);
+//					System.out.println("insertQuery-------"+insertQuery);
 					st.executeUpdate(insertQuery);
 					i++;
 					vto = voiceConnectivityValueList.get(i);
@@ -2339,7 +2382,7 @@ public class VoiceConnectivityProccesorHelper {
 							+ ",SIGNALSTRENGTH_GSMSIGNALSTRENGTH,	SIGNALSTRENGTH_CDMADBM,	SIGNALSTRENGTH_CDMACIO,	SIGNALSTRENGTH_EVDODBM,	SIGNALSTRENGTH_EVDOECIO	"
 							+ ",SIGNALSTRENGTH_EVDOSNR,	SIGNALSTRENGTH_GSM,	SIGNALSTRENGTH_GSMBITRATEERROR,	SIGNALSTRENGTH_LTESIGNALSTRENGTH,	"
 							+ "SIGNALSTRENGTH_LTERSRP,	SIGNALSTRENGTH_LTERSRQ,	SIGNALSTRENGTH_LTERSSNR,	SIGNALSTRENGTH_LTECQI,	CELLLOCATION_CID,	"
-							+ "CELLLOCATION_LAC,	NEIGHBOUR_INFO,	BATTERY_LEVEL,	NETWORK_MANUALLY_DONE,	GEOLOCATION_LATITUDE,	GEOLOCATION_LONGITUDE,"
+							+ "CELLLOCATION_LAC,CELLLOCATION_TAC,CELLLOCATION_PCI,	NEIGHBOUR_INFO,	BATTERY_LEVEL,	NETWORK_MANUALLY_DONE,	GEOLOCATION_LATITUDE,	GEOLOCATION_LONGITUDE,"
 							+ "		SNAPSHOT_ID) VALUES  ('"
 							+ marketId
 							+ "', '"
@@ -2387,7 +2430,7 @@ public class VoiceConnectivityProccesorHelper {
 							+ "','"
 							+ vto.getDeviceInfoTO().getNetworkMNC()
 							+ "','"
-							+ vto.getDeviceInfoTO().getSignalStrengthGSM()
+							+ SignalStrength
 							+ "','"
 							+ vto.getDeviceInfoTO().getSignalStrengthCDMA()
 							+ "',"
@@ -2422,6 +2465,10 @@ public class VoiceConnectivityProccesorHelper {
 							+ "'"
 							+ vto.getDeviceInfoTO().getCellLocationLAC()
 							+ "','"
+							+ vto.getDeviceInfoTO().getCellLocationTAC()
+							+ "','"
+							+ vto.getDeviceInfoTO().getCellLocationPCI()
+							+ "','"
 							+ vto.getDeviceInfoTO().getNeighbourInfo()
 							+ "','"
 							+ vto.getDeviceInfoTO().getBatteryLevel()
@@ -2435,20 +2482,43 @@ public class VoiceConnectivityProccesorHelper {
 							+ "','"
 							+ vto.getDeviceInfoTO().getSnapShotId()
 							+ "')";
-					//System.out.println("insertQuery2-------"+insertQuery);
+//					System.out.println("insertQuery2-------"+insertQuery);
 					st.executeUpdate(insertQuery);
 				}
 				if (chartType.equalsIgnoreCase("all")) {
 
 					vto = voiceConnectivityValueList.get(i);
-
+				if(vto.getDeviceInfoTO().getSignalStrength()=="99")
+				{
+					if (vto.getDeviceInfoTO().getNetworkType().equalsIgnoreCase("LTE")
+								|| vto.getDeviceInfoTO().getNetworkType().equalsIgnoreCase("LTE (4G)")) {
+							/*Code correction */
+//							signalStrength = -140+ (new Float(
+//											new Float(rs.getString("SIGNALSTRENGTH_LTERSRP"))));
+							signalStrength = new Float(vto.getDeviceInfoTO().getSignalStrengthLTERSRP());
+							
+						} else 
+						if(vto.getDeviceInfoTO().getNetworkType().equalsIgnoreCase("wifi") 
+								|| vto.getDeviceInfoTO().getNetworkType().equalsIgnoreCase("WIFI")) //Added by ankit
+						{
+							signalStrength = new Float(vto.getDeviceInfoTO().getWifiRssi());
+							////
+						}
+						else{
+							//SIGNALSTRENGTH_LTESIGNALSTRENGTH
+						signalStrength = -113 + 2* (new Float(new Float(vto.getDeviceInfoTO().getSignalStrength())));
+						}
+					SignalStrength = new Float(signalStrength).toString();
+				}else{SignalStrength = "NA";}
+						
+					
 					String table = "pre_calc_voiceconnectivity_2";
 					if (flag != 1) {
 						if (vto.getDeviceInfoTO().getTestType()
 								.equalsIgnoreCase("mo"))
 							table = "pre_calc_voiceconnectivity_1";
 					}
-
+					
 					String insertQuery = "INSERT INTO "
 							+ table
 							+ " (MARKET_ID,TEST_NAME,NETWORK_TYPE,CHART_TYPE,TIMESTAMP,IMEI	"
@@ -2458,7 +2528,7 @@ public class VoiceConnectivityProccesorHelper {
 							+ ",SIGNALSTRENGTH_GSMSIGNALSTRENGTH,	SIGNALSTRENGTH_CDMADBM,	SIGNALSTRENGTH_CDMACIO,	SIGNALSTRENGTH_EVDODBM,	SIGNALSTRENGTH_EVDOECIO	"
 							+ ",SIGNALSTRENGTH_EVDOSNR,	SIGNALSTRENGTH_GSM,	SIGNALSTRENGTH_GSMBITRATEERROR,	SIGNALSTRENGTH_LTESIGNALSTRENGTH,	"
 							+ "SIGNALSTRENGTH_LTERSRP,	SIGNALSTRENGTH_LTERSRQ,	SIGNALSTRENGTH_LTERSSNR,	SIGNALSTRENGTH_LTECQI,	CELLLOCATION_CID,	"
-							+ "CELLLOCATION_LAC,	NEIGHBOUR_INFO,	BATTERY_LEVEL,	NETWORK_MANUALLY_DONE,	GEOLOCATION_LATITUDE,	GEOLOCATION_LONGITUDE,"
+							+ "CELLLOCATION_LAC,CELLLOCATION_TAC,CELLLOCATION_PCI,	NEIGHBOUR_INFO,	BATTERY_LEVEL,	NETWORK_MANUALLY_DONE,	GEOLOCATION_LATITUDE,	GEOLOCATION_LONGITUDE,"
 							+ "		SNAPSHOT_ID) VALUES  ('"
 							+ marketId
 							+ "', '"
@@ -2508,7 +2578,7 @@ public class VoiceConnectivityProccesorHelper {
 							+ "','"
 							+ vto.getDeviceInfoTO().getNetworkMNC()
 							+ "','"
-							+ vto.getDeviceInfoTO().getSignalStrengthGSM()
+							+ SignalStrength
 							+ "','"
 							+ vto.getDeviceInfoTO().getSignalStrengthCDMA()
 							+ "',"
@@ -2538,7 +2608,12 @@ public class VoiceConnectivityProccesorHelper {
 							+ "','"
 							+ vto.getDeviceInfoTO().getCellLocationCID() + "',"
 							+ "'" + vto.getDeviceInfoTO().getCellLocationLAC()
-							+ "','" + vto.getDeviceInfoTO().getNeighbourInfo()
+							+ "','" 
+							+ vto.getDeviceInfoTO().getCellLocationTAC()
+							+ "','"
+							+ vto.getDeviceInfoTO().getCellLocationPCI()
+							+ "','"
+							+ vto.getDeviceInfoTO().getNeighbourInfo()
 							+ "','" + vto.getDeviceInfoTO().getBatteryLevel()
 							+ "','"
 							+ vto.getDeviceInfoTO().getNetworkManuallyDone()
@@ -2546,7 +2621,7 @@ public class VoiceConnectivityProccesorHelper {
 							+ "','" + vto.getDeviceInfoTO().getLongitude()
 							+ "','" + vto.getDeviceInfoTO().getSnapShotId()
 							+ "')";
-					// System.out.println(insertQuery);
+//					 System.out.println("insertQuery ank"+insertQuery);
 					st.executeUpdate(insertQuery);
 
 				}
@@ -2581,7 +2656,7 @@ public class VoiceConnectivityProccesorHelper {
 						+ ",SIGNALSTRENGTH_GSMSIGNALSTRENGTH,	SIGNALSTRENGTH_CDMADBM,	SIGNALSTRENGTH_CDMACIO,	SIGNALSTRENGTH_EVDODBM,	SIGNALSTRENGTH_EVDOECIO	"
 						+ ",SIGNALSTRENGTH_EVDOSNR,	SIGNALSTRENGTH_GSM,	SIGNALSTRENGTH_GSMBITRATEERROR,	SIGNALSTRENGTH_LTESIGNALSTRENGTH,	"
 						+ "SIGNALSTRENGTH_LTERSRP,	SIGNALSTRENGTH_LTERSRQ,	SIGNALSTRENGTH_LTERSSNR,	SIGNALSTRENGTH_LTECQI,	CELLLOCATION_CID,	"
-						+ "CELLLOCATION_LAC,	NEIGHBOUR_INFO,	BATTERY_LEVEL,	NETWORK_MANUALLY_DONE,	GEOLOCATION_LATITUDE,	GEOLOCATION_LONGITUDE,"
+						+ "CELLLOCATION_LAC,CELLLOCATION_TAC,CELLLOCATION_PCI,	NEIGHBOUR_INFO,	BATTERY_LEVEL,	NETWORK_MANUALLY_DONE,	GEOLOCATION_LATITUDE,	GEOLOCATION_LONGITUDE,"
 						+ "		SNAPSHOT_ID) VALUES  ('"
 						+ marketId
 						+ "', '"
@@ -2663,6 +2738,10 @@ public class VoiceConnectivityProccesorHelper {
 						+ "',"
 						+ "'"
 						+ vto.getDeviceInfoTO().getCellLocationLAC()
+						+ "','"
+						+ vto.getDeviceInfoTO().getCellLocationTAC()
+						+ "','"
+						+ vto.getDeviceInfoTO().getCellLocationPCI()
 						+ "','"
 						+ vto.getDeviceInfoTO().getNeighbourInfo()
 						+ "','"

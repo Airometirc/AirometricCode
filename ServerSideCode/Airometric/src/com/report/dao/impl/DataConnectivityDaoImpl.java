@@ -3711,7 +3711,160 @@ public class DataConnectivityDaoImpl implements DataConnectivityDao {
 	 * }
 	 */
 	///////////////////////////////////////////////////////
+	//Code Added by ankit on mathews request for showing tcp & udp throughput on maps
+	public List<DeviceInfoTO> getTcpThroughputForMaps(String testName,String marketId) {
+		String query = "SELECT * FROM pre_calculation_tcp_level1 WHERE TEST_NAME LIKE '"
+				+ testName + "%' AND MARKET_ID = '"+marketId+"'ORDER BY TIME_STAMP_FOREACH_SAMPLE";
+//		System.out.println("getThroughputForMaps query--------"+query);
+		SimpleDateFormat newSdf = new SimpleDateFormat(
+				"yyyy-MM-dd HH:mm:ss.SSS");
+		List<DeviceInfoTO> mapsDetailsList = new ArrayList<DeviceInfoTO>();
+		Connection conn = DBUtil.openConn();
+		Statement stmt = null;
+		ResultSet rs = null;
+		String prevTestName = "";
+		String currentTestName = "";
+		String currentSnapShotId = "";
+		String prevSnapShotId = "";
+		int currentBytes = 0;
+		int prevBytes = 0;
+		long throughtPut = 0;
 
+		Date currentTime = null;
+		Date prevTime = null;
+
+		try {
+			stmt = conn.createStatement();;
+//			System.out.println(query);
+			rs = stmt.executeQuery(query);
+			while (rs.next()) {
+				String networkType = rs.getString("NETWORK_NETWORKTYPE");
+				int rsrp = 0;
+				if(rs.getString("SIGNALSTRENGTH_LTERSRP").equalsIgnoreCase("Empty")){
+					rsrp = rs.getInt("SIGNALSTRENGTH_LTERSRP");
+				}
+				if(!(networkType.contains("LTE"))||((networkType.contains("LTE"))&&rsrp<1000)){
+				DeviceInfoTO deviceInfos = new DeviceInfoTO();
+				//currentTime = newSdf.parse(rs.getString("TIME_STAMP_FOREACH_SAMPLE"));
+				currentTestName = rs.getString("TEST_NAME");
+				currentSnapShotId= rs.getString("SNAPSHOT_ID");
+				//currentBytes = rs.getInt("EVENT_VALUE");
+				deviceInfos.setThroughputmain(new Long(0).toString());
+				deviceInfos.setSignalStrength(new Integer(rs
+						.getInt("SIGNAL_STRENGTH")).toString());
+				deviceInfos.setSignalStrengthCDMA(rs
+						.getString("SIGNALSTRENGTH_CDMADBM"));
+				deviceInfos.setSignalStrengthEVDO(rs
+						.getString("SIGNALSTRENGTH_EVDODBM"));
+				deviceInfos.setSignalStrengthLTE(rs
+						.getString("SIGNALSTRENGTH_GSM"));
+				deviceInfos.setSignalStrengthLTERSRP(rs
+						.getString("SIGNALSTRENGTH_LTERSRP"));
+				deviceInfos.setNetworkType(rs.getString("NETWORK_NETWORKTYPE"));
+				//deviceInfos.setEventValue(rs.getString("EVENT_VALUE"));
+				//deviceInfos.setEventName(rs.getString("EVENT_NAME"));
+				deviceInfos.setLattitude(rs.getDouble("GEOLOCATION_LATITUDE"));
+				deviceInfos.setLongitude(rs.getDouble("GEOLOCATION_LONGITUDE"));
+				deviceInfos
+						.setTimeStampForEachSample(rs.getString("TIME_STAMP_FOREACH_SAMPLE"));
+				deviceInfos.setCellLocationCID(rs.getString("CELLLOCATION_CID"));
+				
+				deviceInfos.setTestName(testName);
+				deviceInfos.setTestType(rs.getString("TEST_TYPE"));
+				if(!rs.getString("TCP_Download_Effective_Speed").equalsIgnoreCase("null"))
+					{
+					deviceInfos.setThroughputmain(rs.getString("TCP_Download_Effective_Speed"));
+					}
+				mapsDetailsList.add(deviceInfos);
+			}
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		} finally {
+			DBUtil.closeConn();
+		}
+		return mapsDetailsList;
+	}
+	
+///////////////////////////////////////////////////////
+//Code Added by ankit on mathews request for showing tcp & udp throughput on maps
+public List<DeviceInfoTO> getUdpThroughputForMaps(String testName,String marketId) {
+		String query = "SELECT * FROM pre_calculation_udp_level1 WHERE TEST_NAME LIKE '"
+		+ testName + "%' AND MARKET_ID = '"+marketId+"'ORDER BY TIME_STAMP_FOREACH_SAMPLE";
+		//System.out.println("getThroughputForMaps query--------"+query);
+		SimpleDateFormat newSdf = new SimpleDateFormat(
+		"yyyy-MM-dd HH:mm:ss.SSS");
+		List<DeviceInfoTO> mapsDetailsList = new ArrayList<DeviceInfoTO>();
+		Connection conn = DBUtil.openConn();
+		Statement stmt = null;
+		ResultSet rs = null;
+		String prevTestName = "";
+		String currentTestName = "";
+		String currentSnapShotId = "";
+		String prevSnapShotId = "";
+		int currentBytes = 0;
+		int prevBytes = 0;
+		long throughtPut = 0;
+		
+		Date currentTime = null;
+		Date prevTime = null;
+		
+		try {
+		stmt = conn.createStatement();;
+		//System.out.println(query);
+		rs = stmt.executeQuery(query);
+		while (rs.next()) {
+		String networkType = rs.getString("NETWORK_NETWORKTYPE");
+		int rsrp = 0;
+		if(rs.getString("SIGNALSTRENGTH_LTERSRP").equalsIgnoreCase("Empty")){
+		rsrp = rs.getInt("SIGNALSTRENGTH_LTERSRP");
+		}
+		if(!(networkType.contains("LTE"))||((networkType.contains("LTE"))&&rsrp<1000)){
+		DeviceInfoTO deviceInfos = new DeviceInfoTO();
+		//currentTime = newSdf.parse(rs.getString("TIME_STAMP_FOREACH_SAMPLE"));
+		currentTestName = rs.getString("TEST_NAME");
+		currentSnapShotId= rs.getString("SNAPSHOT_ID");
+		//currentBytes = rs.getInt("EVENT_VALUE");
+		deviceInfos.setThroughputmain(new Long(0).toString());
+		deviceInfos.setSignalStrength(new Integer(rs
+		.getInt("SIGNAL_STRENGTH")).toString());
+		deviceInfos.setSignalStrengthCDMA(rs
+		.getString("SIGNALSTRENGTH_CDMADBM"));
+		deviceInfos.setSignalStrengthEVDO(rs
+		.getString("SIGNALSTRENGTH_EVDODBM"));
+		deviceInfos.setSignalStrengthLTE(rs
+		.getString("SIGNALSTRENGTH_GSM"));
+		deviceInfos.setSignalStrengthLTERSRP(rs
+		.getString("SIGNALSTRENGTH_LTERSRP"));
+		deviceInfos.setNetworkType(rs.getString("NETWORK_NETWORKTYPE"));
+		//deviceInfos.setEventValue(rs.getString("EVENT_VALUE"));
+		//deviceInfos.setEventName(rs.getString("EVENT_NAME"));
+		deviceInfos.setLattitude(rs.getDouble("GEOLOCATION_LATITUDE"));
+		deviceInfos.setLongitude(rs.getDouble("GEOLOCATION_LONGITUDE"));
+		deviceInfos
+		.setTimeStampForEachSample(rs.getString("TIME_STAMP_FOREACH_SAMPLE"));
+		deviceInfos.setCellLocationCID(rs.getString("CELLLOCATION_CID"));
+		
+		deviceInfos.setTestName(testName);
+		deviceInfos.setTestType(rs.getString("TEST_TYPE"));
+		if(!rs.getString("UDPDownloadCapacity").equalsIgnoreCase("null"))
+		{
+		deviceInfos.setThroughputmain(rs.getString("UDPDownloadCapacity"));
+		}
+		mapsDetailsList.add(deviceInfos);
+		}
+		}
+		} catch (Exception e) {
+		// TODO: handle exception
+		e.printStackTrace();
+		} finally {
+		DBUtil.closeConn();
+		}
+		return mapsDetailsList;
+		}
+
+	
 	public static void main(String[] args) {
 		String testName = "";
 		String marketId = "";

@@ -73,7 +73,7 @@
 								  <b>Mark Test Status</b>
 								  <br/>
 								  
-									 <h:outputText value="TestName to Process*: " style="size: 10pt;font-family: Arial, Helvetica, Sans-Serif;color:
+									 <h:outputText value="TestName to Process* " style="size: 10pt;font-family: Arial, Helvetica, Sans-Serif;color:
 									  black;"/>
 						  	  	<h:selectOneListbox class="form-control" id="testCaseNametoprocess" name="testCaseNametoprocess" size="1" value="#{reportBean.testCaseNametoprocess}"
 									style="width: 25%;">
@@ -90,15 +90,15 @@
 											value="#{sessionScope['processStatus']}">
 										</h:outputText>
 										<br/><br/>
-										 <h:outputText value="Frequency Plan: " style="size: 10pt;font-family: Arial, Helvetica, Sans-Serif;color:
+										 <h:outputText value="Frequency Plan " style="size: 10pt;font-family: Arial, Helvetica, Sans-Serif;color:
 									  black;" styleClass="fontlabel"/>
 								<h:selectOneListbox class="form-control" id="frequencyPlan" name="frequencyPlan" size="1" value="#{reportBean.frequencyPlan}"
-								style="width: 25%;height: 25px;">
+								style="width: 25%;height: 25px;margin-left: 34px;">
 								<f:selectItem itemValue="0" itemLabel="Select Freq Band" />
 			 					<f:selectItems value="#{sessionScope['freqBandMap']}"/>  
 				 				 </h:selectOneListbox >	
-				 				 <a onclick="confirmPrecalculation()" style="width:70px;position:relative;right: -16px;cursor: pointer;">
-										<h:graphicImage library="images" name="page_right.gif" />
+				 				 <a onclick="confirmPrecalculation()" class="btn btn-small btn-primary" style="margin-left:10px;">
+										<!-- <h:graphicImage library="images" name="page_right.gif" /> -->
 										Mark Complete</a>
 										<br/>
 										<br/>
@@ -113,16 +113,16 @@
 										<br/>
 										<b>Upload Files</b>
 										<br/>
-										    <font color="black">Test Name* :</font>
+										    <font color="black">Test Name* </font>
 								   <h:inputText id="testCaseName" name="testCaseName" 
-										style="width:172px;height:25px;" value="#{fileUploadBean.testCaseName}" >
+										style="width:23%;height:25px;margin-left: 57px;" value="#{fileUploadBean.testCaseName}" >
 									</h:inputText>
 								  </div>
-									<div id="marketName" style="display:none;position: relative;float: right;top: 3px;right: 300px;">
-									 <h:outputText value="TestName*: " style="size: 10pt;font-family: Arial, Helvetica, Sans-Serif;color:
-									  black;position: relative;float: left;right: 78px;top: 3px;"/>
+									<div id="marketName" style="display:none;position: relative;float: right;top: 3px;right: 270px;">
+									 <h:outputText value="TestName* " style="size: 10pt;font-family: Arial, Helvetica, Sans-Serif;color:
+									  black;position: relative;float: left;right: 70px;top: 3px;"/>
 									 <h:selectOneListbox id="testName" name="testName" value="#{fileUploadBean.testName}" 
-									 size="1" style="width: 25%;height: 25px;position: relative;float: left;right:69px;">
+									 size="1" style="width: 31%;height: 25px;position: relative;float: left;right:60px;">
 						   					<f:selectItems value="#{sessionScope['testNameMap']}" />   
 						   				<f:ajax listener="#{fileUploadBean.devicecaseListener}" event="change"  render="deviceId" />    
 									 </h:selectOneListbox>
@@ -133,60 +133,59 @@
 											<f:selectItem itemValue="0" itemLabel="Select Device" />
 						 					<f:selectItems value="#{sessionScope['deviceSelectNameMap']}"/>  
 							  		 </h:selectOneListbox >
-				  		 
-									 <h:outputText value="Market Name*: " style="size: 10pt;font-family: Arial, Helvetica, Sans-Serif;color:
-									  black;position: relative;float: left;left: 373px;bottom: 36px;"/>
+				  		 			<h:outputText value="Market Name* " style="size: 10pt;font-family: Arial, Helvetica, Sans-Serif;color:
+									  black;position: relative;float: left;left: 415px;bottom: 36px;"/>
 									 <h:selectOneListbox id="marketId" name="marketId" value="#{testCaseAction.marketId}" 
-								      	 size="1" style="width:140px;height:25px;position: relative;bottom: 26px;bottom: 39px;left: 380px">
+								      	 size="1" style="width:140px;height:25px;position: relative;bottom: 26px;bottom: 39px;left: 425px">
 								   		<f:selectItems value="#{sessionScope['margetPlaceListdetails']}" />
 									 </h:selectOneListbox>
-									 <div>
+									 <div style="margin-top:10px;">
 									 	 <h:selectOneListbox id="vqType" name="vqType" 
-								      	 size="1" style="width:140px;height:25px;position: relative;bottom: 26px;bottom: 39px;">
+								      	 size="1" style="width:140px;height:25px;position: relative;bottom: 26px;bottom: 30px;">
 								   		<f:selectItem itemValue="Polqa" itemLabel="Polqa" />
 								   		<f:selectItem itemValue="Pesq" itemLabel="Pesq" />
 								   		<f:selectItem itemValue="CallEvents" itemLabel="Call Events" />
 								   		<f:selectItem itemValue="NetTest" itemLabel="Net Tests" />
 									 </h:selectOneListbox>
 									  <h:selectOneListbox id="diffHours" name="diffHours" 
-								      	 size="1" style="width:140px;height:25px;position: relative;bottom: 26px;bottom: 39px;">
+								      	 size="1" style="width:140px;height:25px;position: relative;bottom: 26px;bottom: 30px;margin-left:10px;">
 								   		<f:selectItems value="#{sessionScope['differnceHours']}" />
 									 </h:selectOneListbox>
-									<h:commandLink id="Export" style="height:25px;position: relative;bottom: 26px;bottom: 39px;" action="#{reportBean.migrateAccessToMysql}">
+									<h:commandLink id="Export" class="btn btn-small btn-primary" style="height:25px;position: relative;bottom: 26px;bottom: 30px;margin-left:10px;" 
+									action="#{reportBean.migrateAccessToMysql}">
 									 			migrate
 							 		</h:commandLink>
-							 		<h:commandLink id="ChangeTime" style="height:25px;position: relative;bottom: 26px;bottom: 39px;" action="#{reportBean.changeVquadTimeStamp}">
+							 		<h:commandLink id="ChangeTime" class="btn btn-small btn-primary" style="height:25px;position: relative;bottom: 26px;bottom: 30px;margin-left:10px;"
+							 		 action="#{reportBean.changeVquadTimeStamp}">
 									 			Change Time
 							 		</h:commandLink>
 									 </div>
 								 
 									 </div>	
-									 <div id="space" style="display: none;">
-									  <br/><br/><br/><br/>	
-									 </div>
+									
 									 
 									 <!-- fixes for upload Frequency Plans . starts -->  
 									 
 								  <div id="frequencyDiv" style="display:none; right: 300px;">
 								  <br/>
 							
-								    <font color="black">Frequency Plan Name* :</font>
+								    <font color="black">Frequency Plan Name* </font>
 								   	<h:inputText id="frequencyPlanName" name="frequencyPlanName" 
-										style="width:172px;height:25px;" value="#{fileUploadBean.frequencyPlanName}" >
+										 value="#{fileUploadBean.frequencyPlanName}" >
 										<f:ajax listener="#{fileUploadBean.devicecaseListener1}" event="change" render="PlanNameExist" />
 									</h:inputText>
 								  </div>									 
 									 
 							
 									 <!-- fixes for upload Frequency Plans  . ends -->
-									 
-									  <h:selectOneRadio value="LogFile" styleClass="radioright"  onclick="dataTableSelectOneRadio(this.value);" >
+									 <div id="radiobtn">
+									  <h:selectOneRadio value="LogFile" styleClass="radioright"  onclick="dataTableSelectOneRadio(this.value);"  >
 										<f:selectItem itemLabel="&nbsp;LOG/XML File &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" itemValue="LogFile" style="color=black;"/>
 										<f:selectItem itemLabel="&nbsp;VQT File &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" itemValue="VQTFile" style="color=black;"/>
 										<f:selectItem itemLabel="&nbsp;&nbsp;&nbsp;QXDM File &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" itemValue="QXDMFile" style="color=black;"/>
 										<f:selectItem itemLabel="&nbsp;&nbsp;&nbsp;Frequency Plans &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" itemValue="FrequencyPlans" style="color=black;"/>
 						             </h:selectOneRadio>
-									
+									</div>
 								    <p:fileUpload fileUploadListener="#{fileUploadBean.handleFileUpload}" 
 								            mode="advanced"
 								            update="messages" type="submit"
@@ -220,32 +219,35 @@
 		   document.getElementById("hiddenReportType").value = "LogFile";
 	   }
 	   function dataTableSelectOneRadio(radioButton){
+		   console.log("radioButton "+radioButton);
 		   if(radioButton=="VQTFile"){
 		    	document.getElementById("marketName").style.display='';
 		    	document.getElementById("test").style.display='none';
-		    	document.getElementById("space").style.display='';
 		    	document.getElementById("frequencyDiv").style.display='none';
 		    	document.getElementById("hiddenReportType").value = "VQTFile";
+		    	document.getElementById("radiobtn").style.marginTop="110px";
 		    }
 		   if(radioButton=="LogFile"){
 		    	document.getElementById("marketName").style.display='none';
 		    	document.getElementById("test").style.display='';
 		    	document.getElementById("frequencyDiv").style.display='none';
 		    	document.getElementById("hiddenReportType").value = "LogFile";
+		    	document.getElementById("radiobtn").style.marginTop="5px";
 		    }
 		   if(radioButton=="QXDMFile"){
 		    	document.getElementById("marketName").style.display='none';
 		    	document.getElementById("test").style.display='';
 		    	document.getElementById("frequencyDiv").style.display='none';
 		    	document.getElementById("hiddenReportType").value = "QXDMFile";
+		    	document.getElementById("radiobtn").style.marginTop="5px";
 		    }
 		    if(radioButton=="FrequencyPlans"){
 		    	document.getElementById("frequencyDiv").style.display='';
 		    	document.getElementById("marketName").style.display='none';
 		    	document.getElementById("test").style.display='none';
-		    	document.getElementById("space").style.display='none';
 		    	document.getElementById("hiddenReportType").value = "FrequencyPlans";
 		    	document.getElementById("frequencyPlanName").value ='';
+		    	document.getElementById("radiobtn").style.marginTop="5px";
 		    }
 	   }
 

@@ -262,7 +262,7 @@ public class FtpPreproccesor {
 				",SIGNALSTRENGTH_GSMSIGNALSTRENGTH,	SIGNALSTRENGTH_CDMADBM,	SIGNALSTRENGTH_CDMACIO,	SIGNALSTRENGTH_EVDODBM,	SIGNALSTRENGTH_EVDOECIO	" +
 				",SIGNALSTRENGTH_EVDOSNR,	SIGNALSTRENGTH_GSM,	SIGNALSTRENGTH_GSMBITRATEERROR,	SIGNALSTRENGTH_LTESIGNALSTRENGTH,	" +
 				"SIGNALSTRENGTH_LTERSRP,	SIGNALSTRENGTH_LTERSRQ,	SIGNALSTRENGTH_LTERSSNR,	SIGNALSTRENGTH_LTECQI,	CELLLOCATION_CID,	" +
-				"CELLLOCATION_LAC,	NEIGHBOUR_INFO,	BATTERY_LEVEL,	NETWORK_MANUALLY_DONE,	GEOLOCATION_LATITUDE,	GEOLOCATION_LONGITUDE," +
+				"CELLLOCATION_LAC,CELLLOCATION_TAC,CELLLOCATION_PCI,	NEIGHBOUR_INFO,	BATTERY_LEVEL,	NETWORK_MANUALLY_DONE,	GEOLOCATION_LATITUDE,	GEOLOCATION_LONGITUDE," +
 				"		SNAPSHOT_ID) VALUES ('"
 						+ vto.getTime_stamp() + "', '" + vto.getMarketId()
 						+ "', '" + vto.getTestName() + "', '"
@@ -278,7 +278,7 @@ public class FtpPreproccesor {
 						"'"+vto.getSignalStrengthGSM()+"','"+vto.getSignalStrengthGSMBITRATEERROR()+"','"+vto.getSignalStrengthLTE()+"','"+vto.getSignalStrengthLTERSRP()+"'," +
 						/* Code correction by Sheshadri(05-05-15), Since of null pointer exception code has been updated to signalStrengthLTECQI instead signalStrength_LTECQI variable */
 						"'"+vto.getSignalStrengthLTERSRQ()+"','"+vto.getSignalStrengthLTERSSNR()+"','"+vto.getSignalStrengthLTECQI()+"','"+vto.getCellLocationCID()+"'," +
-						"'"+vto.getCellLocationLAC()+"','"+vto.getNeighbourInfo()+"','"+vto.getBatteryLevel()+"','"+vto.getNetworkManuallyDone()+"'," +
+						"'"+vto.getCellLocationLAC()+"','"+vto.getCellLocationTAC()+"','"+vto.getCellLocationPCI()+"','"+vto.getNeighbourInfo()+"','"+vto.getBatteryLevel()+"','"+vto.getNetworkManuallyDone()+"'," +
 						"'"+vto.getLattitude()+"','"+vto.getLongitude()+"','"+vto.getSnapShotId()+"')" ;
 //				System.out.println(query);
 				if(null!=vto.getTime_stamp()){

@@ -117,7 +117,7 @@ public class PreprocessorMiscHelper {
 			  try {
 			   d1 = format.parse(starttime);
 			   d2 = format2.parse(Endtime);
-			   System.out.println("starttime-"+starttime+",,,,,Endtime-"+Endtime);
+//			   System.out.println("starttime-"+starttime+",,,,,Endtime-"+Endtime);
 			   long diff = d1.getTime() - d2.getTime();
 			   long diffMilliSeconds = diff / 1000 % 60 % 60;
 			   long diffSeconds = diff / 1000 % 60;
@@ -126,7 +126,7 @@ public class PreprocessorMiscHelper {
 			   long diffDays = diff / (24 * 60 * 60 * 1000);
 			  
 			   
-				System.out.println("d-h-m-s diff by ank - "+diffDays + " days, "+diffHours + " hours, "+diffMinutes + " minutes, "+diffSeconds + " seconds.");
+///				System.out.println("d-h-m-s diff by ank - "+diffDays + " days, "+diffHours + " hours, "+diffMinutes + " minutes, "+diffSeconds + " seconds.");
 
 			   seconds = Math.abs((int) diffSeconds + (int) (60 * diffMinutes)+(int)(diffHours*60*60));
 			  } catch (Exception e) {
@@ -146,7 +146,7 @@ public class PreprocessorMiscHelper {
 			   }
 //======================        
 			   }
-			  System.out.println("status--------" + status);
+//			  System.out.println("status--------" + status);
 			  return status;
 			 }
 
@@ -401,7 +401,11 @@ public class PreprocessorMiscHelper {
 						//changes made by ankit
 						deviceInfos.setDeviceManufacturer(rs
 								.getString("WIFIINFO_RSSI"));
-						
+						//Added by Ankit
+						deviceInfos.setCellLocationTAC(rs
+								.getString("CELLLOCATION_TAC"));
+						deviceInfos.setCellLocationPCI(rs
+								.getString("CELLLOCATION_PCI"));
 						deviceInToList.add(deviceInfos);
 
 					}

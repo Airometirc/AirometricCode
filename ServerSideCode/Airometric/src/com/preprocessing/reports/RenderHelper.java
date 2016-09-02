@@ -55,7 +55,7 @@ public class RenderHelper {
 		else if(condition.equalsIgnoreCase("")){
 			 query = "SELECT * FROM " + tableName;
 		}
-//		System.out.println(query);
+//		System.out.println("renderTableInExcel "+query);
 		Connection conn = DBUtil.openConn();
 		try {
 			Statement stmt = conn.createStatement();
@@ -68,7 +68,7 @@ public class RenderHelper {
 				columnNames[count - 1] = meta.getColumnLabel(count);
 				count++;
 			}
-			
+			//DBUtil.closeConn();
 			List<List<String>> allRowsData = getDataToRender(testname, columnNames,tableName,condition);
 			createHeaderLabels(columnNames);
 			renderReport(allRowsData);
@@ -208,7 +208,7 @@ public class RenderHelper {
 		try {
 			Statement st = conn.createStatement();
 			ResultSet rs = st.executeQuery(query);
-			System.out.println(query);
+			System.out.println("getDataToRender "+query);
 			while(rs.next()){
 				rowvalues = new ArrayList<String>();
 				for(String colName:colNames){
@@ -247,6 +247,7 @@ public class RenderHelper {
 				testName = testName.replaceAll("\'", "");
 				String temp[] = testName.trim().split(",");
 				String testType = "";
+				System.out.println("testName array "+testName);
 				for(int i=0;i<temp.length;i++)
 				{
 					testType = vc2.getTestType(temp[i]);
@@ -257,9 +258,9 @@ public class RenderHelper {
 				}
 				
 				//Code Added By Ankit on 13/04/16
-				instantiateFonts(exlFile,"TCP");
+				instantiateFonts(exlFile,"TCP Coverage");
 				renderTableInExcel("pre_calculation_TCP_level1",testName,"","");
-				instantiateFonts(exlFile,"UDP");
+				instantiateFonts(exlFile,"UDP Coverage");
 				renderTableInExcel("pre_calculation_udp_level1",testName,"","");
 				
 			}else if(reportType.equalsIgnoreCase("DC")){
@@ -267,11 +268,11 @@ public class RenderHelper {
 				renderTableInExcel("ftpcalculationtable",testName,"","");
 			}
 			else if(reportType.equalsIgnoreCase("TCP")){
-				instantiateFonts(exlFile,"TCP");
+				instantiateFonts(exlFile,"TCP Coverage");
 				renderTableInExcel("pre_calculation_TCP_level1",testName,"","");
 			}
 			else if(reportType.equalsIgnoreCase("UDP")){
-				instantiateFonts(exlFile,"UDP");
+				instantiateFonts(exlFile,"UDP Coverage");
 				renderTableInExcel("pre_calculation_udp_level1",testName,"","");
 			}
 			else{

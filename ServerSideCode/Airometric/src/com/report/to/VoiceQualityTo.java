@@ -45,6 +45,9 @@ public class VoiceQualityTo {
 
 	private DeviceInfoTO deviceInfoTO;
 	
+	//Added by ankit
+	private String cellLocationTAC;
+	private String cellLocationPCI;
 	
 	
 
@@ -288,4 +291,18 @@ public class VoiceQualityTo {
 		this.pesqlqo = pesqlqo;
 	}
 
+	//Added by ankit
+	public String getCellLocationTAC() {
+		return cellLocationTAC;
+	}
+	public void setCellLocationTAC(String cellLocationTAC) {
+		this.cellLocationTAC = cellLocationTAC;
+	}
+	public String getCellLocationPCI() {
+		return cellLocationPCI;
+	}
+	public void setCellLocationPCI(String cellLocationPCI) {
+		this.cellLocationPCI = cellLocationPCI;
+	}
+	
 }

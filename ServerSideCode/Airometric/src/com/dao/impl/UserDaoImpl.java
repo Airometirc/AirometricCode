@@ -1441,8 +1441,7 @@ public class UserDaoImpl implements UserDao {
 					+ "'  AND   TEST_TYPE='"
 					+ testtype
 					+ "'  GROUP BY TIME_STAMP_FOREACH_SAMPLE";
-			// System.out
-			// .println("deviceInfoQuery------++-----" + deviceInfoQuery);
+//			 System.out.println("deviceInfoQuery------++-----" + deviceInfoQuery);
 			rs = st.executeQuery(deviceInfoQuery);
 			while (rs.next()) {
 				DeviceInfoTO deviceInfos = new DeviceInfoTO();
@@ -1508,10 +1507,14 @@ public class UserDaoImpl implements UserDao {
 					deviceInfos.setWifiInfoLinkSpeed(rs
 							.getString("WIFIINFO_LINKSPEED"));
 					deviceInfos.setWifiRssi(rs.getString("WIFIINFO_RSSI"));
-					deviceInfos.setImei(rs
-							.getString("IMEI"));
+					deviceInfos.setImei(rs.getString("IMEI"));
 					//System.out.println(deviceInfos.getCellLocationCID());
-
+					deviceInfos.setCellLocationTAC(rs
+							.getString("CELLLOCATION_TAC"));
+					deviceInfos.setCellLocationPCI(rs
+							.getString("CELLLOCATION_PCI"));
+					
+					
 					deviceInfos.setFreqBand(getFreqBand(freqPlan, deviceInfos
 							.getCellLocationCID(), conn));
 					deviceInfosList.add(deviceInfos);
@@ -1699,6 +1702,11 @@ public class UserDaoImpl implements UserDao {
 					deviceInfos.setDeviceManufacturer(rs
 							.getString("DEVICE_MANUFACTURER"));
 					deviceInfos.setImei(rs.getString("IMEI"));
+					//added by ankit
+					deviceInfos.setCellLocationTAC(rs
+							.getString("CELLLOCATION_TAC"));
+					deviceInfos.setCellLocationPCI(rs
+							.getString("CELLLOCATION_PCI"));
 					deviceInfosList.add(deviceInfos);
 				}
 
@@ -1783,6 +1791,11 @@ public class UserDaoImpl implements UserDao {
 							.getString("SIGNALSTRENGTH_LTERSSNR"));
 					deviceInfos.setSignalStrengthLTECQI(rs
 							.getString("SIGNALSTRENGTH_LTECQI"));
+					//Added by Ankit
+					deviceInfos.setCellLocationTAC(rs
+							.getString("CELLLOCATION_TAC"));
+					deviceInfos.setCellLocationPCI(rs
+							.getString("CELLLOCATION_PCI"));
 					deviceInfosList.add(deviceInfos);
 				}
 			}
@@ -1896,6 +1909,11 @@ public class UserDaoImpl implements UserDao {
 							.getString("SIGNALSTRENGTH_LTECQI"));
 					deviceInfos.setImei(rs
 							.getString("IMEI"));
+					//Added by Ankit
+					deviceInfos.setCellLocationTAC(rs
+							.getString("CELLLOCATION_TAC"));
+					deviceInfos.setCellLocationPCI(rs
+							.getString("CELLLOCATION_PCI"));
 					deviceInfosList.add(deviceInfos);
 				}
 
@@ -1980,6 +1998,11 @@ public class UserDaoImpl implements UserDao {
 								.getString("SIGNALSTRENGTH_LTERSSNR"));
 						deviceInfos.setSignalStrengthLTECQI(rs
 								.getString("SIGNALSTRENGTH_LTECQI"));
+						//Added by Ankit
+						deviceInfos.setCellLocationTAC(rs
+								.getString("CELLLOCATION_TAC"));
+						deviceInfos.setCellLocationPCI(rs
+								.getString("CELLLOCATION_PCI"));
 						deviceInfosList.add(deviceInfos);
 					}
 				}

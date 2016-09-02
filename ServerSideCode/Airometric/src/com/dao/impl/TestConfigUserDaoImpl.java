@@ -336,24 +336,26 @@ public class TestConfigUserDaoImpl implements TestConfigUserDao{
 		try {
 			conn = DBUtil.getConnection();
 			String selquery = "SELECT COUNT(*) FROM TEST_CONFIG_USER WHERE ISAUTOTESTRUNNING="+status+" " 
-					+ "WHERE USER_ID in (select USER_ID from users where user_name = '"+username+"')"
+					+ "AND USER_ID in (select USER_ID from users where user_name = '"+username+"')"
 					+ " AND DEVICE_ID in (select DEVICE_ID from user_device where imei = '"+imei+"')"
 					+ " AND TEST_CONFIG_ID in (select TEST_CONFIG_ID from TEST_CONFIG where TEST_CONFIG_NAME = '"+testName+"')";
 			st = conn.createStatement();
+//			System.out.println("selquery "+selquery);
 			rs = st.executeQuery(selquery);
 			if(rs.next()){
 				count=rs.getInt(1);
-				if(count>=1){
+//				System.out.println("count " +count);
+				if(count<1){
 					testrunning = true;
 				}
 			}
-			
+//			System.out.println("testrunning " +testrunning);
 			if(testrunning){
 			String query = "update TEST_CONFIG_USER set ISAUTOTESTRUNNING="+status+" "
 					+ "WHERE USER_ID in (select USER_ID from users where user_name = '"+username+"')"
 					+ " AND DEVICE_ID in (select DEVICE_ID from user_device where imei = '"+imei+"')"
 					+ " AND TEST_CONFIG_ID in (select TEST_CONFIG_ID from TEST_CONFIG where TEST_CONFIG_NAME = '"+testName+"')";
-			System.out.println("setIsAutoRunning query "+query);
+//			System.out.println("setIsAutoRunning query "+query);
 			st = conn.createStatement();
 			st.executeUpdate(query);
 			}

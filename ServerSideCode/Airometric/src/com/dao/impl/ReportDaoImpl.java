@@ -1715,7 +1715,7 @@ public class ReportDaoImpl implements ReportDao {
 					+ testType
 					+ "' AND FH.MARKET_ID=M.MARKET_ID AND FH.MARKET_ID != '34'";
 			//logger.error(query);
-			System.out.println("market ID -"+query);
+//			System.out.println("market ID -"+query);
 			rs = st.executeQuery(query);
 			while (rs.next()) {
 				String marketId = rs.getString("M.MARKET_ID");
@@ -1759,7 +1759,7 @@ public class ReportDaoImpl implements ReportDao {
 					+ testType
 					+ "' AND MARKET_ID='"
 					+ marketId + "'";
-			// logger.error(query);
+//			 System.out.println(query);
 			rs = st.executeQuery(query);
 			while (rs.next()) {
 				String fileName = rs.getString("FILE_NAME");
@@ -2648,7 +2648,7 @@ public class ReportDaoImpl implements ReportDao {
 		try {
 			conn = DBUtil.getConnection();
 			st = conn.createStatement();
-			String query = "SELECT  KT.DATA_ID,KT.DATA_TYPE FROM  file_history FH,kpi_type KT WHERE FH.TEST_NAME LIKE '"
+			String query = "SELECT  KT.DATA_ID,KT.DATA_TYPE,FH.TEST_TYPE FROM  file_history FH,kpi_type KT WHERE FH.TEST_NAME LIKE '"
 					+ tesName
 					+ ""
 					+ "' AND FH.DEVICE_MODEL='"
@@ -2661,6 +2661,9 @@ public class ReportDaoImpl implements ReportDao {
 				// rs.getString("KT.DATA_ID"));
 				String testType = rs.getString("KT.DATA_TYPE");
 				String testId = rs.getString("KT.DATA_ID");
+				String test_Type = rs.getString("FH.TEST_TYPE");
+				if(test_Type.equalsIgnoreCase("mt"))
+					 testType = "MT(Excel)";
 				testTypeMap.put(testType, testId);
 			}
 		} catch (Exception e) {
@@ -3358,8 +3361,7 @@ public class ReportDaoImpl implements ReportDao {
 			while (rs.next()) {
 				ConfigBean configBean = new ConfigBean();
 				configBean.setConfigId(rs.getString("CC.CONFIG_ID"));
-				configBean
-						.setTestCaseName(rs.getString("CC.CONFIG_ROUTE_NAME"));
+				configBean.setTestCaseName(rs.getString("CC.CONFIG_ROUTE_NAME"));
 				configBean.setMarketmapId(rs.getString("CC.MARKET_ID"));
 				configBean.setDeviceName(rs.getString("CC.DEVICE_NAME"));
 				configBean.setReportType(rs.getString("CC.DATA_ID"));
@@ -4015,4 +4017,6 @@ public class ReportDaoImpl implements ReportDao {
 			logger.error(e.getMessage());
 		}
 	}
+	
+
 }

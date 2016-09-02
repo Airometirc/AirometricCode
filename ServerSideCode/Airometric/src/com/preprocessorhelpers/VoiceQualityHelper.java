@@ -367,8 +367,8 @@ public class VoiceQualityHelper {
 								",SIGNALSTRENGTH_GSMSIGNALSTRENGTH,	SIGNALSTRENGTH_CDMADBM,	SIGNALSTRENGTH_CDMACIO,	SIGNALSTRENGTH_EVDODBM,	SIGNALSTRENGTH_EVDOECIO	" +
 								",SIGNALSTRENGTH_EVDOSNR,	SIGNALSTRENGTH_GSM,	SIGNALSTRENGTH_GSMBITRATEERROR,	SIGNALSTRENGTH_LTESIGNALSTRENGTH,	" +
 								"SIGNALSTRENGTH_LTERSRP,	SIGNALSTRENGTH_LTERSRQ,	SIGNALSTRENGTH_LTERSSNR,	SIGNALSTRENGTH_LTECQI,	CELLLOCATION_CID,	" +
-								"CELLLOCATION_LAC,	NEIGHBOUR_INFO,	BATTERY_LEVEL,	NETWORK_MANUALLY_DONE,	GEOLOCATION_LATITUDE,	GEOLOCATION_LONGITUDE," +
-								"		SNAPSHOT_ID)"+
+								"CELLLOCATION_LAC,CELLLOCATION_TAC,CELLLOCATION_PCI,NEIGHBOUR_INFO,	BATTERY_LEVEL,	NETWORK_MANUALLY_DONE,	GEOLOCATION_LATITUDE,	GEOLOCATION_LONGITUDE," +
+								"SNAPSHOT_ID)"+
 
 						"VALUES('"+marketName+"','"+testName+"','"+vto.getPesq()+"','"+vto.getPesqlq()+"','"+vto.getPesqlqo()+"','"+vto.getChartType()+"','"+vto.getSignalStrength()+"','"+vto.getRsrp()+"','"+vto.getNetworkType()+"','"+vto.getTimestamp()+"'," +
 								"'"+vto.getDeviceInfoTO().getImei()+"','"+vto.getDeviceInfoTO().getTestType()+"','"+vto.getDeviceInfoTO().getUserName()+"'," +
@@ -379,7 +379,7 @@ public class VoiceQualityHelper {
 										"'"+vto.getDeviceInfoTO().getSignalStrengthCDMACIO()+"','"+vto.getDeviceInfoTO().getSignalStrengthEVDO()+"','"+vto.getDeviceInfoTO().getSignalStrengthEVDOECIO()+"','"+vto.getDeviceInfoTO().getSignalStrength_EVDOSNR()+"'," +
 										"'"+vto.getDeviceInfoTO().getSignalStrengthGSM()+"','"+vto.getDeviceInfoTO().getSignalStrengthGSMBITRATEERROR()+"','"+vto.getDeviceInfoTO().getSignalStrengthLTE()+"','"+vto.getDeviceInfoTO().getSignalStrengthLTERSRP()+"'," +
 										"'"+vto.getDeviceInfoTO().getSignalStrengthLTERSRQ()+"','"+vto.getDeviceInfoTO().getSignalStrengthLTERSSNR()+"','"+vto.getDeviceInfoTO().getSignalStrength_LTECQI()+"','"+vto.getDeviceInfoTO().getCellLocationCID()+"'," +
-										"'"+vto.getDeviceInfoTO().getCellLocationLAC()+"','"+vto.getDeviceInfoTO().getNeighbourInfo()+"','"+vto.getDeviceInfoTO().getBatteryLevel()+"','"+vto.getDeviceInfoTO().getNetworkManuallyDone()+"'," +
+										"'"+vto.getDeviceInfoTO().getCellLocationLAC()+"','"+vto.getDeviceInfoTO().getCellLocationTAC()+"','"+vto.getDeviceInfoTO().getCellLocationPCI()+"','"+vto.getDeviceInfoTO().getNeighbourInfo()+"','"+vto.getDeviceInfoTO().getBatteryLevel()+"','"+vto.getDeviceInfoTO().getNetworkManuallyDone()+"'," +
 										"'"+vto.getDeviceInfoTO().getLattitude()+"','"+vto.getDeviceInfoTO().getLongitude()+"','"+vto.getDeviceInfoTO().getSnapShotId()+"')" ;
 					}
 				}
@@ -391,7 +391,7 @@ public class VoiceQualityHelper {
 								",SIGNALSTRENGTH_GSMSIGNALSTRENGTH,	SIGNALSTRENGTH_CDMADBM,	SIGNALSTRENGTH_CDMACIO,	SIGNALSTRENGTH_EVDODBM,	SIGNALSTRENGTH_EVDOECIO	" +
 								",SIGNALSTRENGTH_EVDOSNR,	SIGNALSTRENGTH_GSM,	SIGNALSTRENGTH_GSMBITRATEERROR,	SIGNALSTRENGTH_LTESIGNALSTRENGTH,	" +
 								"SIGNALSTRENGTH_LTERSRP,	SIGNALSTRENGTH_LTERSRQ,	SIGNALSTRENGTH_LTERSSNR,	SIGNALSTRENGTH_LTECQI,	CELLLOCATION_CID,	" +
-								"CELLLOCATION_LAC,	NEIGHBOUR_INFO,	BATTERY_LEVEL,	NETWORK_MANUALLY_DONE,	GEOLOCATION_LATITUDE,	GEOLOCATION_LONGITUDE," +
+								"CELLLOCATION_LAC,CELLLOCATION_TAC,CELLLOCATION_PCI,	NEIGHBOUR_INFO,	BATTERY_LEVEL,	NETWORK_MANUALLY_DONE,	GEOLOCATION_LATITUDE,	GEOLOCATION_LONGITUDE," +
 								"		SNAPSHOT_ID)"+
 					"VALUES('"+marketName+"','"+testName+"','"+vto.getPolqa()+"','"+vto.getEmodel()+"','"+vto.getSnr()+"','"+vto.getAvgJitter()+"'," +
 							"'"+vto.getChartType()+"','"+vto.getSignalStrength()+"','"+vto.getRsrp()+"','"+vto.getNetworkType()+"','"+vto.getTimestamp()+"',"+
@@ -403,7 +403,7 @@ public class VoiceQualityHelper {
 										"'"+vto.getDeviceInfoTO().getSignalStrengthCDMACIO()+"','"+vto.getDeviceInfoTO().getSignalStrengthEVDO()+"','"+vto.getDeviceInfoTO().getSignalStrengthEVDOECIO()+"','"+vto.getDeviceInfoTO().getSignalStrength_EVDOSNR()+"'," +
 										"'"+vto.getDeviceInfoTO().getSignalStrengthGSM()+"','"+vto.getDeviceInfoTO().getSignalStrengthGSMBITRATEERROR()+"','"+vto.getDeviceInfoTO().getSignalStrengthLTE()+"','"+vto.getDeviceInfoTO().getSignalStrengthLTERSRP()+"'," +
 										"'"+vto.getDeviceInfoTO().getSignalStrengthLTERSRQ()+"','"+vto.getDeviceInfoTO().getSignalStrengthLTERSSNR()+"','"+vto.getDeviceInfoTO().getSignalStrength_LTECQI()+"','"+vto.getDeviceInfoTO().getCellLocationCID()+"'," +
-										"'"+vto.getDeviceInfoTO().getCellLocationLAC()+"','"+vto.getDeviceInfoTO().getNeighbourInfo()+"','"+vto.getDeviceInfoTO().getBatteryLevel()+"','"+vto.getDeviceInfoTO().getNetworkManuallyDone()+"'," +
+										"'"+vto.getDeviceInfoTO().getCellLocationLAC()+"','"+vto.getDeviceInfoTO().getCellLocationTAC()+"','"+vto.getDeviceInfoTO().getCellLocationPCI()+"','"+vto.getDeviceInfoTO().getNeighbourInfo()+"','"+vto.getDeviceInfoTO().getBatteryLevel()+"','"+vto.getDeviceInfoTO().getNetworkManuallyDone()+"'," +
 										"'"+vto.getDeviceInfoTO().getLattitude()+"','"+vto.getDeviceInfoTO().getLongitude()+"','"+vto.getDeviceInfoTO().getSnapShotId()+"')" ;
 				}
 				 
@@ -504,6 +504,10 @@ public class VoiceQualityHelper {
 					vqTo.setLattitude(deviceInfo.getLattitude());
 					vqTo.setLongitude(deviceInfo.getLongitude());
 					vqTo.setDataState(deviceInfo.getNetworkDataState());
+					//Added by Ankit
+					vqTo.setCellLocationTAC(deviceInfo.getCellLocationTAC());
+					vqTo.setCellLocationPCI(deviceInfo.getCellLocationPCI());
+					
 					vqTo.setDeviceInfoTO(deviceInfo);
 					voiceQualityList.add(vqTo);
 //					foundIndex = j+1;

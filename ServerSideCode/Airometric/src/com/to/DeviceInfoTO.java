@@ -69,7 +69,11 @@ public class DeviceInfoTO implements Serializable,Cloneable{
 	private String snapShotId;
 	private String networkManuallyDone;
 	
+	//Added by ankit 
 	private String freqBand;
+	private String cellLocationTAC;
+	private String cellLocationPCI;
+	
 	
 	
 	
@@ -442,6 +446,20 @@ public class DeviceInfoTO implements Serializable,Cloneable{
 	}
 	public void setSignalStrengthLTECQI(String signalStrengthLTECQI) {
 		this.signalStrengthLTECQI = signalStrengthLTECQI;
+	}
+	
+	//Added by ankit
+	public String getCellLocationTAC() {
+		return cellLocationTAC;
+	}
+	public void setCellLocationTAC(String cellLocationTAC) {
+		this.cellLocationTAC = cellLocationTAC;
+	}
+	public String getCellLocationPCI() {
+		return cellLocationPCI;
+	}
+	public void setCellLocationPCI(String cellLocationPCI) {
+		this.cellLocationPCI = cellLocationPCI;
 	}
 	
 	public Object clone(){  

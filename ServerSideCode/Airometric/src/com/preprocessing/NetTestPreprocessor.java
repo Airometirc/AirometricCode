@@ -243,6 +243,10 @@ public class NetTestPreprocessor {
 						+ "'"
 						+ tcpTo.getDeviceInfoTO().getCellLocationLAC()
 						+ "','"
+						+ tcpTo.getDeviceInfoTO().getCellLocationTAC()
+						+ "','"
+						+ tcpTo.getDeviceInfoTO().getCellLocationPCI()
+						+ "','"
 						+ tcpTo.getDeviceInfoTO().getNeighbourInfo()
 						+ "','"
 						+ tcpTo.getDeviceInfoTO().getBatteryLevel()
@@ -366,6 +370,10 @@ public class NetTestPreprocessor {
 						+ "',"
 						+ "'"
 						+ udpTo.getDeviceInfoTO().getCellLocationLAC()
+						+ "','"
+						+ udpTo.getDeviceInfoTO().getCellLocationTAC()
+						+ "','"
+						+ udpTo.getDeviceInfoTO().getCellLocationPCI()
 						+ "','"
 						+ udpTo.getDeviceInfoTO().getNeighbourInfo()
 						+ "','"

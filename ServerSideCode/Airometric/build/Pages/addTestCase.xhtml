@@ -49,25 +49,24 @@
 					             <br></br>
 					                <rich:panel id="testPanel" header="Setup Test Config" 
 									    style="width: 780px; height:200px;position: relative;bottom: 19px;" >
-										<h:panelGrid id="testNamePanel" columns="3" class="testCaseField">
+										<h:panelGrid id="testNamePanel" columns="3" class="testCaseField" style="width:545px;">
 											<font color="black">Test Name*</font>
 											<h:inputText id="testName" name="testName" 
-												style="width:172px;height:25px;" 
+												style="width:172px;" 
 												value="#{testCaseAction.testName}">
 											</h:inputText>	
 										
 										</h:panelGrid>
-											<h:panelGrid id="marketGrid" columns="3" class="testCaseField">
+											<h:panelGrid  columns="3" class="testCaseField" style="width:350px;">
 											<font color="black">Market Name</font>
 												<h:selectOneListbox class="form-control" id="existingConfigName" name="existingConfigName" 
 								               	value="#{testCaseAction.marketId}" 
-								               	size="1" style="width:165px; height:30px;position:relative;left:-35px"  >
+								               	size="1" style="width:172px;"  >
 								               	<f:selectItems value="#{sessionScope['marketMap']}" /> 
 								 	  		</h:selectOneListbox >	
-												   <h:message for="testName" style="font-family: Arial, Helvetica, Sans-Serif;font-size: 10pt;font-weight: bold;color: red;position :relative;white-space: nowrap;position:relative;left: 9px;"/> 
-								            <h:outputText value=" * - is mandatory field" 
-								            	style="position: relative;float: right;left:550px;
-								            	font-family: Arial, Helvetica, Sans-Serif;color:black;"/>
+											<h:message for="testName" style="font-family: Arial, Helvetica, Sans-Serif;font-size: 10pt;font-weight: bold;color: red;position :relative;white-space: nowrap;position:relative;left: 9px;"/> 
+								            <h:outputText value=" * - is mandatory field" colspan='2' 
+								            	style="width:300px;font-family: Arial, Helvetica, Sans-Serif;color:black;"/>
 										</h:panelGrid>
 									</rich:panel>
 					            </rich:tab>
@@ -244,6 +243,7 @@
 			   document.getElementById("holder").style.left = "100px";
 		   }
 		   document.getElementById("CreateConfig").className='active';
+		   
 	   }
 	</script>
 	       <script>window.jQuery || document.write(' <h:outputScript library="js" name="jquery-1.9.0.min.js" />')</script>

@@ -4278,7 +4278,7 @@
                              }	   
 						//}else if(signalStrengthLTT[x] < 88 ){
 						}else if(deviceInfosignalStrengthLTT[i] <= lowerRangeForGood *-1 ){
-  						alert(deviceInfosignalStrengthLTT[i]);
+  						//alert(deviceInfosignalStrengthLTT[i]);
 							 if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString())
       							   && (prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString())){
 								if(currNetworkType.toString() == "Unknown"){
@@ -14012,7 +14012,7 @@ border: 1px solid #a9d9e7;
   <div class="panel test" id="panel-test-three">
     <div class="test-heading clearfix">
       <h3><i><h:graphicImage library="images" name="rentention-icon-big.jpg"/></i>
-        <b>Data Connectivity</b>
+        <b>Data Connectivity / External Coverage</b>
 		<a onclick="setPrecalparam('DC')" style="cursor: pointer;"><h:graphicImage library="images" name="page_right.gif"/>Precalculation info </a>
           <!--<a class="accordion-toggle collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapsethree"></a> 
       --></h3>
@@ -14105,13 +14105,13 @@ border: 1px solid #a9d9e7;
     <div id="collapsethree" class="panel-collapse collapse">
       <div class="row">
       <b id="tcp_Label" style="display:none">TCP:</b>
-      <a onclick="setPrecalparam('TCP')" style="cursor: pointer;"><h:graphicImage library="images" name="page_right.gif" />Precalculation info </a>
+      <a onclick="setPrecalparam('TCP')" style="cursor: pointer;"><h:graphicImage library="images" name="page_right.gif" />Precalculation TCP info </a>
       <div id="DataConnectivityFirstChartMarket_0" style="min-width: 1100px; height: 500px; ;"></div>
       <div id="DataConnectivityFirstChartMarket_1" style="min-width: 1100px; height: 500px; ;"></div>
       <div id="DataConnectivityFirstChartMarket_2" style="min-width: 1100px; height: 500px; ;"></div>
       <div id="DataConnectivityFirstChartMarket_3" style="min-width: 1100px; height: 500px; ;"></div>
        <b id="udp_Label" style="display:none">UDP:</b>
-        <a onclick="setPrecalparam('UDP')" style="cursor: pointer;"><h:graphicImage library="images" name="page_right.gif" />Precalculation info </a>
+        <a onclick="setPrecalparam('UDP')" style="cursor: pointer;"><h:graphicImage library="images" name="page_right.gif" />Precalculation UDP info </a>
        <div id="DataConnectivityUDPChart" style="min-width: 1100px; height: 500px; ;"></div>
        <div id="DataConnectivityUDPChartMarket_1" style="min-width: 1100px; height: 500px; ;"></div>
        <div id="DataConnectivityUDPChartMarket_2" style="min-width: 1100px; height: 500px; ;"></div>

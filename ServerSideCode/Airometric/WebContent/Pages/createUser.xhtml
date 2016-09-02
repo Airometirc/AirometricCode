@@ -103,7 +103,7 @@ xmlns:rich="http://richfaces.org/rich">
 													</h:selectOneListbox>
 													</c:if>
 												 	<h:outputText value="Country" styleClass="fontlabel"/>
-								                    <h:selectOneListbox id="country" name="country" value="#{userBean.countryId}" size="1" style="width:65%;height:25px;">
+								                    <h:selectOneListbox id="country" name="country" value="#{userBean.countryId}" size="1" style="width:65%;height:25px;margin-top:10px;">
 									   					<f:selectItems value="#{sessionScope['countryMapList']}" /> 
 									   					<f:ajax listener="#{userBean.ajaxListener}" event="change"  render="marketId" />    					  							
 												    </h:selectOneListbox>

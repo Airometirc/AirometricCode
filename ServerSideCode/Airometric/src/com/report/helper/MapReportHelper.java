@@ -36,8 +36,8 @@ public class MapReportHelper {
 			throughputList.add(0);
 			eventNameList.add("");
 		}
-//		System.out.println("throughputList---------"+throughputList.size());
-//		System.out.println("deviceInfotimeStampForEachSampleList---------"+deviceInfotimeStampForEachSampleList.size());
+		System.out.println("throughputList---------"+throughputList.size());
+		System.out.println("deviceInfotimeStampForEachSampleList---------"+deviceInfotimeStampForEachSampleList.size());
 		List signalStrengthListRating=new ArrayList() ;
 		List signalStrengthLt=new ArrayList() ;
 		String networkName ="";
@@ -114,9 +114,14 @@ public class MapReportHelper {
 				}
 				signalStrengthListRating.add(deviceInfo.getSignalStrength());
 			}
-//			System.out.println("deviceInfo.getThroughputmain()--------"+deviceInfo.getThroughputmain());
-		   throughputList.set(deviceInfotimeStampForEachSampleList.indexOf(deviceInfo.getTimeStampForEachSample()),new Float(deviceInfo.getThroughputmain())*8);
-		   eventNameList.set(deviceInfotimeStampForEachSampleList.indexOf(deviceInfo.getTimeStampForEachSample()),deviceInfo.getEventName());
+//			System.out.println("deviceInfo.getTestType()--------"+new Float(deviceInfo.getThroughputmain())+" "+deviceInfo.getTimeStampForEachSample());
+		   if(deviceInfo.getTestType().equalsIgnoreCase("externaltest"))
+		   {
+			throughputList.set(deviceInfotimeStampForEachSampleList.indexOf(deviceInfo.getTimeStampForEachSample()),new Float(deviceInfo.getThroughputmain()));
+			}else{
+			throughputList.set(deviceInfotimeStampForEachSampleList.indexOf(deviceInfo.getTimeStampForEachSample()),new Float(deviceInfo.getThroughputmain())*8);
+		   }
+			eventNameList.set(deviceInfotimeStampForEachSampleList.indexOf(deviceInfo.getTimeStampForEachSample()),deviceInfo.getEventName());
 		}
 		
 		 latitudes = lattitudeList.toString();

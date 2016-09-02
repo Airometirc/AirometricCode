@@ -98,12 +98,11 @@ public class FTPReportHelper {
 				deviceInfos
 						.setTimeStampForEachSample(rs.getString("TIME_STAMP_FOREACH_SAMPLE"));
 				deviceInfos.setCellLocationCID(rs.getString("CELLLOCATION_CID"));
-				
+				deviceInfos.setTestType(rs.getString("TEST_TYPE"));
 				deviceInfos.setTestName(testName);
 				if (!currentSnapShotId.equalsIgnoreCase(prevSnapShotId)) {
 					throughtPut = currentBytes;
 				}
-
 				else {
 					if (null != currentTime && null != prevTime) {
 						long diff = (currentTime.getTime() - prevTime.getTime()) / 1000;
@@ -243,7 +242,11 @@ public class FTPReportHelper {
 						.getString("CELLLOCATION_LAC"));
 				deviceInfos.setImei(rs
 						.getString("DEVICE_IMEI"));
-				
+				//Added by Ankit
+				deviceInfos.setCellLocationTAC(rs
+						.getString("CELLLOCATION_TAC"));
+				deviceInfos.setCellLocationPCI(rs
+						.getString("CELLLOCATION_PCI"));
 				mapsDetailsList.add(deviceInfos);
 
 			}

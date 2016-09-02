@@ -352,10 +352,14 @@ public class VoiceConnectivityProccesorHelper2 {
 					// deviceInfos.set
 					deviceInfos.setSignalStrengthLTECQI(rs
 							.getString("SIGNALSTRENGTH_LTECQI"));
-
 					deviceInfos.setDeviceManufacturer(rs
 							.getString("DEVICE_MANUFACTURER"));
 					deviceInfos.setNetworkType(rs.getString("NETWORK_TYPE"));
+					//Added by Ankit
+					deviceInfos.setCellLocationTAC(rs
+							.getString("CELLLOCATION_TAC"));
+					deviceInfos.setCellLocationPCI(rs
+							.getString("CELLLOCATION_PCI"));
 
 				}
 			}
@@ -493,6 +497,12 @@ public class VoiceConnectivityProccesorHelper2 {
 
 					deviceInfos.setDeviceManufacturer(rs
 							.getString("DEVICE_MANUFACTURER"));
+					//Added by Ankit
+					deviceInfos.setCellLocationTAC(rs
+							.getString("CELLLOCATION_TAC"));
+					deviceInfos.setCellLocationPCI(rs
+							.getString("CELLLOCATION_PCI"));
+					
 					CallSetUpTo cto = new CallSetUpTo();
 					cto.setDeviceInfoTO(deviceInfos);
 					allcallSetUpList.add(cto);
@@ -1432,6 +1442,11 @@ public class VoiceConnectivityProccesorHelper2 {
 					deviceInfos.setDeviceManufacturer(rs
 							.getString("DEVICE_MANUFACTURER"));
 					deviceInfos.setNetworkType(rs.getString("NETWORK_TYPE"));
+					//Added by Ankit
+					deviceInfos.setCellLocationTAC(rs
+							.getString("CELLLOCATION_TAC"));
+					deviceInfos.setCellLocationPCI(rs
+							.getString("CELLLOCATION_PCI"));
 
 				}
 			}
@@ -1782,6 +1797,11 @@ public class VoiceConnectivityProccesorHelper2 {
 					deviceInfos.setDeviceManufacturer(rs
 							.getString("DEVICE_MANUFACTURER"));
 					deviceInfos.setNetworkType(rs.getString("NETWORK_TYPE"));
+					//Added by Ankit
+					deviceInfos.setCellLocationTAC(rs
+							.getString("CELLLOCATION_TAC"));
+					deviceInfos.setCellLocationPCI(rs
+							.getString("CELLLOCATION_PCI"));
 
 				}
 			}
@@ -2107,7 +2127,7 @@ public class VoiceConnectivityProccesorHelper2 {
 			String query = "SELECT DISTINCT TEST_TYPE as testType FROM STG_DEVICE_INFO WHERE TEST_NAME like '%"
 					+ testName + "%'";
 			rs = st.executeQuery(query);
-			System.out.println("getAllmarkets---------" + query);
+//			System.out.println("getTestType---------" + query);
 			while (rs.next()) {
 				testType = rs.getString(1);
 			}

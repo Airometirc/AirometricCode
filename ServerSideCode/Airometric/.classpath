@@ -57,7 +57,7 @@
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/w3c.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/jsoup-1.8.3.jar"/>
 	<classpathentry kind="lib" path="WebContent/WEB-INF/lib/gcm.server.jar"/>
-	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.core.runtimeTarget/J2EE Runtime Library (2)">
+	<classpathentry kind="con" path="org.eclipse.jst.server.core.container/org.eclipse.jst.server.core.runtimeTarget/J2EE Runtime Library">
 		<attributes>
 			<attribute name="owner.project.facets" value="jst.web"/>
 		</attributes>
