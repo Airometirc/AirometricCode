@@ -16149,9 +16149,10 @@ public class ReportBean implements Serializable {
 		String allTestStr = context.getExternalContext().getSessionMap().get("testName").toString();
 		String marketId = marketmapId;
 
-		
-		String precalParam = "VC";
-		System.out.println("allTestStr-----------"+testCaseName+" marketId-----------"+marketId);
+		String precalParam = context.getExternalContext()
+				.getRequestParameterMap().get("precalparam");
+		//String precalParam = "VC";
+		System.out.println("allTestStr-----------"+testCaseName+" marketId-----------"+marketId+" precalParam:"+precalParam);
 		filePath = PreprocessExport.exportReport(precalParam, testCaseName,marketId);
 		// logger.info("filePath:"+filePath);
 		File file = new File(filePath);

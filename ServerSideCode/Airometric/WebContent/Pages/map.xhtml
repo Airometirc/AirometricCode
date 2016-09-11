@@ -400,6 +400,7 @@
 		    				signalStrengthLTERSSNRList="";
 		    				signalStrengthLTECQIList="";
 		    			}
+		    			
 		    			networkType[i]=networkType[i].trim();
 						var callDrop =false;
 						image="";
@@ -1100,10 +1101,11 @@
 			    	document.getElementById("LTE_Voice_Data").style.display='none';
 			    	document.getElementById("Frequency_Band").style.display='none';
 			    	var testtype = "#{reportBean.test_type}";
-			    	if(testtype=="mt")
+			    	if(testtype=="mt" && reportType == "signalStrength")
 			    		{
-			    		document.getElementById("preCalVQ").style.display='';
-			    		}
+			    		document.getElementById("precalparam").value="VC";
+			    		document.getElementById("exportprecallink").style.display='';
+			    		}  
 			       }
 				 }else if(reportType == "voiceQuality"){
 		       			var latt ="#{sessionScope['lattitudes']}";  
@@ -2330,7 +2332,7 @@
 	  	  			    				}else{
 	  	  			    					image = '../../'+"#{request.contextPath}"+'/resources/images/FB_Yellow_b3.png';
 	  	  			    				}
-	  	    						   }else if(freqBand[i].match("B4")){console.log("hello this is B4");
+	  	    						   }else if(freqBand[i].match("B4")){
 		  	  	  	  						if((prevSourceCellId.toString()!= currSourceCellId.toString()) 
 		  	  		                        		 && (prevNetworkType.toString() != currNetworkType.toString())){
 		  	  			    					if(currNetworkType.toString() == "Unknown"
@@ -2355,7 +2357,7 @@
 		  	  			    				}else{
 		  	  			    					image = '../../'+"#{request.contextPath}"+'/resources/images/FB_Brown_b4.png';
 		  	  			    				}
-		  	    						   }else if(freqBand[i].match("B5")){console.log("hello this is B5");
+		  	    						   }else if(freqBand[i].match("B5")){
 			  	  	  	  						if((prevSourceCellId.toString()!= currSourceCellId.toString()) 
 			  	  		                        		 && (prevNetworkType.toString() != currNetworkType.toString())){
 			  	  			    					if(currNetworkType.toString() == "Unknown"
@@ -3793,12 +3795,12 @@
 	    				if(throughput[i]==0){
 	    					throughtputList="<b>Throughput:</b>NA ";
 	  	    			}else{
-	  	    				console.log("test_type "+test_type)
+	  	    				
 	  	    				var speed;
 	  	    				if(test_type=="externaltest"){speed = " Mbps";}else{speed = " Bps";}
 	  	    				//removed the throughput[i]*8 to throughput[i] by ankit
 	  	    				var throughputInbits = throughput[i];
-	  	    				console.log("throughputInbits - "+throughputInbits);
+	  	    				
 	  	    				throughtputList="<b>Throughput:</b>"+throughputInbits+speed;
 	  	    				image = '../../'+"#{request.contextPath}"+'/resources/images/star_pink.png';
 	  	    			}	
@@ -3895,6 +3897,17 @@
 
 		            	var networkType = "#{sessionScope['networkType']}";  
 		              	networkType = networkType.split(",");
+		              	
+		              	
+		              	var networkData = "#{sessionScope['networkData']}";  
+		              	networkData = networkData.split(",");
+		              	
+		              	var networkRoaming = "#{sessionScope['networkRoaming']}";  
+		              	networkRoaming = networkRoaming.split(",");
+		              	
+		              	var devicePhoneType = "#{sessionScope['devicePhoneType']}";  
+		              	devicePhoneType = devicePhoneType.split(",");
+		              	
 
 		            	var cellLocationCid = "#{sessionScope['cellLocationCID']}";  
 		            	cellLocationCid = cellLocationCid.split(",");
@@ -3952,6 +3965,9 @@
 		            	var signalStrengthLTERSRP = "#{sessionScope['signalStrengthLTERSRP']}";  
 		            	signalStrengthLTERSRP = signalStrengthLTERSRP.split(",");
 
+		            	var signalStrengthLTERSRQ = "#{sessionScope['signalStrengthLTERSRQ']}";  
+		            	signalStrengthLTERSRQ = signalStrengthLTERSRQ.split(",");
+
 		            	var wifiinforssi = "#{sessionScope['wifiinforssi']}";  
 		              	wifiinforssi = wifiinforssi.split(",");
 
@@ -3971,8 +3987,21 @@
 		              	signalStrengthCDMA = signalStrengthCDMA.split(",");
 		              	var signalStrengthEVDO = "#{sessionScope['signalStrengthEVDO']}";  
 		              	signalStrengthEVDO = signalStrengthEVDO.split(",");
-		              	var signalStrengthStr = "#{sessionScope['signalStrengthGSMStr']}";  
-		              	signalStrengthStr = signalStrengthStr.split(",");
+		              	var signalStrengthStr = "#{sessionScope['signalStrengthGSMStr']}"; 
+		              	
+		              	/*New Code changes*/
+		        		var signalStrengthLTERSRP = "#{sessionScope['signalStrengthLTERSRP']}";  
+		        		signalStrengthLTERSRP = signalStrengthLTERSRP.split(",");
+
+		        		var signalStrengthLTERSRQ = "#{sessionScope['signalStrengthLTERSRQ']}";  
+		        		signalStrengthLTERSRQ = signalStrengthLTERSRQ.split(",");
+
+		        		var signalStrengthLTERSSNR = "#{sessionScope['signalStrengthLTERSSNR']}";  
+		        		signalStrengthLTERSSNR = signalStrengthLTERSSNR.split(",");
+
+		        		var signalStrengthLTECQI = "#{sessionScope['signalStrengthLTECQI']}";  
+		        		signalStrengthLTECQI = signalStrengthLTECQI.split(",");	
+						signalStrengthStr = signalStrengthStr.split(",");
 		              	var signalStrengthCDMACIOList = "";
 		              	var signalStrengthEVDOECIOList = "";
 		              	var signalStrengthSnrList = "";
@@ -3984,6 +4013,15 @@
 		    		var type = "";
 		    		var htmlStr = "";
 		    		var networkTypeList="";
+//Added by ankit on 10/09/16		    		
+		    		var networkDataList="";
+		    		var networkRoamingList="";
+		    		var signalStrengthLTERSRPList="";
+		    		var signalStrengthLTERSRQList="";
+		    		var signalStrengthLTERSRPList="";
+		    		var signalStrengthLTERSSNRList="";
+		    		var signalStrengthLTECQIList ="";
+//-----		    		
 		    		var signalStrengthList="";
 		    		var timeStampForEachSampleList="";
 		    		var throughtputList="";
@@ -4035,9 +4073,50 @@
 	  	    			if(throughput[i]==0){
 	  	    				deviceInfoThroughput="<b>Throughput:</b>NA";
 	  	    			}else{
-	  	    				deviceInfoThroughput="<b>Throughput:</b>"+throughput[i]+eventName[i];
+	  	    				var speed,extra;
+	  	    				if(test_type=="externaltest"){speed = " Mbps";extra="DL";}else{speed = " Bps";extra="";}
+	  	    				deviceInfoThroughput="<b>Throughput "+extra+":</b>"+throughput[i]+speed;
 	  	    			}
 
+
+		    			if(networkType[i].match("EVDO") || networkType[i].match("eHRPD") ||  networkType[i].match("EVDO-A") 
+		    					|| networkType[i].match("EVDO-B")){
+		    				signalStrengthEVDOECIOList="<b>EVDO-ECIO:</b>"+signalStrengthEVDOECIO[i];
+		    				signalStrengthSnrList="<b>EVDO-SNR:</b>"+signalStrengthSnr[i];
+		    				signalStrengthCDMACIOList="";
+		    				signalStrengthLTERSRP="";
+		    				signalStrengthLTERSRQ="";
+		    				signalStrengthLTERSSNR="";
+		    				signalStrengthLTECQI="";
+		        			
+		    			}else if (networkType[i].match("CDMA")){
+		    				signalStrengthSnrList="";
+		    				signalStrengthEVDOECIOList="";
+		    				signalStrengthLTERSRP="";
+		    				signalStrengthLTERSRQ="";
+		    				signalStrengthLTERSSNR="";
+		    				signalStrengthLTECQI="";
+		    			}else if (networkType[i].match("LTE")||networkType[i].toString()== "LTE (4G)" || networkType[i].toString()== " LTE (4G)"){
+		    				signalStrengthCDMACIOList="";
+		    				signalStrengthSnrList="";
+		    				signalStrengthEVDOECIOList="";
+		    				signalStrengthLTERSRPList="<b>LTERSRP:</b>"+signalStrengthLTERSRP[i];
+		    				signalStrengthLTERSRQList="<b>LTERSRQ:</b>"+signalStrengthLTERSRQ[i];
+		    				signalStrengthLTERSSNRList="<b>LTERSSNR:</b>"+signalStrengthLTERSSNR[i];
+		    				signalStrengthLTECQIList="<b>LTECQI:</b>"+signalStrengthLTECQI[i];
+		    				TacData="<b>TAC:</b>"+Tac[i];
+		    				PciData="<b>PCI:</b>"+Pci[i];
+		    			}else{
+		    				signalStrengthEVDOECIOList="";
+		        			signalStrengthCDMACIOList="";
+		        			signalStrengthSnrList="";
+		        			signalStrengthLTERSRPList="";
+		    				signalStrengthLTERSRQList="";
+		    				signalStrengthLTERSSNRList="";
+		    				signalStrengthLTECQIList="";
+		    			}
+	  	    			
+	  	    			
 	  	    			if(deviceInfonetworkType[i].toString().trim() == "wifi" ){
 		    				wifiInfoRssiList = "<b>wifiRssi:</b>"+wifiinforssi[i];
 			    			wifiInfoBssidList="<b>Wifi Bssid:</b>"+wifiinfobssid[i];
@@ -4513,81 +4592,126 @@
 	      							}
 	  	  	 	 				}
 		    			}
-		    			prevSourceCellId=currSourceCellId;
-		             	prevNetworkType= deviceInfonetworkType[i];
+		    			 prevSourceCellId= cellLocationCid[i];
+		             	    prevNetworkType= networkType[i].trim();
+		             	     
+			    			networkDataList="Network Data :"+networkData[i];
+			    			networkRoamingList="Network Roaming :"+networkRoaming[i];
+			    			type =Number(signalStrength[i]);
+			    			networkMncList="<b>MNC:</b>"+networkMnc[i];
+			    			networkMccList="<b>MCC:</b>"+networkMcc[i];
+			    			//freqBandList = "<b>freqBand:</b>"+freqBand[i];
+			    			if(networkType[i].trim() == "wifi" ){
+			    				wifiInfoRssiList = "<b>wifiRssi:</b>"+wifiinforssi[i];
+				    			wifiInfoBssidList="<b>Wifi Bssid:</b>"+wifiinfobssid[i];
+				    			wifiInfoLinkSpeedList="<b>Wifi Link Speed:</b>"+wifiinfoLinkSpeed[i];
+			    			}
+			    			else{
+			    				wifiInfoRssiList = "";
+				    			wifiInfoBssidList="";
+				    			wifiInfoLinkSpeedList="";
+			    			}
+			    			cellLocationLacList="<b>Source LAC:</b>"+cellLocationLac[i];
+			    			cellLocationCidList="<b>Source Cell ID:</b>"+cellLocationCid[i];
+			    			devicePhoneTypeList="Phone Type:"+devicePhoneType[i];
+		                    timeStampForEachSampleList=timeStampForEachSample[i];
+		                    numberofpoints++;
 
-		             	var tempGSMStr = String(signalStrengthStr[i]);
-		    			if(tempGSMStr.match("false"))
-		    			{
-		    				signalStrengthCDMACIOList = "<b>CDMA-ECIO:</b>"+signalStrengthCDMACIO[i];
-		    				signalStrengthEVDOECIOList = "<b>EVDO-ECIO:</b>"+signalStrengthEVDOECIO[i];
-		    				signalStrengthSnrList = "<b>SNR:</b>"+signalStrengthSnr[i];
-		    				signalStrengthCDMAList = "<b>CDMA;</b>"+signalStrengthCDMA[i];
-		    				signalStrengthEVDOList = "<b>EVDO:</b>"+signalStrengthEVDO[i];
-		    			}else{
-			    				signalStrengthCDMACIOList="";
-			    				signalStrengthEVDOECIOList="";
-			    				signalStrengthSnrList="";
-			    				signalStrengthCDMAList="";
-			    				signalStrengthEVDOList="";
-		    			}
-		    			if(deviceInfonetworkType[i].toString()== "LTE (4G)" || deviceInfonetworkType[i].toString()== " LTE (4G)" || deviceInfonetworkType[i].toString()== "LTE")
-		    			{
-				    		htmlStr = "";
-		    				addr="";
-		     	    	}else{
-			    			htmlStr = "<b>signalStrength:</b>"+deviceInfosignalStrength[i];
-			    			addr = "<b>signalStrength:</b>"+deviceInfosignalStrength[i];
-		     	    	}
-		    			var m = new google.maps.Marker({
 
-		    				map : google_map,
-		    				animation : google.maps.Animation.DROP,
-		    				title : addr,
-		    				alt:addr,
-		    				position : new google.maps.LatLng(lat,lng),
-		    				icon : image,
-		    				html : htmlStr,
-		    				info1 : htmlStr,
-		    				info2 : networkTypeList,
-		    				info3: testNamelist,
-		    				info4: throughtputList,
-		    				info5: cellIdList,
-		    				info6: snapShotList,
-		    				info7 :sourceLac,
-		    				info8: timeStampForEachSampleList,
-		    				info9 : networkMncList,
-		    				info10 : networkMccList,
-		    				info11 : deviceInfoThroughput,
-		    				info12:wifiInfoRssiList,
-		    				info13:wifiInfoBssidList,
-		    				info14:wifiInfoLinkSpeedList,
-		    				info15:signalStrengthCDMACIOList,
-		    				info16:signalStrengthEVDOECIOList,
-		    				info17:signalStrengthSnrList,
-		    				info18:signalStrengthCDMAList,
-		    				info19:signalStrengthEVDOList,
-		    				info20:ImeiData,
-		    				topLevel : topLevelData
-			
-		    			});
-		    			htmlStr = "";
-		    			google.maps.event.addListener(m, 'click', function() {
-		    				info_window.setContent('<table><tr><td colspan="2">' +this.info2+ '</td></tr>' 
-		    				+'<tr><td colspan="2">' +this.info1 +'</td>'+'<td>'+ this.info3+ '</td></tr>'
-		    				+'<tr><td colspan="2">' +this.info4 +'</td>'+'<td>'+ this.info5+ '</td></tr>'
-		    				+'<tr><td colspan="2">' +this.info6 +'</td>'+'<td>'+ this.info7+ '</td></tr>'
-		    				+'<tr><td colspan="2">' +this.info9 +'</td>'+'<td>'+ this.info10+ '</td></tr>'
-		    				+'<tr><td colspan="2">' +this.info11 +'</td>'+'<td>'+ this.info20+ '</td></tr>'
-		    				+'<tr><td colspan="2">' +this.info12 +'</td>'+'<td>'+ this.info13+ '</td></tr>'
-		    				+'<tr><td colspan="2">' +this.info15 +'</td>'+'<td>'+ this.info16+ '</td></tr>'
-		    				+'<tr><td colspan="2">' +this.info17 +'</td>'+'<td>'+ this.info18+ '</td></tr>'
-		    				+'<tr><td colspan="2">' +this.info19 +'</td>'+'<td>'+ this.info14+ '</td></tr>'
-		    				+'<tr><td colspan="2">' +this.info8+'</td></tr></table>');
-		    				info_window.open(google_map, this);
-		    			});
-		    		var topLevelData = '';
-		    		var htmlStr = '';
+		                    var tempGSMStr = String(signalStrengthStr[i]);
+			    			if(tempGSMStr.match("false"))
+			    			{
+			    				signalStrengthCDMACIOList = "<b>CDMA-ECIO:</b>"+signalStrengthCDMACIO[i];
+			    				signalStrengthEVDOECIOList = "<b>EVDO-ECIO:</b>"+signalStrengthEVDOECIO[i];
+			    				signalStrengthSnrList = "<b>SNR:</b>"+signalStrengthSnr[i];
+			    				signalStrengthCDMAList = "<b>CDMA;</b>"+signalStrengthCDMA[i];
+			    				signalStrengthEVDOList = "<b>EVDO:</b>"+signalStrengthEVDO[i];
+			    			}else{
+				    				signalStrengthCDMACIOList="";
+				    				signalStrengthEVDOECIOList="";
+				    				signalStrengthSnrList="";
+				    				signalStrengthCDMAList="";
+				    				signalStrengthEVDOList="";
+			    			}
+			    			var flag="";
+			    			
+			    			if (networkType[i].match("LTE")||networkType[i].toString()== "LTE (4G)" || networkType[i].toString()== " LTE (4G)")
+			    				htmlStr = "";
+							else
+								htmlStr = "<b>SignalStrength:</b>"+signalStrength[i];
+
+						if(image!="")
+						{
+		                    var m = new google.maps.Marker({
+			    				map : google_map,
+			    				animation : google.maps.Animation.DROP,
+			    				title : addr,
+			    				alt:addr,
+			    				position : new google.maps.LatLng(lat,lng),
+			    				icon : image,
+			    				html : htmlStr,
+			    				info1 : htmlStr,
+			    				info2 : networkTypeList,
+			    				info4 : networkMncList,
+			    				info5 : networkMccList,
+			    				info6 : signalStrengthSnrList,
+			    				info7 : cellLocationCidList,
+			    				info8 : cellLocationLacList,
+			    				info9 : devicePhoneTypeList,
+			    				info10: timeStampForEachSampleList,
+			    				info11: str,
+			    				info12: signalStrengthEVDOECIOList,
+			    				info13: signalStrengthCDMACIOList,
+			    				info14: signalStrengthLTERSRPList,
+			    				info15: signalStrengthLTERSRQList,
+			    				info16: signalStrengthLTERSSNRList,
+			    				info17: signalStrengthLTECQIList,
+			    				info18:freqBandList,
+			    				info19:wifiInfoRssiList,
+			    				info20:wifiInfoBssidList,
+			    				info21:wifiInfoLinkSpeedList,
+			    				info22:signalStrengthSnrList,
+			    				info23:signalStrengthCDMAList,
+			    				info24:signalStrengthEVDOList,
+			    				info25:ImeiData,
+			    				info26:TacData,
+			    				info27:PciData,
+			    				topLevel : topLevelData
+			    				
+			    			});
+						
+			    			htmlStr = "";
+			    			var qxdmLink = "";
+			    			
+			    			
+			    			google.maps.event.addListener(m, 'click', function() {
+			    				if(isExternal=='true'){
+				    				qxdmLink = '<tr><td colspan="2"> <a  onclick="renderQxdmPopup(\''+this.info10+'\')" target="blank">Qxdm Info</a></td></tr></table>'
+			    				}
+			    				info_window.setContent('<table><tr><td colspan="2">' +this.info1+ '</td>' +'<td>'+this.info2+'</td></tr>' 
+			    				+'<tr><td colspan="2">' +this.info4 +'</td>'+'<td>'+ this.info5+ '</td></tr>'  
+			    				+'<tr><td colspan="2">'+ this.info7+'</td>'+'<td>'+ this.info8+ '</td></tr>'
+			    				+'<tr><td colspan="2">'+ this.info25+'</td>'+'<td  colspan="2"></td></tr>'
+			    				+'<tr><td colspan="2">'+ this.info12+'</td>'+'<td>'+ this.info13+ '</td></tr>'
+			    				+'<tr><td colspan="2">'+ this.info14+'</td>'+'<td>'+ this.info15+ '</td></tr>'
+			    				+'<tr><td colspan="2">'+ this.info16+'</td>'+'<td>'+ this.info17+ '</td></tr>'
+			    				+'<tr><td colspan="2">'+ this.info6+'</td>'+'<td colspan="2">'+this.info18+'</td></tr>'
+			    				+'<tr><td colspan="2">'+ this.info19+'</td>'+'<td colspan="2">'+ this.info20+'</td></tr>'
+			    				+'<tr><td colspan="2">'+ this.info21+' </td>'+'<td colspan="2"></td></tr>'
+			    				+'<tr><td colspan="2">'+ this.info23+' </td>'+'<td colspan="2">'+ this.info24+' </td></tr>'
+			    				+'<tr><td colspan="2">'+ this.info26+' </td>'+'<td colspan="2">'+ this.info27+' </td></tr>'
+			    				+'<tr><td colspan="2">&nbsp;&nbsp;&nbsp;</td>'+'<td></td></tr>'
+			    				+'<tr><td colspan="2">'+ this.info10+'</td></tr>'
+			    				+qxdmLink 
+			    				+'<table align="left"><tr><td><b>Neighbour Info:</b></td><tr></table>'
+			    				+'<br>'
+			    				+ this.info11);
+			    				info_window.open(google_map, this);
+			    				
+			    			});
+						}
+			    			htmlStr = "";
+			    			var qxdmLink = "";
 
 		         	 }
 
@@ -4608,13 +4732,13 @@
 		    				if(throughput[i]==0){
 		    					throughtputList="<b>Throughput:</b>NA ";
 		  	    			}else{
-		  	    				console.log("test_type "+test_type)
+		  	    				
 		  	    				var speed;
 		  	    				if(test_type=="externaltest"){speed = " Mbps";}else{speed = " Bps";}
 		  	    				//removed the throughput[i]*8 to throughput[i] by ankit
 		  	    				var throughputInbits = throughput[i];
-		  	    				console.log("throughputInbits - "+throughputInbits);
-		  	    				throughtputList="<b>Throughput:</b>"+throughputInbits+speed;
+		  	    				
+		  	    				throughtputList="<b>Throughput DL:</b>"+throughputInbits+speed;
 		  	    				if(throughputInbits>=15){
 		  	    				image = '../../'+"#{request.contextPath}"+'/resources/images/star_pink.png';
 		  	    				}else if(throughputInbits<=15 && throughputInbits>=10){
@@ -4678,6 +4802,13 @@
 			    	document.getElementById("UDPThroughput").style.display='none';
 			    	document.getElementById("LTE_Voice_Data").style.display='none';	
 			    	document.getElementById("Frequency_Band").style.display='none';
+//New code added for pre call tables by ankit on 11/09/16				    	
+			    	var testtype = "#{reportBean.test_type}";
+			    	if(testtype=="externaltest" && reportType == "tcpthroughput")
+			    		{
+			    		document.getElementById("precalparam").value="TCP";
+			    		document.getElementById("exportprecallink").style.display='';
+			    		}
 	      		}else if(reportType == "udpthroughput"){
 					 var lattitudes = "#{sessionScope['lattitudes']}";  
 						if(lattitudes != ""){
@@ -4858,7 +4989,9 @@
 		  	    			if(throughput[i]==0){
 		  	    				deviceInfoThroughput="<b>Throughput:</b>NA";
 		  	    			}else{
-		  	    				deviceInfoThroughput="<b>Throughput:</b>"+throughput[i]+eventName[i];
+		  	    				var speed,extra;
+		  	    				if(test_type=="externaltest"){speed = " Mbps";extra="UL";}else{speed = " Bps";extra="";}
+		  	    				deviceInfoThroughput="<b>Throughput "+extra+":</b>"+throughput[i]+speed;
 		  	    			}
 
 		  	    			if(deviceInfonetworkType[i].toString().trim() == "wifi" ){
@@ -5431,13 +5564,13 @@
 			    				if(throughput[i]==0){
 			    					throughtputList="<b>Throughput:</b>NA ";
 			  	    			}else{
-			  	    				console.log("test_type "+test_type)
+			  	    				
 			  	    				var speed;
 			  	    				if(test_type=="externaltest"){speed = " Mbps";}else{speed = " Bps";}
 			  	    				//removed the throughput[i]*8 to throughput[i] by ankit
 			  	    				var throughputInbits = throughput[i];
-			  	    				console.log("throughputInbits - "+throughputInbits);
-			  	    				throughtputList="<b>Throughput:</b>"+throughputInbits+speed;
+			  	    				
+			  	    				throughtputList="<b>Throughput UL:</b>"+throughputInbits+speed;
 			  	    				if(throughputInbits>=15){
 				  	    				image = '../../'+"#{request.contextPath}"+'/resources/images/star_pink.png';
 				  	    				}else if(throughputInbits<=15 && throughputInbits>=10){
@@ -5457,7 +5590,7 @@
 
 			             	    if(image!='' && throughput[i]!=0)
 			             	    {
-			             	    	console.log("image "+image)
+			             	    	
 							var img = new google.maps.MarkerImage(image,
 									new google.maps.Size(30,30),
 									new google.maps.Point(0,0),
@@ -5502,6 +5635,13 @@
 				    	document.getElementById("UDPThroughput").style.display='';
 				    	document.getElementById("LTE_Voice_Data").style.display='none';	
 				    	document.getElementById("Frequency_Band").style.display='none';
+//New code added for pre call tables by ankit on 11/09/16				    	
+				    	var testtype = "#{reportBean.test_type}";
+				    	if(testtype=="externaltest" && reportType == "udpthroughput")
+				    		{
+				    		document.getElementById("precalparam").value="UDP";
+				    		document.getElementById("exportprecallink").style.display='';
+				    		}
 		      		}else if(reportType == "LTE_Voice_Data"){
 				var lattitudes = "#{sessionScope['lattitudes']}";  
 				if(lattitudes != ""){
@@ -6397,6 +6537,10 @@
 				 var button = document.getElementById("qxdmdataBut");
 				 button.click();
 			}
+			   function setPrecalparam(){
+			       var button = document.getElementById("preCalVQ");
+			       button.click();
+			  	}
       </script> 
       <style>
             .customBox {
@@ -6572,7 +6716,7 @@ transform-origin: 50% 50% 0;
    					<h:inputHidden  id="clickedDateOnMap"  name="clickedDateOnMap"></h:inputHidden>
 					<div id="row1" class="row" style="height: 650px !important;">
 						<div class="tab-content" style="width: 855px;height: 330px;position: absolute;top:-65px;left: 58px;">
-						<rich:panel header="Google Maps" style="width: 850px;height: 300px;">
+						<rich:panel header="Map" style="width: 850px;height: 300px;">
 						<div style="font-family: Arial, Helvetica, Sans-Serif;color:black;float:left;width: 100%;margin-bottom:15px;"> 
 						<h:outputText value="Test Name*" />
 						 <h:selectOneListbox id="testCaseName" name="testCaseName" value="#{reportBean.testCaseName}" 
@@ -6628,9 +6772,12 @@ transform-origin: 50% 50% 0;
 							<!-- <h:graphicImage library="images" name="page_right.gif" /> -->
 							Generate 
 						</h:commandLink>
-						<h:commandLink id="preCalVQ" style="font-size:10px;display: none;"  action="#{reportBean.exportMttestPrecalReport}"  >		
-							Export Log Files
+						<input type="hidden" name="precalparam" id= "precalparam"  />
+						<h:commandLink id="preCalVQ" style="font-size:10px;"  action="#{reportBean.exportMttestPrecalReport}"  >		
 							</h:commandLink>
+							
+							<a onclick="setPrecalparam()" id="exportprecallink" style="cursor: pointer; display:none;"><h:graphicImage library="images" name="page_right.gif" />Export Log Files</a>
+       
 						<div style="display:none">
 						 <h:commandButton value="Send" id = "qxdmdataBut" name="qxdmdataBut" actionListener="#{reportBean.downloadQxdmFile}">
 						    <f:ajax disabled="true"/>
@@ -6796,10 +6943,13 @@ transform-origin: 50% 50% 0;
 		<h:outputScript library="js" name="bootstrap.js" />
 		<h:outputScript library="js" name="jquery-1.9.0.min.js" />
         <script>
+           
             var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
             (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
             g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
             s.parentNode.insertBefore(g,s)}(document,'script'));
+            
+            
         </script>
    </body>
 </ui:define>

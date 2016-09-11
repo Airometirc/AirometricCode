@@ -1544,6 +1544,7 @@ public class VoiceConnectivityProccesorHelper {
 	public static DeviceInfoTO matchinDeviceInfo(String date, String format,
 			String testName, String marketId, String test_type) {
 		DeviceInfoTO deviceInfos = new DeviceInfoTO();
+		Float signalStrength = new Float(0);
 		// SimpleDateFormat sdfformat = new SimpleDateFormat(format);
 		ResultSet rs = null;
 		Connection conn = DBUtil.openConn();
@@ -1602,12 +1603,34 @@ public class VoiceConnectivityProccesorHelper {
 						deviceInfos.setSignalStrength(rs
 								.getString("SIGNALSTRENGTH_GSMSIGNALSTRENGTH"));
 					}
-					//changes made by ankit on 25-04-2016
+//changes made by ankit on 25-04-2016
 					if(networkType.equalsIgnoreCase("NA") || networkType.equalsIgnoreCase("NA") 
 							|| networkType.equalsIgnoreCase("UNKNOWN") || networkType.equalsIgnoreCase("UNKNOWN")) //Added by ankit
 					{//System.out.println("Inside NA & Unknown condition");
 						deviceInfos.setNetworkType("UMTS (3G)");
 					}
+					
+//New code added by ankit for Signal strength on 10/09/16					
+					if (networkType.equalsIgnoreCase("LTE")
+							|| networkType.equalsIgnoreCase("LTE (4G)")) {
+						/*Code correction */
+//						signalStrength = -140+ (new Float(
+//										new Float(rs.getString("SIGNALSTRENGTH_LTERSRP"))));
+						signalStrength = new Float(rs.getString("SIGNALSTRENGTH_LTERSRP"));
+						networkType = "LTE";
+					} else 
+					if(networkType.equalsIgnoreCase("wifi") || networkType.equalsIgnoreCase("WIFI")) //Added by ankit
+					{
+						signalStrength = new Float(rs.getString("WIFIINFO_RSSI"));
+						////
+					}
+					else{
+						//SIGNALSTRENGTH_LTESIGNALSTRENGTH
+					signalStrength = -113 + 2* (new Float(new Float(rs.getString("SIGNALSTRENGTH_GSMSIGNALSTRENGTH"))));
+					}
+					deviceInfos.setSignalStrength(new Float(signalStrength)
+					.toString());
+//-----------					
 					/*
 					 * deviceInfos.setSignalStrength(rs
 					 * .getString("SIGNALSTRENGTH_LTERSRP"));
@@ -1724,10 +1747,11 @@ public class VoiceConnectivityProccesorHelper {
 
 	public static DeviceInfoTO matchinDeviceInfo(String date, String format,
 			String testName, String marketId, String test_type,
-			String timeStampIdentifier) {
+			String timeStampIdentifier ) {
 		DeviceInfoTO deviceInfos = new DeviceInfoTO();
 		// SimpleDateFormat sdfformat = new SimpleDateFormat(format);
 		ResultSet rs = null;
+		Float signalStrength = new Float(0);
 		Connection conn = DBUtil.openConn();
 		Statement stmt = null;
 		String query = "select * from (" +
@@ -1800,6 +1824,27 @@ public class VoiceConnectivityProccesorHelper {
 					{//System.out.println("Inside NA & Unknown condition");
 						deviceInfos.setNetworkType("UMTS (3G)");
 					}
+//New code added by ankit for Signal strength on 10/09/16					
+					if (networkType.equalsIgnoreCase("LTE")
+							|| networkType.equalsIgnoreCase("LTE (4G)")) {
+						/*Code correction */
+//						signalStrength = -140+ (new Float(
+//										new Float(rs.getString("SIGNALSTRENGTH_LTERSRP"))));
+						signalStrength = new Float(rs.getString("SIGNALSTRENGTH_LTERSRP"));
+						networkType = "LTE";
+					} else 
+					if(networkType.equalsIgnoreCase("wifi") || networkType.equalsIgnoreCase("WIFI")) //Added by ankit
+					{
+						signalStrength = new Float(rs.getString("WIFIINFO_RSSI"));
+						////
+					}
+					else{
+						//SIGNALSTRENGTH_LTESIGNALSTRENGTH
+					signalStrength = -113 + 2* (new Float(new Float(rs.getString("SIGNALSTRENGTH_GSMSIGNALSTRENGTH"))));
+					}
+					deviceInfos.setSignalStrength(new Float(signalStrength)
+					.toString());
+//-----------	
 					/*
 					 * deviceInfos.setSignalStrength(rs
 					 * .getString("SIGNALSTRENGTH_LTERSRP"));
@@ -2023,6 +2068,7 @@ public class VoiceConnectivityProccesorHelper {
 
 	public static List<CallSetUpTo> getNonMatchinDeviceInfo(String testName,
 			String marketId, String testType, String matchingTimeStamps) {
+		Float signalStrength = new Float(0);
 		List<CallSetUpTo> allcallSetUpList = new ArrayList<CallSetUpTo>();
 		String query = "SELECT * FROM STG_DEVICE_INFO WHERE TEST_NAME LIKE '"
 				+ testName + "-%' " + "AND MARKET_ID='" + marketId
@@ -2063,6 +2109,29 @@ public class VoiceConnectivityProccesorHelper {
 					{//System.out.println("Inside NA & Unknown condition");
 						deviceInfos.setNetworkType("UMTS (3G)");
 					}
+					//New code added by ankit for Signal strength on 10/09/16					
+					if (networkType.equalsIgnoreCase("LTE")
+							|| networkType.equalsIgnoreCase("LTE (4G)")) {
+						/*Code correction */
+//						signalStrength = -140+ (new Float(
+//										new Float(rs.getString("SIGNALSTRENGTH_LTERSRP"))));
+						signalStrength = new Float(rs.getString("SIGNALSTRENGTH_LTERSRP"));
+						networkType = "LTE";
+					} else 
+					if(networkType.equalsIgnoreCase("wifi") || networkType.equalsIgnoreCase("WIFI")) //Added by ankit
+					{
+						signalStrength = new Float(rs.getString("WIFIINFO_RSSI"));
+						////
+					}
+					else{
+						//SIGNALSTRENGTH_LTESIGNALSTRENGTH
+					signalStrength = -113 + 2* (new Float(new Float(rs.getString("SIGNALSTRENGTH_GSMSIGNALSTRENGTH"))));
+					}
+					deviceInfos.setSignalStrength(new Float(signalStrength)
+					.toString());
+//-----------	
+
+					
 					/*
 					 * deviceInfos.setSignalStrength(rs
 					 * .getString("SIGNALSTRENGTH_LTERSRP"));
@@ -2273,7 +2342,7 @@ public class VoiceConnectivityProccesorHelper {
 							+ ",SIGNALSTRENGTH_EVDOSNR,	SIGNALSTRENGTH_GSM,	SIGNALSTRENGTH_GSMBITRATEERROR,	SIGNALSTRENGTH_LTESIGNALSTRENGTH,	"
 							+ "SIGNALSTRENGTH_LTERSRP,	SIGNALSTRENGTH_LTERSRQ,	SIGNALSTRENGTH_LTERSSNR,	SIGNALSTRENGTH_LTECQI,	CELLLOCATION_CID,	"
 							+ "CELLLOCATION_LAC,CELLLOCATION_TAC,CELLLOCATION_PCI,	NEIGHBOUR_INFO,	BATTERY_LEVEL,	NETWORK_MANUALLY_DONE,	GEOLOCATION_LATITUDE,	GEOLOCATION_LONGITUDE,"
-							+ "		SNAPSHOT_ID) VALUES  ('"
+							+ "		SNAPSHOT_ID,SIGNAL_STRENGTH) VALUES  ('"
 							+ marketId
 							+ "', '"
 							+ testName
@@ -2370,8 +2439,10 @@ public class VoiceConnectivityProccesorHelper {
 							+ vto.getDeviceInfoTO().getLongitude()
 							+ "','"
 							+ vto.getDeviceInfoTO().getSnapShotId()
+							+ "','"
+							+ vto.getDeviceInfoTO().getSignalStrength()
 							+ "')";
-//					System.out.println("insertQuery-------"+insertQuery);
+//					System.out.println("insertQuery-------"+insertQuery);,SIGNAL_STRENGTH
 					st.executeUpdate(insertQuery);
 					i++;
 					vto = voiceConnectivityValueList.get(i);
@@ -2383,7 +2454,7 @@ public class VoiceConnectivityProccesorHelper {
 							+ ",SIGNALSTRENGTH_EVDOSNR,	SIGNALSTRENGTH_GSM,	SIGNALSTRENGTH_GSMBITRATEERROR,	SIGNALSTRENGTH_LTESIGNALSTRENGTH,	"
 							+ "SIGNALSTRENGTH_LTERSRP,	SIGNALSTRENGTH_LTERSRQ,	SIGNALSTRENGTH_LTERSSNR,	SIGNALSTRENGTH_LTECQI,	CELLLOCATION_CID,	"
 							+ "CELLLOCATION_LAC,CELLLOCATION_TAC,CELLLOCATION_PCI,	NEIGHBOUR_INFO,	BATTERY_LEVEL,	NETWORK_MANUALLY_DONE,	GEOLOCATION_LATITUDE,	GEOLOCATION_LONGITUDE,"
-							+ "		SNAPSHOT_ID) VALUES  ('"
+							+ "		SNAPSHOT_ID,SIGNAL_STRENGTH) VALUES  ('"
 							+ marketId
 							+ "', '"
 							+ testName
@@ -2481,6 +2552,8 @@ public class VoiceConnectivityProccesorHelper {
 							+ vto.getDeviceInfoTO().getLongitude()
 							+ "','"
 							+ vto.getDeviceInfoTO().getSnapShotId()
+							+ "','"
+							+ vto.getDeviceInfoTO().getSignalStrength()
 							+ "')";
 //					System.out.println("insertQuery2-------"+insertQuery);
 					st.executeUpdate(insertQuery);
@@ -2529,7 +2602,7 @@ public class VoiceConnectivityProccesorHelper {
 							+ ",SIGNALSTRENGTH_EVDOSNR,	SIGNALSTRENGTH_GSM,	SIGNALSTRENGTH_GSMBITRATEERROR,	SIGNALSTRENGTH_LTESIGNALSTRENGTH,	"
 							+ "SIGNALSTRENGTH_LTERSRP,	SIGNALSTRENGTH_LTERSRQ,	SIGNALSTRENGTH_LTERSSNR,	SIGNALSTRENGTH_LTECQI,	CELLLOCATION_CID,	"
 							+ "CELLLOCATION_LAC,CELLLOCATION_TAC,CELLLOCATION_PCI,	NEIGHBOUR_INFO,	BATTERY_LEVEL,	NETWORK_MANUALLY_DONE,	GEOLOCATION_LATITUDE,	GEOLOCATION_LONGITUDE,"
-							+ "		SNAPSHOT_ID) VALUES  ('"
+							+ "		SNAPSHOT_ID,SIGNAL_STRENGTH) VALUES  ('"
 							+ marketId
 							+ "', '"
 							+ testName
@@ -2620,6 +2693,8 @@ public class VoiceConnectivityProccesorHelper {
 							+ "'," + "'" + vto.getDeviceInfoTO().getLattitude()
 							+ "','" + vto.getDeviceInfoTO().getLongitude()
 							+ "','" + vto.getDeviceInfoTO().getSnapShotId()
+							+ "','"
+							+ vto.getDeviceInfoTO().getSignalStrength()
 							+ "')";
 //					 System.out.println("insertQuery ank"+insertQuery);
 					st.executeUpdate(insertQuery);

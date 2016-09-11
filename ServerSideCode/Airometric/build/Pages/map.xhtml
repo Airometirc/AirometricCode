@@ -22,7 +22,7 @@
 			<h:outputScript library="js" name="FusionCharts.js" />
 			 <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
 			<style type="text/css">
-		      #map_canvas { height: 100% }	
+		      #map_canvas { height: 100%; }	
 		      
 		      .radioright td {
 		      position:relative;
@@ -164,6 +164,10 @@
  	 
  	        }
 		function initialize(){
+			
+			
+			document.getElementById("footer").style.position="relative";
+			document.getElementById("footer").style.top="100px";
 			  /* <![CDATA[ */
 			  var numberofpoints = 0;
 			var reportType="#{sessionScope['mapReportType']}";  
@@ -1091,8 +1095,15 @@
 		    		document.getElementById("voiceQuality").style.display='none';
 			    	document.getElementById("signalStrength").style.display='';
 			    	document.getElementById("Throughput").style.display='none';
+			    	document.getElementById("TCPThroughput").style.display='none';
+			    	document.getElementById("UDPThroughput").style.display='none';
 			    	document.getElementById("LTE_Voice_Data").style.display='none';
 			    	document.getElementById("Frequency_Band").style.display='none';
+			    	var testtype = "#{reportBean.test_type}";
+			    	if(testtype=="mt")
+			    		{
+			    		document.getElementById("preCalVQ").style.display='';
+			    		}
 			       }
 				 }else if(reportType == "voiceQuality"){
 		       			var latt ="#{sessionScope['lattitudes']}";  
@@ -1991,6 +2002,8 @@
 		  		    		document.getElementById("voiceQuality").style.display='';
 		  		    		document.getElementById("signalStrength").style.display='none';
 		  		    		document.getElementById("Throughput").style.display='none';
+		  		    		document.getElementById("TCPThroughput").style.display='none';
+					    	document.getElementById("UDPThroughput").style.display='none';
 		  		    		document.getElementById("LTE_Voice_Data").style.display='none';	
 		  		    		document.getElementById("Frequency_Band").style.display='none';
 		  				}
@@ -3022,6 +3035,8 @@
 			    		document.getElementById("voiceQuality").style.display='none';
 				    	document.getElementById("signalStrength").style.display='none';
 				    	document.getElementById("Throughput").style.display='none';
+				    	document.getElementById("TCPThroughput").style.display='none';
+				    	document.getElementById("UDPThroughput").style.display='none';
 				    	document.getElementById("LTE_Voice_Data").style.display='none';
 				    	document.getElementById("Frequency_Band").style.display='';
 				      }
@@ -3778,10 +3793,13 @@
 	    				if(throughput[i]==0){
 	    					throughtputList="<b>Throughput:</b>NA ";
 	  	    			}else{
-	  	    				
-	  	    				var throughputInbits = throughput[i]*8;
+	  	    				console.log("test_type "+test_type)
+	  	    				var speed;
+	  	    				if(test_type=="externaltest"){speed = " Mbps";}else{speed = " Bps";}
+	  	    				//removed the throughput[i]*8 to throughput[i] by ankit
+	  	    				var throughputInbits = throughput[i];
 	  	    				console.log("throughputInbits - "+throughputInbits);
-	  	    				throughtputList="<b>Throughput:</b>"+throughputInbits+" bps";
+	  	    				throughtputList="<b>Throughput:</b>"+throughputInbits+speed;
 	  	    				image = '../../'+"#{request.contextPath}"+'/resources/images/star_pink.png';
 	  	    			}	
 	    			networkType[i]=networkType[i];
@@ -3833,9 +3851,1658 @@
 				document.getElementById("voiceQuality").style.display='none';
 		    	document.getElementById("signalStrength").style.display='none';
 		    	document.getElementById("Throughput").style.display='';
+		    	document.getElementById("TCPThroughput").style.display='none';
+		    	document.getElementById("UDPThroughput").style.display='none';
 		    	document.getElementById("LTE_Voice_Data").style.display='none';	
 		    	document.getElementById("Frequency_Band").style.display='none';
-      		}else if(reportType == "LTE_Voice_Data"){
+      		}else if(reportType == "tcpthroughput"){
+				 var lattitudes = "#{sessionScope['lattitudes']}";  
+					if(lattitudes != ""){
+						lattitudes = lattitudes.split(",");
+
+						var eventName = "#{sessionScope['eventName']}";  
+						eventName = eventName.split(",");
+		             	
+						var longitudes = "#{sessionScope['longitudes']}";  
+		              	longitudes = longitudes.split(",");
+		             	
+		              	var testName = "#{sessionScope['testName']}"; 
+		              	testName = testName.split(",");
+		              	
+	//Added by Ankit 	              	
+		              	var Imei = "#{sessionScope['Imei']}"; 
+		              	Imei = Imei.split(",");
+		              	var Tac = "#{sessionScope['Tac']}"; 
+		                Tac = Tac.split(",");
+		                var Pci = "#{sessionScope['Pci']}"; 
+		                Pci = Pci.split(",");
+	//---------	              	
+		              	
+		              	var signalStrength = "#{sessionScope['signalStrength']}";  
+		              	signalStrength = signalStrength.split(",");
+		              	
+		              	var networkType = "#{sessionScope['networkType']}";  
+		              	networkType = networkType.split(",");
+
+		              	var timeStampForEachSample = "#{sessionScope['timeStampForEachSample']}";  
+		              	timeStampForEachSample = timeStampForEachSample.split(",");
+		            	
+		              	var throughput = "#{sessionScope['throughput']}";  
+		              	throughput = throughput.split(",");
+		            	
+		            	var signalStrengthRating = "#{sessionScope['signalStrengthRating']}";  
+		              	signalStrengthRating = signalStrengthRating.split(",");
+
+		            	var networkType = "#{sessionScope['networkType']}";  
+		              	networkType = networkType.split(",");
+
+		            	var cellLocationCid = "#{sessionScope['cellLocationCID']}";  
+		            	cellLocationCid = cellLocationCid.split(",");
+
+		            	var signalStrengthLTT = "#{sessionScope['signalStrengthLTT']}";  
+		            	signalStrengthLTT = signalStrengthLTT.split(",");
+
+		            	//DEVICE INFO POINTS INTIALIZATION
+		            	
+	           			var	deviceInfolattitudes = "#{sessionScope['deviceInfolattitudes']}";  
+	           			deviceInfolattitudes = deviceInfolattitudes.split(",");	
+		             	
+						var deviceInfolongitudes = "#{sessionScope['deviceInfolongitudes']}";  
+						deviceInfolongitudes = deviceInfolongitudes.split(",");
+		             	
+		              	var deviceInfotestName = "#{sessionScope['deviceInfotestName']}"; 
+		              	deviceInfotestName = deviceInfotestName.split(",");
+		              	
+		              	var deviceInfosignalStrength = "#{sessionScope['deviceInfosignalStrength']}";  
+		              	deviceInfosignalStrength = deviceInfosignalStrength.split(",");
+		              	
+		              	var deviceInfonetworkType = "#{sessionScope['deviceInfonetworkType']}";  
+		              	deviceInfonetworkType = deviceInfonetworkType.split(",");
+
+		              	var deviceInfotimeStampForEachSample = "#{sessionScope['deviceInfotimeStampForEachSample']}";  
+		              	deviceInfotimeStampForEachSample = deviceInfotimeStampForEachSample.split(",");
+		            	
+		              	var deviceInfothroughput = "#{sessionScope['deviceInfothroughput']}";  
+		              	deviceInfothroughput = deviceInfothroughput.split(",");
+		            	
+		            	var deviceInfosignalStrengthRating = "#{sessionScope['deviceInfosignalStrengthRating']}";  
+		            	deviceInfosignalStrengthRating = deviceInfosignalStrengthRating.split(",");
+
+		            	var deviceInfonetworkType = "#{sessionScope['deviceInfonetworkType']}";  
+		            	deviceInfonetworkType = deviceInfonetworkType.split(",");
+
+		            	var deviceInfocellLocationCid = "#{sessionScope['deviceInfocellLocationCID']}";  
+		            	deviceInfocellLocationCid = deviceInfocellLocationCid.split(",");
+
+		            	var deviceInfosignalStrengthLTT = "#{sessionScope['deviceInfosignalStrengthLTT']}";  
+		            	deviceInfosignalStrengthLTT = deviceInfosignalStrengthLTT.split(",");
+
+		            	var deviceInfoSnapShot = "#{sessionScope['deviceInfoSnapShot']}";  
+		            	deviceInfoSnapShot = deviceInfoSnapShot.split(",");
+
+		            	var cellLocationLac = "#{sessionScope['cellLocationLac']}";  
+		            	cellLocationLac = cellLocationLac.split(",");
+
+		            	var networkMnc = "#{sessionScope['networkMnc']}";  
+		            	networkMnc = networkMnc.split(",");
+		            	
+		            	var networkMcc = "#{sessionScope['networkMcc']}";  
+		            	networkMcc = networkMcc.split(",");
+
+		            	var signalStrengthLTERSRP = "#{sessionScope['signalStrengthLTERSRP']}";  
+		            	signalStrengthLTERSRP = signalStrengthLTERSRP.split(",");
+
+		            	var wifiinforssi = "#{sessionScope['wifiinforssi']}";  
+		              	wifiinforssi = wifiinforssi.split(",");
+
+		              	var wifiinfobssid = "#{sessionScope['wifiInfoBssid']}";  
+		              	wifiinfobssid = wifiinfobssid.split(",");
+
+		              	var wifiinfoLinkSpeed = "#{sessionScope['wifiInfoLinkSpeed']}";  
+		              	wifiinfoLinkSpeed = wifiinfoLinkSpeed.split(",");
+
+		              	var signalStrengthCDMACIO = "#{sessionScope['signalStrengthCDMACIO']}";  
+		              	signalStrengthCDMACIO = signalStrengthCDMACIO.split(",");
+		              	var signalStrengthEVDOECIO = "#{sessionScope['signalStrengthEVDOECIO']}";  
+		              	signalStrengthEVDOECIO = signalStrengthEVDOECIO.split(",");
+		              	var signalStrengthSnr = "#{sessionScope['signalStrengthSnr']}";  
+		              	signalStrengthSnr = signalStrengthSnr.split(",");
+		              	var signalStrengthCDMA = "#{sessionScope['signalStrengthCDMA']}";  
+		              	signalStrengthCDMA = signalStrengthCDMA.split(",");
+		              	var signalStrengthEVDO = "#{sessionScope['signalStrengthEVDO']}";  
+		              	signalStrengthEVDO = signalStrengthEVDO.split(",");
+		              	var signalStrengthStr = "#{sessionScope['signalStrengthGSMStr']}";  
+		              	signalStrengthStr = signalStrengthStr.split(",");
+		              	var signalStrengthCDMACIOList = "";
+		              	var signalStrengthEVDOECIOList = "";
+		              	var signalStrengthSnrList = "";
+		              	var signalStrengthCDMAList = "";
+		              	var signalStrengthEVDOList = "";	
+		    		var addr = "";
+		    		var lat = "";
+		    		var lng = "";
+		    		var type = "";
+		    		var htmlStr = "";
+		    		var networkTypeList="";
+		    		var signalStrengthList="";
+		    		var timeStampForEachSampleList="";
+		    		var throughtputList="";
+		    		var testNamelist="";
+		    		var cellIdList = "";
+		    		var snapShotList = "";
+		    		var sourceLac = "";
+		    		var currNetworkType="";
+		    		var prevNetworkType="";
+		    		var currSourceCellId="";
+		    		var prevSourceCellId="";
+		    		var networkMncList = "";
+		    		var ImeiData = "";
+		    		var TacData = "";
+		    		var PciData = "";
+		    		
+			    		var networkMccList = "";
+			    		var deviceInfoThroughput = "";
+		    		var image = null;
+		    		
+		    		var map_options = {
+		    			center : new google.maps.LatLng(lattitudes[0] ,longitudes[0]),
+		    			zoom : 14,
+		    			mapTypeId : google.maps.MapTypeId.ROADMAP
+		    		};
+
+		    		var google_map = new google.maps.Map(document.getElementById("map_canvas"), map_options);
+
+		    		var info_window = new google.maps.InfoWindow({
+		    			content : 'loading'
+		    		});
+		    		for (var i = 0;i<deviceInfosignalStrength.length;i++){
+						value = deviceInfosignalStrength[i];
+						addr="deviceInfosignalStrength:"+deviceInfosignalStrength[i];
+		    			lat = deviceInfolattitudes[i];
+		    			lng = deviceInfolongitudes[i];
+		    			topLevelData = "TestName:"+deviceInfotestName[i];
+		    			ImeiData = "<b>IMEI:</b>"+Imei[i];
+		    			networkTypeList="<b>Network Type:</b>"+deviceInfonetworkType[i];
+		    			type =Number(deviceInfosignalStrength[i]);
+		    			timeStampForEachSampleList="<b>Test Time:</b>"+deviceInfotimeStampForEachSample[i];	
+		    			testNamelist="<b>TestName:</b>"+deviceInfotestName[i];
+		    			cellIdList = "<b>Source Cell ID:</b>"+deviceInfocellLocationCid[i];
+		    			var role = "#{sessionScope['loggedInUserRoleID']}";
+		    				snapShotList= "<b>SnapShot</b>"+deviceInfoSnapShot[i];
+		    			sourceLac = "<b>Source LAC:</b>"+cellLocationLac[i];
+		    			networkMncList="<b>MNC:</b>"+networkMnc[i];
+	  	    			networkMccList="<b>MCC:</b>"+networkMcc[i];
+	  	    			if(throughput[i]==0){
+	  	    				deviceInfoThroughput="<b>Throughput:</b>NA";
+	  	    			}else{
+	  	    				deviceInfoThroughput="<b>Throughput:</b>"+throughput[i]+eventName[i];
+	  	    			}
+
+	  	    			if(deviceInfonetworkType[i].toString().trim() == "wifi" ){
+		    				wifiInfoRssiList = "<b>wifiRssi:</b>"+wifiinforssi[i];
+			    			wifiInfoBssidList="<b>Wifi Bssid:</b>"+wifiinfobssid[i];
+			    			wifiInfoLinkSpeedList="<b>Wifi Link Speed:</b>"+wifiinfoLinkSpeed[i];
+		    			}
+		    			else{
+		    				wifiInfoRssiList = "";
+			    			wifiInfoBssidList="";
+			    			wifiInfoLinkSpeedList="";
+		    			}
+	  	    			
+		    			var test_type = "#{reportBean.test_type}";
+		    			deviceInfonetworkType[i]=deviceInfonetworkType[i].trim();
+		    			currNetworkType=deviceInfonetworkType[i];
+		    			currSourceCellId=deviceInfocellLocationCid[i];
+		    			
+		    		
+		    			if(deviceInfosignalStrengthRating[i] == "Empty"){
+	                		if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()) 
+	                        		 && (prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString())){
+	                			if(deviceInfonetworkType[i].toString() == "Unknown"
+	                        	      ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()!= "Unknown")
+	                            	  ||(prevNetworkType.toString()!= "Unknown" && currNetworkType.toString()== "Unknown")
+									  ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()== "Unknown")){
+	                				image = '../../'+"#{request.contextPath}"+'/resources/images/mm_20_blue_circular.png';
+	                			}else{
+	                				 image = '../../'+"#{request.contextPath}"+'/resources/images/mm_20_blue_both.png';
+	                			}
+	                        }else {
+	                          if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+	                      	 	 image = '../../'+"#{request.contextPath}"+'/resources/images/mm_20_blue_circular.png';
+	                          }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){                          	  	
+	                        	  if(deviceInfonetworkType[i].toString() == "Unknown"
+	                          	      ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()!= "Unknown")
+	                              	  ||(prevNetworkType.toString()!= "Unknown" && currNetworkType.toString()== "Unknown")
+										  ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()== "Unknown")){
+	                  				image = '../../'+"#{request.contextPath}"+'/resources/images/L-AVG2.png';
+	                  			}else{
+	                  				image = '../../'+"#{request.contextPath}"+'/resources/images/mm_20_blue_rect.png';
+	                  			}
+	                          }
+	                      	  else{
+	                      	  	image = '../../'+"#{request.contextPath}"+'/resources/images/L-AVG2.png';
+	                      	  }
+	                        }	       		
+		    			}else{
+		    				if(deviceInfonetworkType[i].toString()== "LTE (4G)" || deviceInfonetworkType[i].toString()== " LTE (4G)" || deviceInfonetworkType[i].toString()== "LTE"){
+		    					if((signalStrengthLTERSRP[i] <= lteupperRangeForPoor)){
+	    	    					if(!(prevSourceCellId.toString() == "" || prevSourceCellId.toString() != currSourceCellId.toString())
+	    	    	    					  && (prevNetworkType.toString() == "" ||prevNetworkType != currNetworkType.toString())){
+	    	    						if(networkType[i].toString() == "Unknown"){
+	    	    							image = '../../'+"#{request.contextPath}"+'/resources/images/L-BAD2.png';
+		                              	 }else{
+		                              		image = '../../'+"#{request.contextPath}"+'/resources/images/L-BAD2.png';
+		                              	 }
+	                                  }else { 
+	                                        if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+	                                        	image = '../../'+"#{request.contextPath}"+'/resources/images/L-plus_BAD2.png';
+		                                     }else{
+		                                    	 image = '../../'+"#{request.contextPath}"+'/resources/images/L-BAD2.png';
+	                                   }
+	                               }
+	    		    			}else 	
+	    		    				//if(deviceInfosignalStrengthLTT[i] > 80 && deviceInfosignalStrengthLTT[i] <= 102 ){
+	    		    				if((signalStrengthLTERSRP[i] <= lteupperRangeForAverage && signalStrengthLTERSRP[i] >= ltelowerRangeForAverage) ){
+	    		    					 if((prevSourceCellId.toString() == "" || prevSourceCellId.toString() != currSourceCellId.toString())  
+	          	      							 && (prevNetworkType.toString() == "" || prevNetworkType.toString() != currNetworkType.toString())){
+	          								if(networkType[i].toString() == "Unknown"){
+	          									image = '../../'+"#{request.contextPath}"+'/resources/images/L-AVG2.png';
+	    			                              	 }else{
+	    			                              		image = '../../'+"#{request.contextPath}"+'/resources/images/L-AVG2.png';
+	    			                              	 }
+	                                          }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()){
+	                                        	  image = '../../'+"#{request.contextPath}"+'/resources/images/L-plus_AVG2.png';
+	    	                                  }else{
+	    	                                	  image = '../../'+"#{request.contextPath}"+'/resources/images/L-AVG2.png';
+	    	                                }		          		    					           
+	      						   //}else if(deviceInfosignalStrengthLTT[i] >=50 && deviceInfosignalStrengthLTT[i] <= 80 ){
+	      						    }else if((signalStrengthLTERSRP[i] >= ltelowerRangeForGood) ){
+	      							 if((prevSourceCellId.toString() == "" || prevSourceCellId.toString() != currSourceCellId.toString())  
+	      	      							 && (prevNetworkType.toString() == "" || prevNetworkType.toString() != currNetworkType.toString())){
+	      								if(networkType[i].toString() == "Unknown"){
+	      									image = '../../'+"#{request.contextPath}"+'/resources/images/L-GOOD2.png';
+				                              	 }else{
+				                              		image = '../../'+"#{request.contextPath}"+'/resources/images/L-GOOD2.png';
+				                              	 }
+	                                      }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()){
+	                                    	  image = '../../'+"#{request.contextPath}"+'/resources/images/L-plus_GOOD2.png';
+		                                  }else{
+		                                	  image = '../../'+"#{request.contextPath}"+'/resources/images/L-GOOD2.png';
+		                                }	   
+	      							//}else if(deviceInfosignalStrengthLTT[i] < 50 ){
+	      							}
+	      	    			}
+		    				else 
+	  		    				if(deviceInfonetworkType[i].toString().trim()== "UMTS (3G)"||deviceInfonetworkType[i].toString().trim()== "HSDPA (3G - Transitional)"||currNetworkType.trim()== "HSPA (3G - Transitional)" ){
+	  	    				//if(deviceInfosignalStrengthRating[i] >= 113){
+	  	    				if(deviceInfosignalStrengthLTT[i] >= upperRangeForPoor*-1){
+	                              if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()) 
+		                                   && (prevNetworkType.toString() == "" ||prevNetworkType != currNetworkType.toString())){
+	                            	  if(deviceInfonetworkType[i].toString() == "Unknown"
+	                            	      ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()!= "Unknown")
+	                                	  ||(prevNetworkType.toString()!= "Unknown" && currNetworkType.toString()== "Unknown")
+										  ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()== "Unknown")){
+	                            		  image = '../../'+"#{request.contextPath}"+'/resources/images/3G-BAD2.png';
+		                  	    				 }else{
+		                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/3G-BAD2.png';
+		                  	    				 }
+	                                }else { 
+	                                  if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+	                                	  image = '../../'+"#{request.contextPath}"+'/resources/images/3G-plus_BAD2.png';
+	                                     }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+	                                   	if(deviceInfonetworkType[i].toString() == "Unknown"
+	                                	      ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()!= "Unknown")
+	                                    	  ||(prevNetworkType.toString()!= "Unknown" && currNetworkType.toString()== "Unknown")
+											  ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()== "Unknown")){
+	                                   		image = '../../'+"#{request.contextPath}"+'/resources/images/3G-BAD2.png';
+		                  	    				 }else{
+		                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/3G-BAD2.png';
+		                  	    				 }
+	                                     }else{
+	                                    	 image = '../../'+"#{request.contextPath}"+'/resources/images/3G-BAD2.png';
+	                             }
+	                          }       
+	  		    			}else 
+	      		    			//if(deviceInfosignalStrengthRating[i] >= 97 && deviceInfosignalStrengthRating[i] <= 112 ){
+	      		    			if(deviceInfosignalStrengthLTT[i] >= upperRangeForAverage*-1 && deviceInfosignalStrengthLTT[i] <= lowerRangeForAverage*-1){
+	  		    					if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()) 
+	          		    					 && (prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString())){
+	  		    						if(deviceInfonetworkType[i].toString() == "Unknown"
+	                              	      ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()!= "Unknown")
+	                                  	  ||(prevNetworkType.toString()!= "Unknown" && currNetworkType.toString()== "Unknown")
+											  ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()== "Unknown")){
+	  		    							image = '../../'+"#{request.contextPath}"+'/resources/images/3G-AVG2.png';
+	                	    				 }else{
+	                	    					image = '../../'+"#{request.contextPath}"+'/resources/images/3G-AVG2.png';
+	                	    				 }
+	                                    }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+	                                    	image = '../../'+"#{request.contextPath}"+'/resources/images/3G-plus_AVG2.png';
+		                                }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+		                                	if(deviceInfonetworkType[i].toString() == "Unknown"
+	                              	      ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()!= "Unknown")
+	                                  	  ||(prevNetworkType.toString()!= "Unknown" && currNetworkType.toString()== "Unknown")
+											  ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()== "Unknown")){
+		                                		image = '../../'+"#{request.contextPath}"+'/resources/images/3G-AVG2.png';
+	                	    				 }else{
+	                	    					image = '../../'+"#{request.contextPath}"+'/resources/images/3G-AVG2.png';
+	                	    				 }
+		                                }else{
+		                                	image = '../../'+"#{request.contextPath}"+'/resources/images/3G-AVG2.png';
+	                                    }	          		    					           
+	  						   //}else if(deviceInfosignalStrengthRating[i] >= 88 && deviceInfosignalStrengthRating[i] <= 96 ){
+	  						   }else if(deviceInfosignalStrengthLTT[i] >= upperRangeForGood*-1 && deviceInfosignalStrengthLTT[i] <= lowerRangeForGood*-1 ){
+	  							 if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString())
+	          							   && (prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString())){
+	  								if(deviceInfonetworkType[i].toString() == "Unknown"
+	                            	      ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()!= "Unknown")
+	                                	  ||(prevNetworkType.toString()!= "Unknown" && currNetworkType.toString()== "Unknown")
+										  ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()== "Unknown")){
+	  									image = '../../'+"#{request.contextPath}"+'/resources/images/3G-GOOD2.png';
+	                	    				 }else{
+	                	    					image = '../../'+"#{request.contextPath}"+'/resources/images/3G-GOOD2.png';
+	                	    				 }
+	                                    }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+	                                    	image = '../../'+"#{request.contextPath}"+'/resources/images/3G-plus_GOOD2.png';
+		                                     }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+		                                    	if(deviceInfonetworkType[i].toString() == "Unknown"
+	                                    	      ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()!= "Unknown")
+	                                        	  ||(prevNetworkType.toString()!= "Unknown" && currNetworkType.toString()== "Unknown")
+												  ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()== "Unknown")){
+		                                    		image = '../../'+"#{request.contextPath}"+'/resources/images/3G-GOOD2.png';
+		                  	    				 }else{
+		                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/3G-GOOD2.png';
+		                  	    				 }
+		                                     }else{
+		                                    	 image = '../../'+"#{request.contextPath}"+'/resources/images/3G-GOOD2.png';
+	                                 }	   
+	  						//}else if(deviceInfosignalStrengthRating[i] < 88 ){
+	  						}else if(deviceInfosignalStrengthLTT[i] < upperRangeForGood*-1 ){
+	  							 if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString())
+	          							   && (prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString())){
+	  								if(deviceInfonetworkType[i].toString() == "Unknown"
+	                            	      ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()!= "Unknown")
+	                                	  ||(prevNetworkType.toString()!= "Unknown" && currNetworkType.toString()== "Unknown")
+										  ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()== "Unknown")){
+	  									image = '../../'+"#{request.contextPath}"+'/resources/images/3G-GOOD2.png';
+	                	    				 }else{
+	                	    					image = '../../'+"#{request.contextPath}"+'/resources/images/3G-GOOD2.png';
+	                	    				 }
+	                                    }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+		                                   	  image = '../../'+"#{request.contextPath}"+'/resources/images/3G-plus_GOOD2.png';
+		                                     }else{
+		                                    	 image = '../../'+"#{request.contextPath}"+'/resources/images/3G-GOOD2.png';
+	                                 }	   
+	  						}
+	  	    			}
+
+	  	 	  					else if(currNetworkType.trim() == "EDGE (2.75G)" ){
+	  	 	  					
+	  	  	 	  					
+		     	    				//if(signalStrengthLTT[x] >= 113){
+	      	    					if(deviceInfosignalStrengthLTT[i] >= upperRangeForPoor*-1){
+	                                  if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()) 
+			                                   && (prevNetworkType.toString() == "" ||prevNetworkType != currNetworkType.toString())){
+	                                	  if(currNetworkType.toString() == "Unknown"){
+	                                		  image = '../../'+"#{request.contextPath}"+'/resources/images/2G-BAD2.png';
+	  	                  	    				 }else{
+	  	                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/2G-BAD2.png';
+	  	                  	    				 }
+	                                    }else { 
+	                                      if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+	                                    	  image = '../../'+"#{request.contextPath}"+'/resources/images/2G-plus_BAD2.png';
+		                                     }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+		                                   	if(currNetworkType.toString() == "Unknown"){
+		                                   		image = '../../'+"#{request.contextPath}"+'/resources/images/2G-BAD2.png';
+	  	                  	    				 }else{
+	  	                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/2G-BAD2.png';
+	  	                  	    				 }
+		                                     }else{
+		                                    	 image = '../../'+"#{request.contextPath}"+'/resources/images/2G-BAD2.png';
+	                                 }
+	                              }       
+	      		    			}else if(deviceInfosignalStrengthLTT[i] > 0){
+	          		    			//if(signalStrengthLTT[x] >= 97 && signalStrengthLTT[x] <= 112 ){
+	          		    				if(deviceInfosignalStrengthLTT[i] >= upperRangeForAverage*-1 && deviceInfosignalStrengthLTT[i] <= lowerRangeForAverage*-1 ){
+	      		    					if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()) 
+	              		    					 && (prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString())){
+	      		    						if(currNetworkType.toString() == "Unknown"){
+	      		    							image = '../../'+"#{request.contextPath}"+'/resources/images/2G-AVG2.png';
+		                  	    				 }else{
+		                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/2G-AVG2.png';
+		                  	    				 }
+	                                        }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+	                                        	image = '../../'+"#{request.contextPath}"+'/resources/images/2G-plus_AVG2.png';
+			                                }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+			                                	if(currNetworkType.toString() == "Unknown"){
+			                                		image = '../../'+"#{request.contextPath}"+'/resources/images/2G-AVG2.png';
+		                  	    				 }else{
+		                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/2G-AVG2.png';
+		                  	    				 }
+			                                }else{
+			                                	image = '../../'+"#{request.contextPath}"+'/resources/images/2G-AVG2.png';
+		                                    }	          		    					           
+	      						 //  }else if(signalStrengthLTT[x] >= 88 && signalStrengthLTT[x] <= 96 ){
+	      						}else if(deviceInfosignalStrengthLTT[i] >= upperRangeForGood*-1 && deviceInfosignalStrengthLTT[i] <= lowerRangeForGood*-1 ){
+	      							 if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString())
+	              							   && (prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString())){
+	      								if(currNetworkType.toString() == "Unknown"){
+	      									image = '../../'+"#{request.contextPath}"+'/resources/images/2G-GOOD2.png';
+		                  	    				 }else{
+		                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/2G-GOOD2.png';
+		                  	    				 }
+	                                        }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+	                                        	image = '../../'+"#{request.contextPath}"+'/resources/images/2G-plus_GOOD2.png';
+			                                     }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+			                                    	if(currNetworkType.toString() == "Unknown"){
+			                                    		image = '../../'+"#{request.contextPath}"+'/resources/images/2G-GOOD2.png';
+	  	                  	    				 }else{
+	  	                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/2G-GOOD2.png';
+	  	                  	    				 }
+			                                     }else{
+			                                    	image = '../../'+"#{request.contextPath}"+'/resources/images/2G-GOOD2.png';
+		                                 }	   
+	      						//}else if(signalStrengthLTT[x] < 88 ){
+	      						}else if(deviceInfosignalStrengthLTT[i] <= lowerRangeForGood *-1 ){
+	          						//alert(deviceInfosignalStrengthLTT[i]);
+	      							 if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString())
+	              							   && (prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString())){
+	      								if(currNetworkType.toString() == "Unknown"){
+	      									image = '../../'+"#{request.contextPath}"+'/resources/images/2G-GOOD2.png';
+		                  	    				 }else{
+		                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/2G-GOOD2.png';
+		                  	    				 }
+	                                        }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+	                                        	image = '../../'+"#{request.contextPath}"+'/resources/images/2G-plus_GOOD2.png';
+			                                     }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+			                                    	if(currNetworkType.toString() == "Unknown"){
+			                                    		image = '../../'+"#{request.contextPath}"+'/resources/images/2G-GOOD2.png';
+	  	                  	    				 }else{
+	  	                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/2G-GOOD2.png';
+	  	                  	    				 }
+			                                     }else{
+			                                    	image = '../../'+"#{request.contextPath}"+'/resources/images/2G-GOOD2.png';
+		                                 }	   
+	      						}
+	      		    		  }
+		  	  					   }
+
+	  	 	  					else if(currNetworkType.trim() == "NA" ){
+	  	 	  					
+	  	  	 	  					//if(signalStrengthLTT[x] >= 113){
+	      	    					if(deviceInfosignalStrengthLTT[i] >= upperRangeForPoor*-1){
+	                                  if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()) 
+			                                   && (prevNetworkType.toString() == "" ||prevNetworkType != currNetworkType.toString())){
+	                                	  if(currNetworkType.toString() == "Unknown"){
+	                                		  image = '../../'+"#{request.contextPath}"+'/resources/images/NA-BAD2.png';
+	  	                  	    				 }else{
+	  	                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/NA-BAD2.png';
+	  	                  	    				 }
+	                                    }else { 
+	                                      if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+	                                    	  image = '../../'+"#{request.contextPath}"+'/resources/images/NA-BAD2.png';
+		                                     }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+		                                   	if(currNetworkType.toString() == "Unknown"){
+		                                   		image = '../../'+"#{request.contextPath}"+'/resources/images/NA-BAD2.png';
+	  	                  	    				 }else{
+	  	                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/NA-BAD2.png';
+	  	                  	    				 }
+		                                     }else{
+		                                    	 image = '../../'+"#{request.contextPath}"+'/resources/images/NA-BAD2.png';
+	                                 }
+	                              }       
+	      		    			}else if(deviceInfosignalStrengthLTT[i] > 0){
+	          		    			//if(signalStrengthLTT[x] >= 97 && signalStrengthLTT[x] <= 112 ){
+	          		    				if(deviceInfosignalStrengthLTT[i] >= upperRangeForAverage*-1 && deviceInfosignalStrengthLTT[i] <= lowerRangeForAverage*-1 ){
+	      		    					if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()) 
+	              		    					 && (prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString())){
+	      		    						if(currNetworkType.toString() == "Unknown"){
+	      		    							image = '../../'+"#{request.contextPath}"+'/resources/images/NA-AVG2.png';
+		                  	    				 }else{
+		                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/NA-AVG2.png';
+		                  	    				 }
+	                                        }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+	                                        	image = '../../'+"#{request.contextPath}"+'/resources/images/NA-AVG2.png';
+			                                }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+			                                	if(currNetworkType.toString() == "Unknown"){
+			                                		image = '../../'+"#{request.contextPath}"+'/resources/images/NA-AVG2.png';
+		                  	    				 }else{
+		                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/NA-AVG2.png';
+		                  	    				 }
+			                                }else{
+			                                	image = '../../'+"#{request.contextPath}"+'/resources/images/NA-AVG2.png';
+		                                    }	          		    					           
+	      						 //  }else if(signalStrengthLTT[x] >= 88 && signalStrengthLTT[x] <= 96 ){
+	      						}else if(deviceInfosignalStrengthLTT[i] >= upperRangeForGood*-1 && deviceInfosignalStrengthLTT[i] <= lowerRangeForGood*-1 ){
+	      							 if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString())
+	              							   && (prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString())){
+	      								if(currNetworkType.toString() == "Unknown"){
+	      									image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+		                  	    				 }else{
+		                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+		                  	    				 }
+	                                        }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+	                                        	image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+			                                     }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+			                                    	if(currNetworkType.toString() == "Unknown"){
+			                                    		image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+	  	                  	    				 }else{
+	  	                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+	  	                  	    				 }
+			                                     }else{
+			                                    	image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+		                                 }	   
+	      						//}else if(signalStrengthLTT[x] < 88 ){
+	      						}else if(deviceInfosignalStrengthLTT[i] <= lowerRangeForGood *-1 ){
+	          						//alert(deviceInfosignalStrengthLTT[i]);
+	      							 if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString())
+	              							   && (prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString())){
+	      								if(currNetworkType.toString() == "Unknown"){
+	      									image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+		                  	    				 }else{
+		                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+		                  	    				 }
+	                                        }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+	                                        	image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+			                                     }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+			                                    	if(currNetworkType.toString() == "Unknown"){
+			                                    		image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+	  	                  	    				 }else{
+	  	                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+	  	                  	    				 }
+			                                     }else{
+			                                    	image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+		                                 }	   
+	      						}
+	      		    		  }
+		  	  					   }
+
+	  	 	 				else if(currNetworkType.trim() == "wifi" ){
+
+		    					if(signalStrengthLTT[i] >= lowerRangeForPoor*-1){
+		    						image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+		    					}
+		    					else 	if(signalStrengthRating[i] > 0){
+	    		    				if(signalStrengthLTERSRP[i] > upperRangeForAverage*-1 && signalStrengthLTERSRP[i] <= lowerRangeForAverage*-1 ){
+	    		    					image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+	    		    				}
+			    				}
+		    					image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+
+		    					if(signalStrengthLTT[i] >= lowerRangeForPoor*-1){
+		    					if((prevSourceCellId.toString() == "" || prevSourceCellId.toString() != currSourceCellId.toString())
+		    	    					  && (prevNetworkType.toString() == "" ||prevNetworkType != currNetworkType.toString())){
+		    						if(networkType[i].toString() == "Unknown"){
+		    							image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-BAD2.png';
+	                              	 }else{
+	                              		image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-BAD2.png';
+	                              	 }
+	                              }else { 
+	                                    if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+	                                    	image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-plus_BAD2.png';
+	                                     }else if(prevNetworkType.toString() == "" || prevNetworkType.toString() != currNetworkType.toString() ){
+	                                    	 if(networkType[i].toString() == "Unknown"){
+	                                    		 image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-BAD2.png';
+		                              	 }else{
+		                              		image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-BAD2.png';
+		                              	 }
+	                                     }else{
+	                                    	 image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-BAD2.png';
+	                               }
+	                           }
+			    			}else 	
+			    				//if(signalStrengthLTT[i] > 80 && signalStrengthLTT[i] <= 102 ){
+			    				if(signalStrengthLTERSRP[i] >= upperRangeForAverage*-1 && signalStrengthLTERSRP[i] <= lowerRangeForAverage*-1 ){
+	  		    					if((prevSourceCellId.toString() == "" || prevSourceCellId.toString() != currSourceCellId.toString()) 
+	  	      		    					 && (prevNetworkType.toString() == "" || prevNetworkType.toString() != currNetworkType.toString())){
+	  		    						if(networkType[i].toString() == "Unknown"){
+	  		    							image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-AVG2.png';
+		                              	 }else{
+		                              		image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-AVG2.png';
+		                              	 }
+	                                  }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+	                                	  image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-plus_AVG2.png';
+	                                     }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+	                                    	 if(networkType[i].toString() == "Unknown"){
+	                                    		 image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-AVG2.png';
+		                              	 }else{
+		                              		image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-AVG2.png';
+		                              	 }
+	                                     }else{
+	                                    	 image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-AVG2.png';
+	                                    }	          		    					           
+	  						   //}else if(signalStrengthLTT[i] >=50 && signalStrengthLTT[i] <= 80 ){
+	  						    }else if(signalStrengthLTERSRP[i] >=upperRangeForGood*-1 && signalStrengthLTERSRP[i] <= lowerRangeForGood*-1 ){
+	  							 if((prevSourceCellId.toString() == "" || prevSourceCellId.toString() != currSourceCellId.toString())  
+	  	      							 && (prevNetworkType.toString() == "" || prevNetworkType.toString() != currNetworkType.toString())){
+	  								if(networkType[i].toString() == "Unknown"){
+	  									image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+			                              	 }else{
+			                              		image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+			                              	 }
+	                                  }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()){
+	                                	  image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-plus_GOOD2.png';
+	                                  }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+	                                	  if(networkType[i].toString() == "Unknown"){
+	                                		  image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+		                              	 }else{
+		                              		image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+		                              	 }
+	                                  }else{
+	                                	  image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+	                                }	   
+	  							//}else if(signalStrengthLTT[i] < 50 ){
+	  							}else if(signalStrengthLTERSRP[i] < upperRangeForGood*-1 ){
+	     							 if((prevSourceCellId.toString() == "" || prevSourceCellId.toString() != currSourceCellId.toString())  
+	      	      							 && (prevNetworkType.toString() == "" || prevNetworkType.toString() != currNetworkType.toString())){
+	     								if(networkType[i].toString() == "Unknown"){
+	     									image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+			                              	 }else{
+			                              		image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+			                              	 }
+	                                      }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()){
+	                                    	  image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-plus_GOOD2.png';
+		                                  }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){	 
+		                                	  if(networkType[i].toString() == "Unknown"){
+		                                		  image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+			                              	 }else{
+			                              		image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+			                              	 }
+		                                  }else{
+		                                	  image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+		                                }	   
+	      							}
+	  	  	 	 				}
+		    			}
+		    			prevSourceCellId=currSourceCellId;
+		             	prevNetworkType= deviceInfonetworkType[i];
+
+		             	var tempGSMStr = String(signalStrengthStr[i]);
+		    			if(tempGSMStr.match("false"))
+		    			{
+		    				signalStrengthCDMACIOList = "<b>CDMA-ECIO:</b>"+signalStrengthCDMACIO[i];
+		    				signalStrengthEVDOECIOList = "<b>EVDO-ECIO:</b>"+signalStrengthEVDOECIO[i];
+		    				signalStrengthSnrList = "<b>SNR:</b>"+signalStrengthSnr[i];
+		    				signalStrengthCDMAList = "<b>CDMA;</b>"+signalStrengthCDMA[i];
+		    				signalStrengthEVDOList = "<b>EVDO:</b>"+signalStrengthEVDO[i];
+		    			}else{
+			    				signalStrengthCDMACIOList="";
+			    				signalStrengthEVDOECIOList="";
+			    				signalStrengthSnrList="";
+			    				signalStrengthCDMAList="";
+			    				signalStrengthEVDOList="";
+		    			}
+		    			if(deviceInfonetworkType[i].toString()== "LTE (4G)" || deviceInfonetworkType[i].toString()== " LTE (4G)" || deviceInfonetworkType[i].toString()== "LTE")
+		    			{
+				    		htmlStr = "";
+		    				addr="";
+		     	    	}else{
+			    			htmlStr = "<b>signalStrength:</b>"+deviceInfosignalStrength[i];
+			    			addr = "<b>signalStrength:</b>"+deviceInfosignalStrength[i];
+		     	    	}
+		    			var m = new google.maps.Marker({
+
+		    				map : google_map,
+		    				animation : google.maps.Animation.DROP,
+		    				title : addr,
+		    				alt:addr,
+		    				position : new google.maps.LatLng(lat,lng),
+		    				icon : image,
+		    				html : htmlStr,
+		    				info1 : htmlStr,
+		    				info2 : networkTypeList,
+		    				info3: testNamelist,
+		    				info4: throughtputList,
+		    				info5: cellIdList,
+		    				info6: snapShotList,
+		    				info7 :sourceLac,
+		    				info8: timeStampForEachSampleList,
+		    				info9 : networkMncList,
+		    				info10 : networkMccList,
+		    				info11 : deviceInfoThroughput,
+		    				info12:wifiInfoRssiList,
+		    				info13:wifiInfoBssidList,
+		    				info14:wifiInfoLinkSpeedList,
+		    				info15:signalStrengthCDMACIOList,
+		    				info16:signalStrengthEVDOECIOList,
+		    				info17:signalStrengthSnrList,
+		    				info18:signalStrengthCDMAList,
+		    				info19:signalStrengthEVDOList,
+		    				info20:ImeiData,
+		    				topLevel : topLevelData
+			
+		    			});
+		    			htmlStr = "";
+		    			google.maps.event.addListener(m, 'click', function() {
+		    				info_window.setContent('<table><tr><td colspan="2">' +this.info2+ '</td></tr>' 
+		    				+'<tr><td colspan="2">' +this.info1 +'</td>'+'<td>'+ this.info3+ '</td></tr>'
+		    				+'<tr><td colspan="2">' +this.info4 +'</td>'+'<td>'+ this.info5+ '</td></tr>'
+		    				+'<tr><td colspan="2">' +this.info6 +'</td>'+'<td>'+ this.info7+ '</td></tr>'
+		    				+'<tr><td colspan="2">' +this.info9 +'</td>'+'<td>'+ this.info10+ '</td></tr>'
+		    				+'<tr><td colspan="2">' +this.info11 +'</td>'+'<td>'+ this.info20+ '</td></tr>'
+		    				+'<tr><td colspan="2">' +this.info12 +'</td>'+'<td>'+ this.info13+ '</td></tr>'
+		    				+'<tr><td colspan="2">' +this.info15 +'</td>'+'<td>'+ this.info16+ '</td></tr>'
+		    				+'<tr><td colspan="2">' +this.info17 +'</td>'+'<td>'+ this.info18+ '</td></tr>'
+		    				+'<tr><td colspan="2">' +this.info19 +'</td>'+'<td>'+ this.info14+ '</td></tr>'
+		    				+'<tr><td colspan="2">' +this.info8+'</td></tr></table>');
+		    				info_window.open(google_map, this);
+		    			});
+		    		var topLevelData = '';
+		    		var htmlStr = '';
+
+		         	 }
+
+		         	 //THIS IS TO POPULATE DEVICE INFO POINTS
+		     		for (var i = 0;i<deviceInfosignalStrength.length;i++){
+						value = deviceInfosignalStrength[i];
+						addr="SignalStrength:"+deviceInfosignalStrength[i];
+						lat = deviceInfolattitudes[i];
+		    			lng = deviceInfolongitudes[i];
+		    			topLevelData = "TestName:"+deviceInfotestName[i];
+		    			networkTypeList="<b>Network Type:</b>"+deviceInfonetworkType[i];
+		    			type =Number(deviceInfosignalStrength[i]);
+		    			htmlStr = "<b>SignalStrengths:</b>"+deviceInfosignalStrength[i];
+		    			timeStampForEachSampleList="<b>Test Time:</b>"+deviceInfotimeStampForEachSample[i];	
+		    			testNamelist="<b>TestName:</b>"+deviceInfotestName[i];
+		    			var test_type = "#{reportBean.test_type}";
+
+		    				if(throughput[i]==0){
+		    					throughtputList="<b>Throughput:</b>NA ";
+		  	    			}else{
+		  	    				console.log("test_type "+test_type)
+		  	    				var speed;
+		  	    				if(test_type=="externaltest"){speed = " Mbps";}else{speed = " Bps";}
+		  	    				//removed the throughput[i]*8 to throughput[i] by ankit
+		  	    				var throughputInbits = throughput[i];
+		  	    				console.log("throughputInbits - "+throughputInbits);
+		  	    				throughtputList="<b>Throughput:</b>"+throughputInbits+speed;
+		  	    				if(throughputInbits>=15){
+		  	    				image = '../../'+"#{request.contextPath}"+'/resources/images/star_pink.png';
+		  	    				}else if(throughputInbits<=15 && throughputInbits>=10){
+		  	    				image = '../../'+"#{request.contextPath}"+'/resources/images/star_green.png';
+		  	    				}else if(throughputInbits<=10 && throughputInbits>=2){
+		  	    				image = '../../'+"#{request.contextPath}"+'/resources/images/star_blue.png';
+		  	    				}else if(throughputInbits<2){
+		  	    				image = '../../'+"#{request.contextPath}"+'/resources/images/star_grey.png';
+		  	    				}
+		  	    			}		
+		    			networkType[i]=networkType[i];
+		    			currNetworkType=networkType[i];
+		    			currSourceCellId=cellLocationCid[i];
+		    			prevSourceCellId= cellLocationCid[i];
+		             	prevNetworkType= networkType[i];
+
+		             	    if(image!='' && throughput[i]!=0)
+		             	    {
+
+						var img = new google.maps.MarkerImage(image,
+								new google.maps.Size(30,30),
+								new google.maps.Point(0,0),
+								new google.maps.Point(8,4)); 
+						
+			             	    
+		    			var m = new google.maps.Marker({
+
+		    				map : google_map,
+		    				animation : google.maps.Animation.DROP,
+		    				title : addr,
+		    				alt:addr,
+		    				position : new google.maps.LatLng(lat,lng),
+		    				icon : img,
+		    				html : htmlStr,
+		    				info1 : htmlStr,
+		    				info2 : networkTypeList,
+		    				info3: testNamelist,
+		    				info4: throughtputList,
+		    				info5: timeStampForEachSampleList,
+		    				topLevel : topLevelData
+			
+		    			});
+		    			htmlStr = "";
+		    			google.maps.event.addListener(m, 'click', function() {
+		    				info_window.setContent('<table><tr><td colspan="2">' +this.info2+ '</td></tr>' 
+		    				+'<tr><td>'+ this.info3+ '</td></tr>'
+		    				+'<tr><td colspan="2">' +this.info4+'</td>'+'<td>'+ this.info5+ '</td></tr></table>');
+		    				info_window.open(google_map, this);
+		    			});
+		    		var topLevelData = '';
+		    		var htmlStr = '';
+
+		         	 }
+		             	   image='';
+		     		}	         	 
+			       }
+					document.getElementById("voiceQuality").style.display='none';
+			    	document.getElementById("signalStrength").style.display='none';
+			    	document.getElementById("Throughput").style.display='none';
+			    	document.getElementById("TCPThroughput").style.display='';
+			    	document.getElementById("UDPThroughput").style.display='none';
+			    	document.getElementById("LTE_Voice_Data").style.display='none';	
+			    	document.getElementById("Frequency_Band").style.display='none';
+	      		}else if(reportType == "udpthroughput"){
+					 var lattitudes = "#{sessionScope['lattitudes']}";  
+						if(lattitudes != ""){
+							lattitudes = lattitudes.split(",");
+
+							var eventName = "#{sessionScope['eventName']}";  
+							eventName = eventName.split(",");
+			             	
+							var longitudes = "#{sessionScope['longitudes']}";  
+			              	longitudes = longitudes.split(",");
+			             	
+			              	var testName = "#{sessionScope['testName']}"; 
+			              	testName = testName.split(",");
+			              	
+		//Added by Ankit 	              	
+			              	var Imei = "#{sessionScope['Imei']}"; 
+			              	Imei = Imei.split(",");
+			              	var Tac = "#{sessionScope['Tac']}"; 
+			                Tac = Tac.split(",");
+			                var Pci = "#{sessionScope['Pci']}"; 
+			                Pci = Pci.split(",");
+		//---------	              	
+			              	
+			              	var signalStrength = "#{sessionScope['signalStrength']}";  
+			              	signalStrength = signalStrength.split(",");
+			              	
+			              	var networkType = "#{sessionScope['networkType']}";  
+			              	networkType = networkType.split(",");
+
+			              	var timeStampForEachSample = "#{sessionScope['timeStampForEachSample']}";  
+			              	timeStampForEachSample = timeStampForEachSample.split(",");
+			            	
+			              	var throughput = "#{sessionScope['throughput']}";  
+			              	throughput = throughput.split(",");
+			            	
+			            	var signalStrengthRating = "#{sessionScope['signalStrengthRating']}";  
+			              	signalStrengthRating = signalStrengthRating.split(",");
+
+			            	var networkType = "#{sessionScope['networkType']}";  
+			              	networkType = networkType.split(",");
+
+			            	var cellLocationCid = "#{sessionScope['cellLocationCID']}";  
+			            	cellLocationCid = cellLocationCid.split(",");
+
+			            	var signalStrengthLTT = "#{sessionScope['signalStrengthLTT']}";  
+			            	signalStrengthLTT = signalStrengthLTT.split(",");
+
+			            	//DEVICE INFO POINTS INTIALIZATION
+			            	
+		           			var	deviceInfolattitudes = "#{sessionScope['deviceInfolattitudes']}";  
+		           			deviceInfolattitudes = deviceInfolattitudes.split(",");	
+			             	
+							var deviceInfolongitudes = "#{sessionScope['deviceInfolongitudes']}";  
+							deviceInfolongitudes = deviceInfolongitudes.split(",");
+			             	
+			              	var deviceInfotestName = "#{sessionScope['deviceInfotestName']}"; 
+			              	deviceInfotestName = deviceInfotestName.split(",");
+			              	
+			              	var deviceInfosignalStrength = "#{sessionScope['deviceInfosignalStrength']}";  
+			              	deviceInfosignalStrength = deviceInfosignalStrength.split(",");
+			              	
+			              	var deviceInfonetworkType = "#{sessionScope['deviceInfonetworkType']}";  
+			              	deviceInfonetworkType = deviceInfonetworkType.split(",");
+
+			              	var deviceInfotimeStampForEachSample = "#{sessionScope['deviceInfotimeStampForEachSample']}";  
+			              	deviceInfotimeStampForEachSample = deviceInfotimeStampForEachSample.split(",");
+			            	
+			              	var deviceInfothroughput = "#{sessionScope['deviceInfothroughput']}";  
+			              	deviceInfothroughput = deviceInfothroughput.split(",");
+			            	
+			            	var deviceInfosignalStrengthRating = "#{sessionScope['deviceInfosignalStrengthRating']}";  
+			            	deviceInfosignalStrengthRating = deviceInfosignalStrengthRating.split(",");
+
+			            	var deviceInfonetworkType = "#{sessionScope['deviceInfonetworkType']}";  
+			            	deviceInfonetworkType = deviceInfonetworkType.split(",");
+
+			            	var deviceInfocellLocationCid = "#{sessionScope['deviceInfocellLocationCID']}";  
+			            	deviceInfocellLocationCid = deviceInfocellLocationCid.split(",");
+
+			            	var deviceInfosignalStrengthLTT = "#{sessionScope['deviceInfosignalStrengthLTT']}";  
+			            	deviceInfosignalStrengthLTT = deviceInfosignalStrengthLTT.split(",");
+
+			            	var deviceInfoSnapShot = "#{sessionScope['deviceInfoSnapShot']}";  
+			            	deviceInfoSnapShot = deviceInfoSnapShot.split(",");
+
+			            	var cellLocationLac = "#{sessionScope['cellLocationLac']}";  
+			            	cellLocationLac = cellLocationLac.split(",");
+
+			            	var networkMnc = "#{sessionScope['networkMnc']}";  
+			            	networkMnc = networkMnc.split(",");
+			            	
+			            	var networkMcc = "#{sessionScope['networkMcc']}";  
+			            	networkMcc = networkMcc.split(",");
+
+			            	var signalStrengthLTERSRP = "#{sessionScope['signalStrengthLTERSRP']}";  
+			            	signalStrengthLTERSRP = signalStrengthLTERSRP.split(",");
+
+			            	var wifiinforssi = "#{sessionScope['wifiinforssi']}";  
+			              	wifiinforssi = wifiinforssi.split(",");
+
+			              	var wifiinfobssid = "#{sessionScope['wifiInfoBssid']}";  
+			              	wifiinfobssid = wifiinfobssid.split(",");
+
+			              	var wifiinfoLinkSpeed = "#{sessionScope['wifiInfoLinkSpeed']}";  
+			              	wifiinfoLinkSpeed = wifiinfoLinkSpeed.split(",");
+
+			              	var signalStrengthCDMACIO = "#{sessionScope['signalStrengthCDMACIO']}";  
+			              	signalStrengthCDMACIO = signalStrengthCDMACIO.split(",");
+			              	var signalStrengthEVDOECIO = "#{sessionScope['signalStrengthEVDOECIO']}";  
+			              	signalStrengthEVDOECIO = signalStrengthEVDOECIO.split(",");
+			              	var signalStrengthSnr = "#{sessionScope['signalStrengthSnr']}";  
+			              	signalStrengthSnr = signalStrengthSnr.split(",");
+			              	var signalStrengthCDMA = "#{sessionScope['signalStrengthCDMA']}";  
+			              	signalStrengthCDMA = signalStrengthCDMA.split(",");
+			              	var signalStrengthEVDO = "#{sessionScope['signalStrengthEVDO']}";  
+			              	signalStrengthEVDO = signalStrengthEVDO.split(",");
+			              	var signalStrengthStr = "#{sessionScope['signalStrengthGSMStr']}";  
+			              	signalStrengthStr = signalStrengthStr.split(",");
+			              	var signalStrengthCDMACIOList = "";
+			              	var signalStrengthEVDOECIOList = "";
+			              	var signalStrengthSnrList = "";
+			              	var signalStrengthCDMAList = "";
+			              	var signalStrengthEVDOList = "";	
+			    		var addr = "";
+			    		var lat = "";
+			    		var lng = "";
+			    		var type = "";
+			    		var htmlStr = "";
+			    		var networkTypeList="";
+			    		var signalStrengthList="";
+			    		var timeStampForEachSampleList="";
+			    		var throughtputList="";
+			    		var testNamelist="";
+			    		var cellIdList = "";
+			    		var snapShotList = "";
+			    		var sourceLac = "";
+			    		var currNetworkType="";
+			    		var prevNetworkType="";
+			    		var currSourceCellId="";
+			    		var prevSourceCellId="";
+			    		var networkMncList = "";
+			    		var ImeiData = "";
+			    		var TacData = "";
+			    		var PciData = "";
+			    		
+				    		var networkMccList = "";
+				    		var deviceInfoThroughput = "";
+			    		var image = null;
+			    		
+			    		var map_options = {
+			    			center : new google.maps.LatLng(lattitudes[0] ,longitudes[0]),
+			    			zoom : 14,
+			    			mapTypeId : google.maps.MapTypeId.ROADMAP
+			    		};
+
+			    		var google_map = new google.maps.Map(document.getElementById("map_canvas"), map_options);
+
+			    		var info_window = new google.maps.InfoWindow({
+			    			content : 'loading'
+			    		});
+			    		for (var i = 0;i<deviceInfosignalStrength.length;i++){
+							value = deviceInfosignalStrength[i];
+							addr="deviceInfosignalStrength:"+deviceInfosignalStrength[i];
+			    			lat = deviceInfolattitudes[i];
+			    			lng = deviceInfolongitudes[i];
+			    			topLevelData = "TestName:"+deviceInfotestName[i];
+			    			ImeiData = "<b>IMEI:</b>"+Imei[i];
+			    			networkTypeList="<b>Network Type:</b>"+deviceInfonetworkType[i];
+			    			type =Number(deviceInfosignalStrength[i]);
+			    			timeStampForEachSampleList="<b>Test Time:</b>"+deviceInfotimeStampForEachSample[i];	
+			    			testNamelist="<b>TestName:</b>"+deviceInfotestName[i];
+			    			cellIdList = "<b>Source Cell ID:</b>"+deviceInfocellLocationCid[i];
+			    			var role = "#{sessionScope['loggedInUserRoleID']}";
+			    				snapShotList= "<b>SnapShot</b>"+deviceInfoSnapShot[i];
+			    			sourceLac = "<b>Source LAC:</b>"+cellLocationLac[i];
+			    			networkMncList="<b>MNC:</b>"+networkMnc[i];
+		  	    			networkMccList="<b>MCC:</b>"+networkMcc[i];
+		  	    			if(throughput[i]==0){
+		  	    				deviceInfoThroughput="<b>Throughput:</b>NA";
+		  	    			}else{
+		  	    				deviceInfoThroughput="<b>Throughput:</b>"+throughput[i]+eventName[i];
+		  	    			}
+
+		  	    			if(deviceInfonetworkType[i].toString().trim() == "wifi" ){
+			    				wifiInfoRssiList = "<b>wifiRssi:</b>"+wifiinforssi[i];
+				    			wifiInfoBssidList="<b>Wifi Bssid:</b>"+wifiinfobssid[i];
+				    			wifiInfoLinkSpeedList="<b>Wifi Link Speed:</b>"+wifiinfoLinkSpeed[i];
+			    			}
+			    			else{
+			    				wifiInfoRssiList = "";
+				    			wifiInfoBssidList="";
+				    			wifiInfoLinkSpeedList="";
+			    			}
+		  	    			
+			    			var test_type = "#{reportBean.test_type}";
+			    			deviceInfonetworkType[i]=deviceInfonetworkType[i].trim();
+			    			currNetworkType=deviceInfonetworkType[i];
+			    			currSourceCellId=deviceInfocellLocationCid[i];
+			    			
+			    		
+			    			if(deviceInfosignalStrengthRating[i] == "Empty"){
+		                		if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()) 
+		                        		 && (prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString())){
+		                			if(deviceInfonetworkType[i].toString() == "Unknown"
+		                        	      ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()!= "Unknown")
+		                            	  ||(prevNetworkType.toString()!= "Unknown" && currNetworkType.toString()== "Unknown")
+										  ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()== "Unknown")){
+		                				image = '../../'+"#{request.contextPath}"+'/resources/images/mm_20_blue_circular.png';
+		                			}else{
+		                				 image = '../../'+"#{request.contextPath}"+'/resources/images/mm_20_blue_both.png';
+		                			}
+		                        }else {
+		                          if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+		                      	 	 image = '../../'+"#{request.contextPath}"+'/resources/images/mm_20_blue_circular.png';
+		                          }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){                          	  	
+		                        	  if(deviceInfonetworkType[i].toString() == "Unknown"
+		                          	      ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()!= "Unknown")
+		                              	  ||(prevNetworkType.toString()!= "Unknown" && currNetworkType.toString()== "Unknown")
+											  ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()== "Unknown")){
+		                  				image = '../../'+"#{request.contextPath}"+'/resources/images/L-AVG2.png';
+		                  			}else{
+		                  				image = '../../'+"#{request.contextPath}"+'/resources/images/mm_20_blue_rect.png';
+		                  			}
+		                          }
+		                      	  else{
+		                      	  	image = '../../'+"#{request.contextPath}"+'/resources/images/L-AVG2.png';
+		                      	  }
+		                        }	       		
+			    			}else{
+			    				if(deviceInfonetworkType[i].toString()== "LTE (4G)" || deviceInfonetworkType[i].toString()== " LTE (4G)" || deviceInfonetworkType[i].toString()== "LTE"){
+			    					if((signalStrengthLTERSRP[i] <= lteupperRangeForPoor)){
+		    	    					if(!(prevSourceCellId.toString() == "" || prevSourceCellId.toString() != currSourceCellId.toString())
+		    	    	    					  && (prevNetworkType.toString() == "" ||prevNetworkType != currNetworkType.toString())){
+		    	    						if(networkType[i].toString() == "Unknown"){
+		    	    							image = '../../'+"#{request.contextPath}"+'/resources/images/L-BAD2.png';
+			                              	 }else{
+			                              		image = '../../'+"#{request.contextPath}"+'/resources/images/L-BAD2.png';
+			                              	 }
+		                                  }else { 
+		                                        if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+		                                        	image = '../../'+"#{request.contextPath}"+'/resources/images/L-plus_BAD2.png';
+			                                     }else{
+			                                    	 image = '../../'+"#{request.contextPath}"+'/resources/images/L-BAD2.png';
+		                                   }
+		                               }
+		    		    			}else 	
+		    		    				//if(deviceInfosignalStrengthLTT[i] > 80 && deviceInfosignalStrengthLTT[i] <= 102 ){
+		    		    				if((signalStrengthLTERSRP[i] <= lteupperRangeForAverage && signalStrengthLTERSRP[i] >= ltelowerRangeForAverage) ){
+		    		    					 if((prevSourceCellId.toString() == "" || prevSourceCellId.toString() != currSourceCellId.toString())  
+		          	      							 && (prevNetworkType.toString() == "" || prevNetworkType.toString() != currNetworkType.toString())){
+		          								if(networkType[i].toString() == "Unknown"){
+		          									image = '../../'+"#{request.contextPath}"+'/resources/images/L-AVG2.png';
+		    			                              	 }else{
+		    			                              		image = '../../'+"#{request.contextPath}"+'/resources/images/L-AVG2.png';
+		    			                              	 }
+		                                          }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()){
+		                                        	  image = '../../'+"#{request.contextPath}"+'/resources/images/L-plus_AVG2.png';
+		    	                                  }else{
+		    	                                	  image = '../../'+"#{request.contextPath}"+'/resources/images/L-AVG2.png';
+		    	                                }		          		    					           
+		      						   //}else if(deviceInfosignalStrengthLTT[i] >=50 && deviceInfosignalStrengthLTT[i] <= 80 ){
+		      						    }else if((signalStrengthLTERSRP[i] >= ltelowerRangeForGood) ){
+		      							 if((prevSourceCellId.toString() == "" || prevSourceCellId.toString() != currSourceCellId.toString())  
+		      	      							 && (prevNetworkType.toString() == "" || prevNetworkType.toString() != currNetworkType.toString())){
+		      								if(networkType[i].toString() == "Unknown"){
+		      									image = '../../'+"#{request.contextPath}"+'/resources/images/L-GOOD2.png';
+					                              	 }else{
+					                              		image = '../../'+"#{request.contextPath}"+'/resources/images/L-GOOD2.png';
+					                              	 }
+		                                      }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()){
+		                                    	  image = '../../'+"#{request.contextPath}"+'/resources/images/L-plus_GOOD2.png';
+			                                  }else{
+			                                	  image = '../../'+"#{request.contextPath}"+'/resources/images/L-GOOD2.png';
+			                                }	   
+		      							//}else if(deviceInfosignalStrengthLTT[i] < 50 ){
+		      							}
+		      	    			}
+			    				else 
+		  		    				if(deviceInfonetworkType[i].toString().trim()== "UMTS (3G)"||deviceInfonetworkType[i].toString().trim()== "HSDPA (3G - Transitional)"||currNetworkType.trim()== "HSPA (3G - Transitional)" ){
+		  	    				//if(deviceInfosignalStrengthRating[i] >= 113){
+		  	    				if(deviceInfosignalStrengthLTT[i] >= upperRangeForPoor*-1){
+		                              if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()) 
+			                                   && (prevNetworkType.toString() == "" ||prevNetworkType != currNetworkType.toString())){
+		                            	  if(deviceInfonetworkType[i].toString() == "Unknown"
+		                            	      ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()!= "Unknown")
+		                                	  ||(prevNetworkType.toString()!= "Unknown" && currNetworkType.toString()== "Unknown")
+											  ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()== "Unknown")){
+		                            		  image = '../../'+"#{request.contextPath}"+'/resources/images/3G-BAD2.png';
+			                  	    				 }else{
+			                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/3G-BAD2.png';
+			                  	    				 }
+		                                }else { 
+		                                  if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+		                                	  image = '../../'+"#{request.contextPath}"+'/resources/images/3G-plus_BAD2.png';
+		                                     }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+		                                   	if(deviceInfonetworkType[i].toString() == "Unknown"
+		                                	      ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()!= "Unknown")
+		                                    	  ||(prevNetworkType.toString()!= "Unknown" && currNetworkType.toString()== "Unknown")
+												  ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()== "Unknown")){
+		                                   		image = '../../'+"#{request.contextPath}"+'/resources/images/3G-BAD2.png';
+			                  	    				 }else{
+			                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/3G-BAD2.png';
+			                  	    				 }
+		                                     }else{
+		                                    	 image = '../../'+"#{request.contextPath}"+'/resources/images/3G-BAD2.png';
+		                             }
+		                          }       
+		  		    			}else 
+		      		    			//if(deviceInfosignalStrengthRating[i] >= 97 && deviceInfosignalStrengthRating[i] <= 112 ){
+		      		    			if(deviceInfosignalStrengthLTT[i] >= upperRangeForAverage*-1 && deviceInfosignalStrengthLTT[i] <= lowerRangeForAverage*-1){
+		  		    					if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()) 
+		          		    					 && (prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString())){
+		  		    						if(deviceInfonetworkType[i].toString() == "Unknown"
+		                              	      ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()!= "Unknown")
+		                                  	  ||(prevNetworkType.toString()!= "Unknown" && currNetworkType.toString()== "Unknown")
+												  ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()== "Unknown")){
+		  		    							image = '../../'+"#{request.contextPath}"+'/resources/images/3G-AVG2.png';
+		                	    				 }else{
+		                	    					image = '../../'+"#{request.contextPath}"+'/resources/images/3G-AVG2.png';
+		                	    				 }
+		                                    }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+		                                    	image = '../../'+"#{request.contextPath}"+'/resources/images/3G-plus_AVG2.png';
+			                                }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+			                                	if(deviceInfonetworkType[i].toString() == "Unknown"
+		                              	      ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()!= "Unknown")
+		                                  	  ||(prevNetworkType.toString()!= "Unknown" && currNetworkType.toString()== "Unknown")
+												  ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()== "Unknown")){
+			                                		image = '../../'+"#{request.contextPath}"+'/resources/images/3G-AVG2.png';
+		                	    				 }else{
+		                	    					image = '../../'+"#{request.contextPath}"+'/resources/images/3G-AVG2.png';
+		                	    				 }
+			                                }else{
+			                                	image = '../../'+"#{request.contextPath}"+'/resources/images/3G-AVG2.png';
+		                                    }	          		    					           
+		  						   //}else if(deviceInfosignalStrengthRating[i] >= 88 && deviceInfosignalStrengthRating[i] <= 96 ){
+		  						   }else if(deviceInfosignalStrengthLTT[i] >= upperRangeForGood*-1 && deviceInfosignalStrengthLTT[i] <= lowerRangeForGood*-1 ){
+		  							 if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString())
+		          							   && (prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString())){
+		  								if(deviceInfonetworkType[i].toString() == "Unknown"
+		                            	      ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()!= "Unknown")
+		                                	  ||(prevNetworkType.toString()!= "Unknown" && currNetworkType.toString()== "Unknown")
+											  ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()== "Unknown")){
+		  									image = '../../'+"#{request.contextPath}"+'/resources/images/3G-GOOD2.png';
+		                	    				 }else{
+		                	    					image = '../../'+"#{request.contextPath}"+'/resources/images/3G-GOOD2.png';
+		                	    				 }
+		                                    }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+		                                    	image = '../../'+"#{request.contextPath}"+'/resources/images/3G-plus_GOOD2.png';
+			                                     }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+			                                    	if(deviceInfonetworkType[i].toString() == "Unknown"
+		                                    	      ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()!= "Unknown")
+		                                        	  ||(prevNetworkType.toString()!= "Unknown" && currNetworkType.toString()== "Unknown")
+													  ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()== "Unknown")){
+			                                    		image = '../../'+"#{request.contextPath}"+'/resources/images/3G-GOOD2.png';
+			                  	    				 }else{
+			                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/3G-GOOD2.png';
+			                  	    				 }
+			                                     }else{
+			                                    	 image = '../../'+"#{request.contextPath}"+'/resources/images/3G-GOOD2.png';
+		                                 }	   
+		  						//}else if(deviceInfosignalStrengthRating[i] < 88 ){
+		  						}else if(deviceInfosignalStrengthLTT[i] < upperRangeForGood*-1 ){
+		  							 if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString())
+		          							   && (prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString())){
+		  								if(deviceInfonetworkType[i].toString() == "Unknown"
+		                            	      ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()!= "Unknown")
+		                                	  ||(prevNetworkType.toString()!= "Unknown" && currNetworkType.toString()== "Unknown")
+											  ||(prevNetworkType.toString()== "Unknown" && currNetworkType.toString()== "Unknown")){
+		  									image = '../../'+"#{request.contextPath}"+'/resources/images/3G-GOOD2.png';
+		                	    				 }else{
+		                	    					image = '../../'+"#{request.contextPath}"+'/resources/images/3G-GOOD2.png';
+		                	    				 }
+		                                    }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+			                                   	  image = '../../'+"#{request.contextPath}"+'/resources/images/3G-plus_GOOD2.png';
+			                                     }else{
+			                                    	 image = '../../'+"#{request.contextPath}"+'/resources/images/3G-GOOD2.png';
+		                                 }	   
+		  						}
+		  	    			}
+
+		  	 	  					else if(currNetworkType.trim() == "EDGE (2.75G)" ){
+		  	 	  					
+		  	  	 	  					
+			     	    				//if(signalStrengthLTT[x] >= 113){
+		      	    					if(deviceInfosignalStrengthLTT[i] >= upperRangeForPoor*-1){
+		                                  if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()) 
+				                                   && (prevNetworkType.toString() == "" ||prevNetworkType != currNetworkType.toString())){
+		                                	  if(currNetworkType.toString() == "Unknown"){
+		                                		  image = '../../'+"#{request.contextPath}"+'/resources/images/2G-BAD2.png';
+		  	                  	    				 }else{
+		  	                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/2G-BAD2.png';
+		  	                  	    				 }
+		                                    }else { 
+		                                      if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+		                                    	  image = '../../'+"#{request.contextPath}"+'/resources/images/2G-plus_BAD2.png';
+			                                     }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+			                                   	if(currNetworkType.toString() == "Unknown"){
+			                                   		image = '../../'+"#{request.contextPath}"+'/resources/images/2G-BAD2.png';
+		  	                  	    				 }else{
+		  	                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/2G-BAD2.png';
+		  	                  	    				 }
+			                                     }else{
+			                                    	 image = '../../'+"#{request.contextPath}"+'/resources/images/2G-BAD2.png';
+		                                 }
+		                              }       
+		      		    			}else if(deviceInfosignalStrengthLTT[i] > 0){
+		          		    			//if(signalStrengthLTT[x] >= 97 && signalStrengthLTT[x] <= 112 ){
+		          		    				if(deviceInfosignalStrengthLTT[i] >= upperRangeForAverage*-1 && deviceInfosignalStrengthLTT[i] <= lowerRangeForAverage*-1 ){
+		      		    					if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()) 
+		              		    					 && (prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString())){
+		      		    						if(currNetworkType.toString() == "Unknown"){
+		      		    							image = '../../'+"#{request.contextPath}"+'/resources/images/2G-AVG2.png';
+			                  	    				 }else{
+			                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/2G-AVG2.png';
+			                  	    				 }
+		                                        }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+		                                        	image = '../../'+"#{request.contextPath}"+'/resources/images/2G-plus_AVG2.png';
+				                                }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+				                                	if(currNetworkType.toString() == "Unknown"){
+				                                		image = '../../'+"#{request.contextPath}"+'/resources/images/2G-AVG2.png';
+			                  	    				 }else{
+			                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/2G-AVG2.png';
+			                  	    				 }
+				                                }else{
+				                                	image = '../../'+"#{request.contextPath}"+'/resources/images/2G-AVG2.png';
+			                                    }	          		    					           
+		      						 //  }else if(signalStrengthLTT[x] >= 88 && signalStrengthLTT[x] <= 96 ){
+		      						}else if(deviceInfosignalStrengthLTT[i] >= upperRangeForGood*-1 && deviceInfosignalStrengthLTT[i] <= lowerRangeForGood*-1 ){
+		      							 if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString())
+		              							   && (prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString())){
+		      								if(currNetworkType.toString() == "Unknown"){
+		      									image = '../../'+"#{request.contextPath}"+'/resources/images/2G-GOOD2.png';
+			                  	    				 }else{
+			                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/2G-GOOD2.png';
+			                  	    				 }
+		                                        }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+		                                        	image = '../../'+"#{request.contextPath}"+'/resources/images/2G-plus_GOOD2.png';
+				                                     }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+				                                    	if(currNetworkType.toString() == "Unknown"){
+				                                    		image = '../../'+"#{request.contextPath}"+'/resources/images/2G-GOOD2.png';
+		  	                  	    				 }else{
+		  	                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/2G-GOOD2.png';
+		  	                  	    				 }
+				                                     }else{
+				                                    	image = '../../'+"#{request.contextPath}"+'/resources/images/2G-GOOD2.png';
+			                                 }	   
+		      						//}else if(signalStrengthLTT[x] < 88 ){
+		      						}else if(deviceInfosignalStrengthLTT[i] <= lowerRangeForGood *-1 ){
+		          						//alert(deviceInfosignalStrengthLTT[i]);
+		      							 if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString())
+		              							   && (prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString())){
+		      								if(currNetworkType.toString() == "Unknown"){
+		      									image = '../../'+"#{request.contextPath}"+'/resources/images/2G-GOOD2.png';
+			                  	    				 }else{
+			                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/2G-GOOD2.png';
+			                  	    				 }
+		                                        }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+		                                        	image = '../../'+"#{request.contextPath}"+'/resources/images/2G-plus_GOOD2.png';
+				                                     }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+				                                    	if(currNetworkType.toString() == "Unknown"){
+				                                    		image = '../../'+"#{request.contextPath}"+'/resources/images/2G-GOOD2.png';
+		  	                  	    				 }else{
+		  	                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/2G-GOOD2.png';
+		  	                  	    				 }
+				                                     }else{
+				                                    	image = '../../'+"#{request.contextPath}"+'/resources/images/2G-GOOD2.png';
+			                                 }	   
+		      						}
+		      		    		  }
+			  	  					   }
+
+		  	 	  					else if(currNetworkType.trim() == "NA" ){
+		  	 	  					
+		  	  	 	  					//if(signalStrengthLTT[x] >= 113){
+		      	    					if(deviceInfosignalStrengthLTT[i] >= upperRangeForPoor*-1){
+		                                  if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()) 
+				                                   && (prevNetworkType.toString() == "" ||prevNetworkType != currNetworkType.toString())){
+		                                	  if(currNetworkType.toString() == "Unknown"){
+		                                		  image = '../../'+"#{request.contextPath}"+'/resources/images/NA-BAD2.png';
+		  	                  	    				 }else{
+		  	                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/NA-BAD2.png';
+		  	                  	    				 }
+		                                    }else { 
+		                                      if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+		                                    	  image = '../../'+"#{request.contextPath}"+'/resources/images/NA-BAD2.png';
+			                                     }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+			                                   	if(currNetworkType.toString() == "Unknown"){
+			                                   		image = '../../'+"#{request.contextPath}"+'/resources/images/NA-BAD2.png';
+		  	                  	    				 }else{
+		  	                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/NA-BAD2.png';
+		  	                  	    				 }
+			                                     }else{
+			                                    	 image = '../../'+"#{request.contextPath}"+'/resources/images/NA-BAD2.png';
+		                                 }
+		                              }       
+		      		    			}else if(deviceInfosignalStrengthLTT[i] > 0){
+		          		    			//if(signalStrengthLTT[x] >= 97 && signalStrengthLTT[x] <= 112 ){
+		          		    				if(deviceInfosignalStrengthLTT[i] >= upperRangeForAverage*-1 && deviceInfosignalStrengthLTT[i] <= lowerRangeForAverage*-1 ){
+		      		    					if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()) 
+		              		    					 && (prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString())){
+		      		    						if(currNetworkType.toString() == "Unknown"){
+		      		    							image = '../../'+"#{request.contextPath}"+'/resources/images/NA-AVG2.png';
+			                  	    				 }else{
+			                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/NA-AVG2.png';
+			                  	    				 }
+		                                        }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+		                                        	image = '../../'+"#{request.contextPath}"+'/resources/images/NA-AVG2.png';
+				                                }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+				                                	if(currNetworkType.toString() == "Unknown"){
+				                                		image = '../../'+"#{request.contextPath}"+'/resources/images/NA-AVG2.png';
+			                  	    				 }else{
+			                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/NA-AVG2.png';
+			                  	    				 }
+				                                }else{
+				                                	image = '../../'+"#{request.contextPath}"+'/resources/images/NA-AVG2.png';
+			                                    }	          		    					           
+		      						 //  }else if(signalStrengthLTT[x] >= 88 && signalStrengthLTT[x] <= 96 ){
+		      						}else if(deviceInfosignalStrengthLTT[i] >= upperRangeForGood*-1 && deviceInfosignalStrengthLTT[i] <= lowerRangeForGood*-1 ){
+		      							 if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString())
+		              							   && (prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString())){
+		      								if(currNetworkType.toString() == "Unknown"){
+		      									image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+			                  	    				 }else{
+			                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+			                  	    				 }
+		                                        }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+		                                        	image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+				                                     }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+				                                    	if(currNetworkType.toString() == "Unknown"){
+				                                    		image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+		  	                  	    				 }else{
+		  	                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+		  	                  	    				 }
+				                                     }else{
+				                                    	image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+			                                 }	   
+		      						//}else if(signalStrengthLTT[x] < 88 ){
+		      						}else if(deviceInfosignalStrengthLTT[i] <= lowerRangeForGood *-1 ){
+		          						//alert(deviceInfosignalStrengthLTT[i]);
+		      							 if((prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString())
+		              							   && (prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString())){
+		      								if(currNetworkType.toString() == "Unknown"){
+		      									image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+			                  	    				 }else{
+			                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+			                  	    				 }
+		                                        }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+		                                        	image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+				                                     }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+				                                    	if(currNetworkType.toString() == "Unknown"){
+				                                    		image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+		  	                  	    				 }else{
+		  	                  	    					image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+		  	                  	    				 }
+				                                     }else{
+				                                    	image = '../../'+"#{request.contextPath}"+'/resources/images/NA-GOOD2.png';
+			                                 }	   
+		      						}
+		      		    		  }
+			  	  					   }
+
+		  	 	 				else if(currNetworkType.trim() == "wifi" ){
+
+			    					if(signalStrengthLTT[i] >= lowerRangeForPoor*-1){
+			    						image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+			    					}
+			    					else 	if(signalStrengthRating[i] > 0){
+		    		    				if(signalStrengthLTERSRP[i] > upperRangeForAverage*-1 && signalStrengthLTERSRP[i] <= lowerRangeForAverage*-1 ){
+		    		    					image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+		    		    				}
+				    				}
+			    					image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+
+			    					if(signalStrengthLTT[i] >= lowerRangeForPoor*-1){
+			    					if((prevSourceCellId.toString() == "" || prevSourceCellId.toString() != currSourceCellId.toString())
+			    	    					  && (prevNetworkType.toString() == "" ||prevNetworkType != currNetworkType.toString())){
+			    						if(networkType[i].toString() == "Unknown"){
+			    							image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-BAD2.png';
+		                              	 }else{
+		                              		image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-BAD2.png';
+		                              	 }
+		                              }else { 
+		                                    if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+		                                    	image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-plus_BAD2.png';
+		                                     }else if(prevNetworkType.toString() == "" || prevNetworkType.toString() != currNetworkType.toString() ){
+		                                    	 if(networkType[i].toString() == "Unknown"){
+		                                    		 image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-BAD2.png';
+			                              	 }else{
+			                              		image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-BAD2.png';
+			                              	 }
+		                                     }else{
+		                                    	 image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-BAD2.png';
+		                               }
+		                           }
+				    			}else 	
+				    				//if(signalStrengthLTT[i] > 80 && signalStrengthLTT[i] <= 102 ){
+				    				if(signalStrengthLTERSRP[i] >= upperRangeForAverage*-1 && signalStrengthLTERSRP[i] <= lowerRangeForAverage*-1 ){
+		  		    					if((prevSourceCellId.toString() == "" || prevSourceCellId.toString() != currSourceCellId.toString()) 
+		  	      		    					 && (prevNetworkType.toString() == "" || prevNetworkType.toString() != currNetworkType.toString())){
+		  		    						if(networkType[i].toString() == "Unknown"){
+		  		    							image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-AVG2.png';
+			                              	 }else{
+			                              		image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-AVG2.png';
+			                              	 }
+		                                  }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString() ){
+		                                	  image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-plus_AVG2.png';
+		                                     }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+		                                    	 if(networkType[i].toString() == "Unknown"){
+		                                    		 image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-AVG2.png';
+			                              	 }else{
+			                              		image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-AVG2.png';
+			                              	 }
+		                                     }else{
+		                                    	 image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-AVG2.png';
+		                                    }	          		    					           
+		  						   //}else if(signalStrengthLTT[i] >=50 && signalStrengthLTT[i] <= 80 ){
+		  						    }else if(signalStrengthLTERSRP[i] >=upperRangeForGood*-1 && signalStrengthLTERSRP[i] <= lowerRangeForGood*-1 ){
+		  							 if((prevSourceCellId.toString() == "" || prevSourceCellId.toString() != currSourceCellId.toString())  
+		  	      							 && (prevNetworkType.toString() == "" || prevNetworkType.toString() != currNetworkType.toString())){
+		  								if(networkType[i].toString() == "Unknown"){
+		  									image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+				                              	 }else{
+				                              		image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+				                              	 }
+		                                  }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()){
+		                                	  image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-plus_GOOD2.png';
+		                                  }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){
+		                                	  if(networkType[i].toString() == "Unknown"){
+		                                		  image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+			                              	 }else{
+			                              		image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+			                              	 }
+		                                  }else{
+		                                	  image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+		                                }	   
+		  							//}else if(signalStrengthLTT[i] < 50 ){
+		  							}else if(signalStrengthLTERSRP[i] < upperRangeForGood*-1 ){
+		     							 if((prevSourceCellId.toString() == "" || prevSourceCellId.toString() != currSourceCellId.toString())  
+		      	      							 && (prevNetworkType.toString() == "" || prevNetworkType.toString() != currNetworkType.toString())){
+		     								if(networkType[i].toString() == "Unknown"){
+		     									image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+				                              	 }else{
+				                              		image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+				                              	 }
+		                                      }else if(prevSourceCellId.toString() == "" ||prevSourceCellId.toString() != currSourceCellId.toString()){
+		                                    	  image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-plus_GOOD2.png';
+			                                  }else if(prevNetworkType.toString() == "" ||prevNetworkType.toString() != currNetworkType.toString() ){	 
+			                                	  if(networkType[i].toString() == "Unknown"){
+			                                		  image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+				                              	 }else{
+				                              		image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+				                              	 }
+			                                  }else{
+			                                	  image = '../../'+"#{request.contextPath}"+'/resources/images/WIFI-GOOD2.png';
+			                                }	   
+		      							}
+		  	  	 	 				}
+			    			}
+			    			prevSourceCellId=currSourceCellId;
+			             	prevNetworkType= deviceInfonetworkType[i];
+
+			             	var tempGSMStr = String(signalStrengthStr[i]);
+			    			if(tempGSMStr.match("false"))
+			    			{
+			    				signalStrengthCDMACIOList = "<b>CDMA-ECIO:</b>"+signalStrengthCDMACIO[i];
+			    				signalStrengthEVDOECIOList = "<b>EVDO-ECIO:</b>"+signalStrengthEVDOECIO[i];
+			    				signalStrengthSnrList = "<b>SNR:</b>"+signalStrengthSnr[i];
+			    				signalStrengthCDMAList = "<b>CDMA;</b>"+signalStrengthCDMA[i];
+			    				signalStrengthEVDOList = "<b>EVDO:</b>"+signalStrengthEVDO[i];
+			    			}else{
+				    				signalStrengthCDMACIOList="";
+				    				signalStrengthEVDOECIOList="";
+				    				signalStrengthSnrList="";
+				    				signalStrengthCDMAList="";
+				    				signalStrengthEVDOList="";
+			    			}
+			    			if(deviceInfonetworkType[i].toString()== "LTE (4G)" || deviceInfonetworkType[i].toString()== " LTE (4G)" || deviceInfonetworkType[i].toString()== "LTE")
+			    			{
+					    		htmlStr = "";
+			    				addr="";
+			     	    	}else{
+				    			htmlStr = "<b>signalStrength:</b>"+deviceInfosignalStrength[i];
+				    			addr = "<b>signalStrength:</b>"+deviceInfosignalStrength[i];
+			     	    	}
+			    			var m = new google.maps.Marker({
+
+			    				map : google_map,
+			    				animation : google.maps.Animation.DROP,
+			    				title : addr,
+			    				alt:addr,
+			    				position : new google.maps.LatLng(lat,lng),
+			    				icon : image,
+			    				html : htmlStr,
+			    				info1 : htmlStr,
+			    				info2 : networkTypeList,
+			    				info3: testNamelist,
+			    				info4: throughtputList,
+			    				info5: cellIdList,
+			    				info6: snapShotList,
+			    				info7 :sourceLac,
+			    				info8: timeStampForEachSampleList,
+			    				info9 : networkMncList,
+			    				info10 : networkMccList,
+			    				info11 : deviceInfoThroughput,
+			    				info12:wifiInfoRssiList,
+			    				info13:wifiInfoBssidList,
+			    				info14:wifiInfoLinkSpeedList,
+			    				info15:signalStrengthCDMACIOList,
+			    				info16:signalStrengthEVDOECIOList,
+			    				info17:signalStrengthSnrList,
+			    				info18:signalStrengthCDMAList,
+			    				info19:signalStrengthEVDOList,
+			    				info20:ImeiData,
+			    				topLevel : topLevelData
+				
+			    			});
+			    			htmlStr = "";
+			    			google.maps.event.addListener(m, 'click', function() {
+			    				info_window.setContent('<table><tr><td colspan="2">' +this.info2+ '</td></tr>' 
+			    				+'<tr><td colspan="2">' +this.info1 +'</td>'+'<td>'+ this.info3+ '</td></tr>'
+			    				+'<tr><td colspan="2">' +this.info4 +'</td>'+'<td>'+ this.info5+ '</td></tr>'
+			    				+'<tr><td colspan="2">' +this.info6 +'</td>'+'<td>'+ this.info7+ '</td></tr>'
+			    				+'<tr><td colspan="2">' +this.info9 +'</td>'+'<td>'+ this.info10+ '</td></tr>'
+			    				+'<tr><td colspan="2">' +this.info11 +'</td>'+'<td>'+ this.info20+ '</td></tr>'
+			    				+'<tr><td colspan="2">' +this.info12 +'</td>'+'<td>'+ this.info13+ '</td></tr>'
+			    				+'<tr><td colspan="2">' +this.info15 +'</td>'+'<td>'+ this.info16+ '</td></tr>'
+			    				+'<tr><td colspan="2">' +this.info17 +'</td>'+'<td>'+ this.info18+ '</td></tr>'
+			    				+'<tr><td colspan="2">' +this.info19 +'</td>'+'<td>'+ this.info14+ '</td></tr>'
+			    				+'<tr><td colspan="2">' +this.info8+'</td></tr></table>');
+			    				info_window.open(google_map, this);
+			    			});
+			    		var topLevelData = '';
+			    		var htmlStr = '';
+
+			         	 }
+
+			         	 //THIS IS TO POPULATE DEVICE INFO POINTS
+			     		for (var i = 0;i<deviceInfosignalStrength.length;i++){
+							value = deviceInfosignalStrength[i];
+							addr="SignalStrength:"+deviceInfosignalStrength[i];
+							lat = deviceInfolattitudes[i];
+			    			lng = deviceInfolongitudes[i];
+			    			topLevelData = "TestName:"+deviceInfotestName[i];
+			    			networkTypeList="<b>Network Type:</b>"+deviceInfonetworkType[i];
+			    			type =Number(deviceInfosignalStrength[i]);
+			    			htmlStr = "<b>SignalStrengths:</b>"+deviceInfosignalStrength[i];
+			    			timeStampForEachSampleList="<b>Test Time:</b>"+deviceInfotimeStampForEachSample[i];	
+			    			testNamelist="<b>TestName:</b>"+deviceInfotestName[i];
+			    			var test_type = "#{reportBean.test_type}";
+
+			    				if(throughput[i]==0){
+			    					throughtputList="<b>Throughput:</b>NA ";
+			  	    			}else{
+			  	    				console.log("test_type "+test_type)
+			  	    				var speed;
+			  	    				if(test_type=="externaltest"){speed = " Mbps";}else{speed = " Bps";}
+			  	    				//removed the throughput[i]*8 to throughput[i] by ankit
+			  	    				var throughputInbits = throughput[i];
+			  	    				console.log("throughputInbits - "+throughputInbits);
+			  	    				throughtputList="<b>Throughput:</b>"+throughputInbits+speed;
+			  	    				if(throughputInbits>=15){
+				  	    				image = '../../'+"#{request.contextPath}"+'/resources/images/star_pink.png';
+				  	    				}else if(throughputInbits<=15 && throughputInbits>=10){
+				  	    				image = '../../'+"#{request.contextPath}"+'/resources/images/star_green.png';
+				  	    				}else if(throughputInbits<=10 && throughputInbits>=2){
+				  	    				image = '../../'+"#{request.contextPath}"+'/resources/images/star_blue.png';
+				  	    				}else if(throughputInbits<2){
+				  	    				image = '../../'+"#{request.contextPath}"+'/resources/images/star_grey.png';
+				  	    				}
+			  	    				
+			  	    			}	
+			    			networkType[i]=networkType[i];
+			    			currNetworkType=networkType[i];
+			    			currSourceCellId=cellLocationCid[i];
+			    			prevSourceCellId= cellLocationCid[i];
+			             	prevNetworkType= networkType[i];
+
+			             	    if(image!='' && throughput[i]!=0)
+			             	    {
+			             	    	console.log("image "+image)
+							var img = new google.maps.MarkerImage(image,
+									new google.maps.Size(30,30),
+									new google.maps.Point(0,0),
+									new google.maps.Point(8,4)); 
+							
+				             	    
+			    			var m = new google.maps.Marker({
+
+			    				map : google_map,
+			    				animation : google.maps.Animation.DROP,
+			    				title : addr,
+			    				alt:addr,
+			    				position : new google.maps.LatLng(lat,lng),
+			    				icon : img,
+			    				html : htmlStr,
+			    				info1 : htmlStr,
+			    				info2 : networkTypeList,
+			    				info3: testNamelist,
+			    				info4: throughtputList,
+			    				info5: timeStampForEachSampleList,
+			    				topLevel : topLevelData
+				
+			    			});
+			    			htmlStr = "";
+			    			google.maps.event.addListener(m, 'click', function() {
+			    				info_window.setContent('<table><tr><td colspan="2">' +this.info2+ '</td></tr>' 
+			    				+'<tr><td>'+ this.info3+ '</td></tr>'
+			    				+'<tr><td colspan="2">' +this.info4+'</td>'+'<td>'+ this.info5+ '</td></tr></table>');
+			    				info_window.open(google_map, this);
+			    			});
+			    		var topLevelData = '';
+			    		var htmlStr = '';
+
+			         	 }
+			             	   image='';
+			     		}	         	 
+				       }
+						document.getElementById("voiceQuality").style.display='none';
+				    	document.getElementById("signalStrength").style.display='none';
+				    	document.getElementById("Throughput").style.display='none';
+				    	document.getElementById("TCPThroughput").style.display='none';
+				    	document.getElementById("UDPThroughput").style.display='';
+				    	document.getElementById("LTE_Voice_Data").style.display='none';	
+				    	document.getElementById("Frequency_Band").style.display='none';
+		      		}else if(reportType == "LTE_Voice_Data"){
 				var lattitudes = "#{sessionScope['lattitudes']}";  
 				if(lattitudes != ""){
 					lattitudes = lattitudes.split(",");
@@ -4692,12 +6359,16 @@
 				document.getElementById("voiceQuality").style.display='none';
 		    	document.getElementById("signalStrength").style.display='none';
 		    	document.getElementById("Throughput").style.display='none';
+		    	document.getElementById("TCPThroughput").style.display='none';
+		    	document.getElementById("UDPThroughput").style.display='none';
 		    	document.getElementById("LTE_Voice_Data").style.display='';
 		    	document.getElementById("Frequency_Band").style.display='none';
       		}else{
       			document.getElementById("voiceQuality").style.display='none';
 		    	document.getElementById("signalStrength").style.display='none';
 		    	document.getElementById("Throughput").style.display='none';
+		    	document.getElementById("TCPThroughput").style.display='none';
+		    	document.getElementById("UDPThroughput").style.display='none';
 		    	document.getElementById("LTE_Voice_Data").style.display='none';	
 		    	document.getElementById("Frequency_Band").style.display='none';
       		}
@@ -4945,16 +6616,21 @@ transform-origin: 50% 50% 0;
 	  		  			
 						<div id="map" style="margin-left: 100px;">
 					    <h:selectOneRadio value="#{reportBean.mapReportType}" styleClass="radioright">
-						<f:selectItem itemLabel="&nbsp;Signal Strength &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" itemValue="signalStrength" style="color=black;"/>
-						<f:selectItem itemLabel="&nbsp;Voice Quality&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" itemValue="voiceQuality" style="color=black;"/>
-						<f:selectItem itemLabel="&nbsp;&nbsp;&nbsp;Throughput&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" itemValue="throughput" style="color=black;"/>
-						<f:selectItem itemLabel="&nbsp;&nbsp;&nbsp;LTE(Simultaneous Voice and Data).&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" itemValue="LTE_Voice_Data" style="color=black;"/>
-						<f:selectItem itemLabel="&nbsp;&nbsp;&nbsp;Frequency Band.&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" itemValue="Frequency_Band" style="color=black;"/>
+						<f:selectItem itemLabel="&nbsp;Signal Strength&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" itemValue="signalStrength" style="color=black;"/>
+						<f:selectItem itemLabel="&nbsp;Voice Quality&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" itemValue="voiceQuality" style="color=black;"/>
+						<f:selectItem itemLabel="&nbsp;Throughput&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" itemValue="throughput" style="color=black;"/>
+						<f:selectItem itemLabel="&nbsp;TCP &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" itemValue="tcpthroughput" style="color=black;"/>
+						<f:selectItem itemLabel="&nbsp;UDP &nbsp;&nbsp;&nbsp;&nbsp;" itemValue="udpthroughput" style="color=black;"/>
+						<f:selectItem itemLabel="&nbsp;LTE(Simultaneous Voice, Data)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" itemValue="LTE_Voice_Data" style="color=black;"/>
+						<f:selectItem itemLabel="&nbsp;Freq. Band" itemValue="Frequency_Band" style="color=black;"/>
 						</h:selectOneRadio>
-						<h:commandLink class="btn btn-primary" style="margin-right: 135px;" action="#{reportBean.generateGoogleMapReport}">		
+						<h:commandLink class="btn btn-primary"  action="#{reportBean.generateGoogleMapReport}">		
 							<!-- <h:graphicImage library="images" name="page_right.gif" /> -->
 							Generate 
 						</h:commandLink>
+						<h:commandLink id="preCalVQ" style="font-size:10px;display: none;"  action="#{reportBean.exportMttestPrecalReport}"  >		
+							Export Log Files
+							</h:commandLink>
 						<div style="display:none">
 						 <h:commandButton value="Send" id = "qxdmdataBut" name="qxdmdataBut" actionListener="#{reportBean.downloadQxdmFile}">
 						    <f:ajax disabled="true"/>
@@ -4977,7 +6653,9 @@ transform-origin: 50% 50% 0;
 							<h:outputText value=" CallDrop " styleClass="fontlabel"/>
 							<h:graphicImage value="../..#{request.contextPath}/resources/images/circ.JPG"/>
 							<h:outputText value=" Cell ID Change " styleClass="fontlabel"/>
+					 		
 						</rich:panel>
+						
 						</div>
 						<div id="voiceQuality" style="display: none;">
 						<rich:panel header="Rating">
@@ -5000,7 +6678,9 @@ transform-origin: 50% 50% 0;
 							<h:outputText value=" CallDrop " styleClass="fontlabel"/>
 							<h:graphicImage value="../..#{request.contextPath}/resources/images/circ.JPG"/>
 							<h:outputText value=" Cell ID Change " styleClass="fontlabel"/>
+					       
 					        </rich:panel>
+					       
 						</div>
 						
 						<div id="Frequency_Band" style="display: none;">
@@ -5047,6 +6727,56 @@ transform-origin: 50% 50% 0;
 							<h:outputText value="Throughput present" styleClass="fontlabel"/>
 						</rich:panel>
 						</div>
+						<div id="TCPThroughput" style="display: none;">
+						<rich:panel header="Rating">
+						     <h:graphicImage value="../..#{request.contextPath}/resources/images/star_pink.png" width="15" height="20"/>
+								<h:outputText value=" Excellent " styleClass="fontlabel"/>
+								<h:graphicImage value="../..#{request.contextPath}/resources/images/star_green.png" width="15" height="20"/>
+								<h:outputText value=" Good " styleClass="fontlabel"/>
+								<h:graphicImage value="../..#{request.contextPath}/resources/images/star_blue.png" width="15" height="20"/>
+								 <h:outputText value=" Fair " styleClass="fontlabel"/>
+								<h:graphicImage value="../..#{request.contextPath}/resources/images/star_grey.png" width="15" height="20"/>
+								<h:outputText value=" Poor " styleClass="fontlabel"/>
+									<h:graphicImage value="../..#{request.contextPath}/resources/images/L-GOOD2.png"/>
+							<h:outputText value=" Good(LTE:#{sessionScope['lteupperRangeForGood']}; to #{sessionScope['ltelowerRangeForGood']} ,2G/3G/HSPA/UMTS:#{sessionScope['upperRangeForGood']}; to #{sessionScope['lowerRangeForGood']}) " styleClass="fontlabel"/>
+							<h:graphicImage value="../..#{request.contextPath}/resources/images/L-AVG2.png"/>
+							<h:outputText value=" Average(LTE:#{sessionScope['lteupperRangeForAverage']}; to #{sessionScope['ltelowerRangeForAverage']} ,2G/3G/HSPA/UMTS:#{sessionScope['upperRangeForAverage']}; to #{sessionScope['lowerRangeForAverage']}) " styleClass="fontlabel"/>
+							<h:graphicImage value="../..#{request.contextPath}/resources/images/L-BAD2.png"/>
+							<h:outputText value=" Bad(LTE:>=#{sessionScope['lteupperRangeForPoor']} 2G/3G/HSPA/UMTS:>=-103) " styleClass="fontlabel"/>
+			
+							<h:graphicImage value="../..#{request.contextPath}/resources/images/mm_20_red.png"/>
+							<h:outputText value=" CallDrop " styleClass="fontlabel"/>
+							<h:graphicImage value="../..#{request.contextPath}/resources/images/circ.JPG"/>
+							<h:outputText value=" Cell ID Change " styleClass="fontlabel"/>
+					       
+					        </rich:panel>
+					       
+						</div>
+						<div id="UDPThroughput" style="display: none;">
+						<rich:panel header="Rating">
+						     <h:graphicImage value="../..#{request.contextPath}/resources/images/star_pink.png" width="15" height="20"/>
+								<h:outputText value=" Excellent " styleClass="fontlabel"/>
+								<h:graphicImage value="../..#{request.contextPath}/resources/images/star_green.png" width="15" height="20"/>
+								<h:outputText value=" Good " styleClass="fontlabel"/>
+								<h:graphicImage value="../..#{request.contextPath}/resources/images/star_blue.png" width="15" height="20"/>
+								 <h:outputText value=" Fair " styleClass="fontlabel"/>
+								<h:graphicImage value="../..#{request.contextPath}/resources/images/star_grey.png" width="15" height="20"/>
+								<h:outputText value=" Poor " styleClass="fontlabel"/>
+									<h:graphicImage value="../..#{request.contextPath}/resources/images/L-GOOD2.png"/>
+							<h:outputText value=" Good(LTE:#{sessionScope['lteupperRangeForGood']}; to #{sessionScope['ltelowerRangeForGood']} ,2G/3G/HSPA/UMTS:#{sessionScope['upperRangeForGood']}; to #{sessionScope['lowerRangeForGood']}) " styleClass="fontlabel"/>
+							<h:graphicImage value="../..#{request.contextPath}/resources/images/L-AVG2.png"/>
+							<h:outputText value=" Average(LTE:#{sessionScope['lteupperRangeForAverage']}; to #{sessionScope['ltelowerRangeForAverage']} ,2G/3G/HSPA/UMTS:#{sessionScope['upperRangeForAverage']}; to #{sessionScope['lowerRangeForAverage']}) " styleClass="fontlabel"/>
+							<h:graphicImage value="../..#{request.contextPath}/resources/images/L-BAD2.png"/>
+							<h:outputText value=" Bad(LTE:>=#{sessionScope['lteupperRangeForPoor']} 2G/3G/HSPA/UMTS:>=-103) " styleClass="fontlabel"/>
+			
+							<h:graphicImage value="../..#{request.contextPath}/resources/images/mm_20_red.png"/>
+							<h:outputText value=" CallDrop " styleClass="fontlabel"/>
+							<h:graphicImage value="../..#{request.contextPath}/resources/images/circ.JPG"/>
+							<h:outputText value=" Cell ID Change " styleClass="fontlabel"/>
+					       
+					        </rich:panel>
+					       
+						</div>
 						<div id="LTE_Voice_Data" style="display: none;">
 						<rich:panel header="Signal Strength">
 							<h:graphicImage value="../..#{request.contextPath}/resources/images/mapslengend.png"/>
@@ -5058,7 +6788,7 @@ transform-origin: 50% 50% 0;
 		    </div>
 		     </h:form>
 		     <br/>
-			<div id="map_canvas" align="center" style="position:relative;width: 1100px;height: 400px;bottom: 400px;left: 60px;z-index: 999;"></div>
+			<div id="map_canvas" align="center" style="position:relative;width: 1100px;height: 500px;bottom: 400px;left: 60px;z-index: 999;"></div>
 		</div>	
         <script>window.jQuery || document.write(' <h:outputScript library="js" name="jquery-1.9.0.min.js" />')</script>
         <h:outputScript library="js" name="plugins.js" />
